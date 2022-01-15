@@ -1,12 +1,14 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from development.extractpoint import calMatrix
+
 # distanceMatrix=calMatrix()
-distanceMatrix=np.array(calMatrix())
+newMatrix= calMatrix()
+# distanceMatrix=np.array(newMatrix.trueMatrix())
+distanceMatrix=np.array(newMatrix.grayRGBMatrix())
 # print(len(distanceMatrix))
-plt.matshow(distanceMatrix, cmap=plt.cm.gray_r)
 
+image = np.array(distanceMatrix, dtype=np.uint8)
 
-# plt.colorbar(ax.colorbar, fraction=0.025)1
-plt.title("Gray Graph of Protein Distance Matrix")
+plt.imshow(image, interpolation='none')
 plt.show()
