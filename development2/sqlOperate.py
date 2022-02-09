@@ -1,3 +1,4 @@
+from turtle import distance
 from attr import field
 import pymysql
 import os
@@ -7,10 +8,9 @@ import numpy as np
 from pydoc import describe
 from soupsieve import select
 
-from development.matrixMaker import calMatrix
 
 
-class sqlOp:
+class sqlOP:
     '''The username and password of MySQL are needed from Envionment Variables.
        user's key is "SQLUSER", password's is "SQLPSWD". 
        Attention: You need to restart you PC to make new Envionment Variables available'''
@@ -21,9 +21,6 @@ class sqlOp:
         password = os.environ.get('SQLPSWD')
 
         self.pdbID = pdbID
-        newMatrix = calMatrix(pdb_id=pdbID)
-        self.distanceMatrix = np.array(newMatrix.trueMatrix())
-        self.matrixLen = len(self.distanceMatrix)
 
         # 打开数据库连接
         self.db = pymysql.connect(host='127.0.0.1',
@@ -40,6 +37,17 @@ class sqlOp:
             return 0
         except:
             return 1
+    
+    def importMatrix(self):
+        from matrixMaker import makeMatrix
+
+
+    def entryCount(self):
+        isEmptySQL='SELECT COUNT(1) FROM {}'.format(self.pdbID)
+        self.cursor.execute(isEmptySQL)
+        data=self.cursor.fetchone()
+        print("The entrys you have saved is {}".format(data[0]))
+        return data[0]
 
     def createTable(self, reload_mode=True):
         '''reload_mode means to cover the old table.'''
@@ -77,11 +85,13 @@ class sqlOp:
             print("CREATE TABLE ERROR.")
             sys.exit()
 
-    def saveDistance(self):
+    def saveDisMatrix(self):
         insertPre = 'INSERT INTO {}'.format(self.pdbID)+" VALUES " # Preparation for inserting.
         i = 0
         tmp=0
         print(self.matrixLen)
+
+        # Insert data.
         while i < self.matrixLen:
             if tmp == 5:
                 print("INSERT ERROR")
@@ -100,24 +110,47 @@ class sqlOp:
     def saveToDB(self):
         isExist=self.tableExist()
         if isExist==0:
-            isEmptySQL='SELECT COUNT(1) FROM {}'.format(self.pdbID)
-            self.cursor.execute(isEmptySQL)
-            data=self.cursor.fetchone()
-            print(data[0])
-            if data[0]==self.matrixLen:
+            entryCount = self.entryCount()
+
+            if entryCount==self.matrixLen:
                 print("You have saved the distance matrix. Do not execute again.")
                 sys.exit()
-            elif data[0]==0:
-                self.saveDistance()
+            elif entryCount==0:
+                self.saveDisMatrix()
             else:
                 self.createTable()
-                self.saveDistance()
+                self.saveDisMatrix()
         else:
             self.createTable()
-            self.saveDistance()
+            self.saveDisMatrix()
     
     def loadFrDB(self):
-        pass
+        isExist=self.tableExist()
+        if isExist==0:
+            entryCount = self.entryCount()
+
+            if entryCount==self.matrixLen:
+                disMatrix=[]
+                selectSQL='SELECT * FROM {}'.format(self.pdbID)
+                self.cursor.execute(selectSQL)
+                data=self.cursor.fetchall()
+                for line in data:
+                    tmpDis= list(line)
+                    disMatrix.append(tmpDis)
+
+                disMatrix=np.array(disMatrix)
+                print(len(disMatrix))
+                return disMatrix
+                
+            elif entryCount==0:
+                print("You have not saved the distance matrix. please save it first! ")
+                return 1
+            else:
+                print("You distance matrix is not full. please reload it! ")
+                sys.exit()
+        else:
+            print("Table is not exist, please create it first! ")
+            sys.exit()
 
     def backup():
         pass
@@ -128,6 +161,7 @@ class sqlOp:
 
 
 if __name__ == '__main__':
-    op = sqlOp(pdbID='6vw1')
+    op = sqlOP() # pdbID='6vw1'
     # print(op.createTable())
-    print(op.saveToDB())
+    # print(op.saveToDB())
+    print(op.loadFrDB())

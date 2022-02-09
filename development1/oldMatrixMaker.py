@@ -6,6 +6,8 @@ import sys
 import csv
 import requests
 
+from sqlOperate import sqlOP
+
 p = PDBParser() #可选参数PERMISSIVE=1时忽略错误
 
 class calMatrix:
@@ -32,10 +34,8 @@ class calMatrix:
             sys.exit()
         else:
           return 0
-  
-  def databaseSave(self):
-    pass
 
+  def new_trueMatrix(self):
 
   def trueMatrix(self):
 

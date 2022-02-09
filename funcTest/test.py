@@ -1,7 +1,14 @@
-list1=[1,2,3]
-i=0
-while i<3:
-    i=i+1
-    if i==1:
-        i=i+1
-    print(list1[i])
+from sre_constants import SUCCESS
+import pymysql
+import os
+import sys
+
+def cur():
+    for i in range(5):
+        print(i)
+        if i==3:
+            sys.exit()
+
+if __name__=='__main__':
+    cur()
+    print('SUCCESS')
