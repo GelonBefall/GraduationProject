@@ -1,10 +1,12 @@
-from turtle import distance
-from attr import field
 import pymysql
 import os
 import sys
 import numpy as np
 
+from collections import deque
+
+from turtle import distance
+from attr import field
 from pydoc import describe
 from soupsieve import select
 
@@ -29,6 +31,7 @@ class sqlOP:
                                   database=database,
                                   charset='utf8')
         self.cursor = self.db.cursor()
+        self.entryAmount = self.entryCount()
 
     def tableExist(self):
         try:
@@ -37,43 +40,38 @@ class sqlOP:
             return 0
         except:
             return 1
-    
-    def importMatrix(self):
-        from matrixMaker import makeMatrix
-
 
     def entryCount(self):
-        isEmptySQL='SELECT COUNT(1) FROM {}'.format(self.pdbID)
-        self.cursor.execute(isEmptySQL)
-        data=self.cursor.fetchone()
-        print("The entrys you have saved is {}".format(data[0]))
-        return data[0]
+        try:
+            isEmptySQL='SELECT COUNT(1) FROM {}'.format(self.pdbID)
+            self.cursor.execute(isEmptySQL)
+            data=self.cursor.fetchone()
+            print("The entrys you have saved is {}".format(data[0]))
+            return data[0]
+        except:
+            print("Cant found the table.")
+            return -1
 
-    def createTable(self, reload_mode=True):
-        '''reload_mode means to cover the old table.'''
-        isExist = self.tableExist()
-        if isExist == 0:
+    def dropTable(self):
+        try:
+            deleteTableSQL = "DROP TABLE {}".format(self.pdbID)
+            self.cursor.execute(deleteTableSQL)
+            self.db.commit()
+            print("DROP TABLE SUCCESSFULLY.")
+            return 0
+        except:
+            self.db.rollback()
+            print("DROP TABLE ERROR, please check your database.")
+            sys.exit()
 
-            # Drop table.
-            if reload_mode == True:
-                try:
-                    deleteTableSQL = "DROP TABLE {}".format(self.pdbID)
-                    self.cursor.execute(deleteTableSQL)
-                    self.db.commit()
-                except:
-                    self.db.rollback()
-                    print("DROP TABLE ERROR, please check your database.")
-                    sys.exit()
-            else:
-                return 0
-
+    def createTable(self,matrixLen):
         # Create new table.
         tableCreateSQL = "CREATE TABLE {}(".format(self.pdbID)
-        for i in range(self.matrixLen-1):
-            tableCreateSQL = tableCreateSQL + 'Coloumn{} DOUBLE,'.format(i)
+        for i in range(matrixLen-1):
+            tableCreateSQL = tableCreateSQL + 'Col{} DOUBLE,'.format(i)
         tableCreateSQL = tableCreateSQL + \
-            'Coloumn{} DOUBLE)'.format(self.matrixLen-1)
-        if i>1000: # Choose engine MyISAM.
+            'Col{} DOUBLE)'.format(matrixLen-1)
+        if i>1000: # Choose MySQL-engine MyISAM.
             tableCreateSQL=tableCreateSQL+'engine=MyISAM'
 
         try:
@@ -85,18 +83,17 @@ class sqlOP:
             print("CREATE TABLE ERROR.")
             sys.exit()
 
-    def saveDisMatrix(self):
+    def saveDisMatrix(self, disMatrix, matrixLen):
         insertPre = 'INSERT INTO {}'.format(self.pdbID)+" VALUES " # Preparation for inserting.
         i = 0
         tmp=0
-        print(self.matrixLen)
 
         # Insert data.
-        while i < self.matrixLen:
+        while i < matrixLen:
             if tmp == 5:
                 print("INSERT ERROR")
                 sys.exit()
-            insertSQL = insertPre + str(tuple(self.distanceMatrix[i]))
+            insertSQL = insertPre + str(tuple(disMatrix[i]))
             try:
                 self.cursor.execute(insertSQL)
                 self.db.commit()
@@ -106,62 +103,50 @@ class sqlOP:
                 self.db.rollback()
                 i = i-1
                 tmp = tmp+1
+        print("SAVE TO DB SUCCESSFULLY.")
 
-    def saveToDB(self):
+    def saveToDB(self,disMatrix):
         isExist=self.tableExist()
+        matrixLen=len(disMatrix)
         if isExist==0:
-            entryCount = self.entryCount()
 
-            if entryCount==self.matrixLen:
+            if self.entryAmount==matrixLen:
                 print("You have saved the distance matrix. Do not execute again.")
-                sys.exit()
-            elif entryCount==0:
-                self.saveDisMatrix()
+                return 0
+
+            elif self.entryAmount==0:
+                self.saveDisMatrix(disMatrix,matrixLen)
+
             else:
-                self.createTable()
-                self.saveDisMatrix()
+                self.dropTable()
+                self.createTable(matrixLen)
+                self.saveDisMatrix(disMatrix,matrixLen)
         else:
-            self.createTable()
-            self.saveDisMatrix()
+            self.createTable(matrixLen)
+            self.saveDisMatrix(disMatrix,matrixLen)
     
     def loadFrDB(self):
-        isExist=self.tableExist()
-        if isExist==0:
-            entryCount = self.entryCount()
+        try:
+            disLists=deque()
+            selectSQL='SELECT * FROM {}'.format(self.pdbID)
+            self.cursor.execute(selectSQL)
+            data=self.cursor.fetchall()
+            for line in data:
+                tmpDis= list(line)
+                disLists.append(tmpDis)
 
-            if entryCount==self.matrixLen:
-                disMatrix=[]
-                selectSQL='SELECT * FROM {}'.format(self.pdbID)
-                self.cursor.execute(selectSQL)
-                data=self.cursor.fetchall()
-                for line in data:
-                    tmpDis= list(line)
-                    disMatrix.append(tmpDis)
-
-                disMatrix=np.array(disMatrix)
-                print(len(disMatrix))
-                return disMatrix
-                
-            elif entryCount==0:
-                print("You have not saved the distance matrix. please save it first! ")
-                return 1
-            else:
-                print("You distance matrix is not full. please reload it! ")
-                sys.exit()
-        else:
-            print("Table is not exist, please create it first! ")
+            disMatrix=np.array(disLists)
+            # print(len(disMatrix))
+            return disMatrix
+        except:
+            print("Fail to load from database. please check it! ")
             sys.exit()
-
-    def backup():
-        pass
-        # insertPre=' ('
-        # for i in range(self.matrixLen-1):
-        #     insertPre=insertPre+"Coloumn{},".format(i)
-        # insertPre = insertPre + "Coloumn{} ) ".format(self.matrixLen-1) + " VALUES "
 
 
 if __name__ == '__main__':
     op = sqlOP() # pdbID='6vw1'
+    # op.dropTable()
+    print(op.entryAmount)
     # print(op.createTable())
     # print(op.saveToDB())
-    print(op.loadFrDB())
+    # print(op.loadFrDB())
