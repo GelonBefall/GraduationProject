@@ -1,3 +1,4 @@
 oldMatrixAndPNG/
-.vscode/
 funcTes/
+production/
+MatrixAndPNG\__pycache__

@@ -33,7 +33,7 @@ class makePNG:
         print(self.colormaps)
 
     def pngPlot(self, clrMatrix, MatrixLen, pdbID):
-        pngPath="./materials/png/"
+        pngPath="./production/png"
         pngFile=os.path.join(pngPath, pdbID+".png")
         pngData = []
         for i in range(MatrixLen):
