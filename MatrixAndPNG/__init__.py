@@ -55,6 +55,7 @@ class matrixExecute:
         clrmaps=self.mkPNG.colormaps
         clrMat=self.mkMat.grayMatrix(disMatrix,clrmaps)
         self.mkPNG.pngPlot(clrMat, self.mkMat.CAAmount, self.pdbID)
+        return clrMat
 
     
         
