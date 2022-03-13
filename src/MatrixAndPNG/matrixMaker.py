@@ -11,8 +11,8 @@ class makeMatrix:
     '''Before using other function, better to execute "calMatrix()" first.'''
     def __init__(self, pdbID = "2erk"):
         self.pdbID = pdbID
-        self.pdbPath = "./materials/pdb/"
-        self.pdbFile = os.path.join(self.pdbPath, "{}.pdb".format(self.pdbID))
+        self.__pdbPath = "./materials/pdb/"
+        self.__pdbFile = os.path.join(self.__pdbPath, "{}.pdb".format(self.pdbID))
 
         initStatus=self.initPDBFile()
         if initStatus==0:
@@ -27,28 +27,28 @@ class makeMatrix:
         if pdbExist==0:
           return 0
         else:
-          dlStatus=self.pdbDownload()
+          dlStatus=self.__pdbDownload()
           if dlStatus==0:
             return 0
           else:
             return 1
 
     def pdbExist(self):
-        if os.path.exists(self.pdbFile):
+        if os.path.exists(self.__pdbFile):
           print("PDB file exist!")
           return 0
         else:
           print("PDB file doesn't exist!")
           return 1
 
-    def pdbDownload(self):
+    def __pdbDownload(self):
         url = "https://files.rcsb.org/download/" + self.pdbID + ".pdb"
         r = requests.get(url)
         print(r)
         for i in range(3) :
           if r:
             print("Downloading {}...".format(self.pdbID))
-            with open(self.pdbFile,"wb") as pdbFile:
+            with open(self.__pdbFile,"wb") as pdbFile:
               pdbFile.write(r.content)
             isPDBExist=self.pdbExist()
             if isPDBExist==0:
@@ -64,7 +64,7 @@ class makeMatrix:
 
     def CACount(self):
         '''Get CA atoms' count.'''
-        structure = self.p.get_structure(self.pdbID, self.pdbFile)
+        structure = self.p.get_structure(self.pdbID, self.__pdbFile)
         # atoms = structure.get_atoms()
         residues = structure.get_residues()
         count = 0
@@ -76,7 +76,7 @@ class makeMatrix:
 
     def calMatrix(self):
         '''To calculate the distance of CA.'''
-        structure = self.p.get_structure(self.pdbID, self.pdbFile)
+        structure = self.p.get_structure(self.pdbID, self.__pdbFile)
         disLists = deque()
         ListsTemp= deque()
 
@@ -120,8 +120,6 @@ class makeMatrix:
 
         clrMatrix=np.array(clrLists)
         return clrMatrix
-
-
 
 
 if __name__=='__main__':

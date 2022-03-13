@@ -1,12 +1,12 @@
 # import sys
 # import numpy as np
 
-from matrixMaker import makeMatrix
-from sqlOperate import sqlOP
-from pngMaker import makePNG
+from .matrixMaker import makeMatrix
+from .sqlOperate import sqlOP
+from .pngMaker import makePNG
 
 
-class matrixExecute:
+class matrixExecuter:
     def __init__(self, pdbID='2erk', database='atomdistance'):
         self.pdbID=pdbID
         self.sql=sqlOP(pdbID=self.pdbID, database=database)
@@ -42,7 +42,7 @@ class matrixExecute:
                 return self.mkMat.disMatrix
 
     def LASMat(self, dropMode=False):
-        '''LAS means load martix and save the matrix to database.
+        '''LAS means load and save the matrix to database.
            If dropMode==False, Production will drop the table of database first.'''
         if dropMode==True:
             self.sql.dropTable()
@@ -60,7 +60,7 @@ class matrixExecute:
     
         
 if __name__ == '__main__':
-    matEXE = matrixExecute() # pdbID='6vw1'
+    matEXE = matrixExecuter() # default pdbID='6vw1'
     # print(op.createTable())
     # print(op.saveToDB())
     # print(matEXE.LASMat())

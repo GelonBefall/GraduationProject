@@ -1,8 +1,7 @@
 .vscode/
-oldMatrixAndPNG/
-funcTes/
 production/png/*
-MatrixAndPNG/__pycache__
 materials/dssp/*
 materials/pdb/*
 materials/rgb/*
+discard/
+src/__pycache__/

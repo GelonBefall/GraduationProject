@@ -6,8 +6,8 @@ import png
 class makePNG:
     def __init__(self, colorFilename="gray.rgb"):
         
-        self.rgbPath="./materials/rgb/"
-        self.colormapInit(colorFilename)
+        self.__rgbPath="./materials/rgb/"
+        self.__colormapInit(colorFilename)
 
     def colormapExist(self, colorFile):
         if os.path.exists(colorFile):
@@ -17,8 +17,8 @@ class makePNG:
           print("The RGB doesn't exist!")
           return 1
 
-    def colormapInit(self, colorFilename="gray.rgb"):
-        colorFile=os.path.join(self.rgbPath, colorFilename)
+    def __colormapInit(self, colorFilename="gray.rgb"):
+        colorFile=os.path.join(self.__rgbPath, colorFilename)
         RGBstatus=self.colormapExist(colorFile)
         if RGBstatus==1:
             sys.exit()
