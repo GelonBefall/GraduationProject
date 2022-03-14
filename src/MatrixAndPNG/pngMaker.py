@@ -27,10 +27,10 @@ class makePNG:
         with open(colorFile) as f:
             for line in f:
                 # colormapMatrix.insert(0,list(map(int,line.split())))
-                colormaps.append(list(map(int,line.split(","))))
-        
-        self.colormaps = np.array(colormaps)
-        print(self.colormaps)
+                colormaps.append(tuple(map(int,line.split(","))))
+        self.colormaps = colormaps
+        # self.colormaps = np.array(colormaps)
+        # print(self.colormaps)
 
     def pngPlot(self, clrMatrix, MatrixLen, pdbID):
         pngPath="./production/png"
@@ -49,3 +49,6 @@ class makePNG:
         w.write(f,pngData)
         f.close()
 
+if __name__=='__main__':
+    mkPNG=makePNG()
+    print(mkPNG.colormaps)

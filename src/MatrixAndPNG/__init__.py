@@ -2,11 +2,11 @@
 # import numpy as np
 
 from .matrixMaker import makeMatrix
-from .sqlOperate import sqlOP
+from .sqlOperater import sqlOP
 from .pngMaker import makePNG
 
 
-class matrixExecuter:
+class matrixExecute:
     def __init__(self, pdbID='2erk', database='atomdistance'):
         self.pdbID=pdbID
         self.sql=sqlOP(pdbID=self.pdbID, database=database)
@@ -60,7 +60,7 @@ class matrixExecuter:
     
         
 if __name__ == '__main__':
-    matEXE = matrixExecuter() # default pdbID='6vw1'
+    matEXE = matrixExecute() # default pdbID='6vw1'
     # print(op.createTable())
     # print(op.saveToDB())
     # print(matEXE.LASMat())

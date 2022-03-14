@@ -93,7 +93,9 @@ class makeMatrix:
               CA2 = residue2["CA"]
               distance = CA1 - CA2
               ListsTemp.append(distance)
-              # print(ListsTemp)
+              # if distance <0:
+              #   raise '有数据小于0！'
+              # # print(ListsTemp)
             else:
                 continue
 
@@ -123,6 +125,6 @@ class makeMatrix:
 
 
 if __name__=='__main__':
-    NM=makeMatrix()
+    NM=makeMatrix(pdbID='1a4f')
     disMatrix=NM.calMatrix()
     print(disMatrix)

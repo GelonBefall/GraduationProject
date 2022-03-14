@@ -1,7 +1,8 @@
-.vscode/
 production/png/*
 materials/dssp/*
 materials/pdb/*
 materials/rgb/*
 discard/
 src/__pycache__/
+src/MatrixAndPNG/__pycache__/
+src/DSSP/__pycache__/

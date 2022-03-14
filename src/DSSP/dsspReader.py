@@ -1,14 +1,15 @@
-import os
+import os, sys
 
 from collections import deque
 
 
-class dsspReader:
+class dsspRead:
     def __init__(self, pdbID: str):
         self.dsspID = pdbID.lower()
         self.__dsspPath = "./materials/dssp/"
         self.__dsspFile = os.path.join(
             self.__dsspPath, "{}.dssp".format(self.dsspID))
+        self.dsspExist()
 
     def __str__(self):
       return str(self.getAHelix())
@@ -18,8 +19,8 @@ class dsspReader:
             print("DSSP file exist!")
             return 0
         else:
-            print("DSSP file doesn't exist!")
-            return 1
+            # print("DSSP file doesn't exist!")
+            sys.exit("DSSP file doesn't exist!")
 
     def getAHelix(self):
         with open(self.__dsspFile, mode='r') as dF:
@@ -49,8 +50,15 @@ class dsspReader:
         aHelix = list(aHelix)
         return aHelix
 
+    def aHelixRange(self):
+        aHRange=[]
+        rangeList=self.getAHelix()
+        for i in rangeList:
+            aHRange.append(range(i[0], i[1]+1))
+        return aHRange
+
 
 if __name__ == '__main__':
     # dR = dsspReader('1a4f')
-    dR = dsspReader('1faw')
-    print(dR)
+    dR = dsspRead('1faw')
+    print(dR.aHelixRange())
