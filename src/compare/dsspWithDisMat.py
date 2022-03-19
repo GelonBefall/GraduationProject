@@ -1,4 +1,4 @@
-from src.DSSP.dsspReader import dsspReader
+from src.funcs.dsspReader import dsspReader
 from src.MatrixAndPNG import matrixExecuter
 
 class dWD:

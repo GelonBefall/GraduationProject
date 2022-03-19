@@ -2,7 +2,9 @@ production/png/*
 materials/dssp/*
 materials/pdb/*
 materials/rgb/*
+materials/pickle/*
 discard/
 src/__pycache__/
 src/MatrixAndPNG/__pycache__/
 src/DSSP/__pycache__/
+src/funcs/__pycache__/

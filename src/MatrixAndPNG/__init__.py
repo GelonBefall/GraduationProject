@@ -1,13 +1,13 @@
 # import sys
 # import numpy as np
 
-from .matrixMaker import makeMatrix
-from .sqlOperater import sqlOP
-from .pngMaker import makePNG
+from src.MatrixAndPNG.matrixMaker import makeMatrix
+from src.MatrixAndPNG.sqlOperater import sqlOP
+from src.MatrixAndPNG.pngMaker import makePNG
 
 
 class matrixExecute:
-    def __init__(self, pdbID='2erk', database='atomdistance'):
+    def __init__(self, pdbID='1a4f', database='atomdistance'):
         self.pdbID=pdbID
         self.sql=sqlOP(pdbID=self.pdbID, database=database)
         self.mkMat=makeMatrix(pdbID=self.pdbID)

@@ -9,7 +9,7 @@ class dsspRead:
         self.__dsspPath = "./materials/dssp/"
         self.__dsspFile = os.path.join(
             self.__dsspPath, "{}.dssp".format(self.dsspID))
-        self.dsspExist()
+        # self.dsspExist()
 
     def __str__(self):
       return str(self.getAHelix())

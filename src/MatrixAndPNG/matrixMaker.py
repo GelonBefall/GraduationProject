@@ -113,11 +113,11 @@ class makeMatrix:
 
           for m in range(self.CAAmount):
             checked=0
-            if disMatrix[i][m]>=19:
-              checked=19
+            if disMatrix[i][m]>=30:
+              checked=30
             else:
               checked=round(disMatrix[i][m])
-            tmp.append(clrmaps[19-checked])
+            tmp.append(clrmaps[9-checked//3])
           clrLists.append(tmp)
 
         clrMatrix=np.array(clrLists)
@@ -126,5 +126,5 @@ class makeMatrix:
 
 if __name__=='__main__':
     NM=makeMatrix(pdbID='1a4f')
-    disMatrix=NM.calMatrix()
-    print(disMatrix)
+    # disMatrix=NM.calMatrix()
+    # print(disMatrix)
