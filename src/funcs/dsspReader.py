@@ -23,6 +23,7 @@ class dsspRead:
             sys.exit("DSSP file doesn't exist!")
 
     def getAHelix(self):
+        '''返回α螺旋位置。例如[1, 3]为第二个到第四个α残基。'''
         with open(self.__dsspFile, mode='r') as dF:
             aHelix = deque()
             tmp = []
@@ -51,6 +52,7 @@ class dsspRead:
         return aHelix
 
     def aHelixRange(self):
+        '''返回range列表.'''
         aHRange=[]
         rangeList=self.getAHelix()
         for i in rangeList:
