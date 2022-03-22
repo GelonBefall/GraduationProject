@@ -41,7 +41,7 @@ class featureExtract:
 
         return alpahFeature
 
-    def featureOfTotal(self):
+    def __featureOfTotal(self):
         pass
 
 

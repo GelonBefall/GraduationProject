@@ -65,43 +65,59 @@ class diaStep:
         choosenArea = deque()
         print(choosenAreas)
         for area in choosenAreas:
-            if (area[1]-area[0])<step:
+            if 4<=area[1]-area[0]<step:
                 choosenArea.append(area)
                 continue
             areaTemp=[]
             temp=None
+            flag=0 # 允许错误次数
             for col in range(area[0], area[1]-step):
                 # 遍历该step线, 连续四个以上距离相同的残基添加入同一组中，作为α螺旋候选。
-                
                 row=col+step
-                # if row>
                 
-                if len(areaTemp)<1:
+                if len(areaTemp)==0:
                     temp=self.clrMat[col][row]
                     areaTemp.append(col)
+
                 elif len(areaTemp)==1:
                     if all(temp==self.clrMat[col][row]):
                         areaTemp.append(col)
                     else:
-                        areaTemp.clear()
-                        temp=self.clrMat[col][row]
-                        areaTemp.append(col)
-                elif 2<=(areaTemp[1]-areaTemp[0])<4:
+                        # flag+=1
+                        # if flag==2:
+                            areaTemp[0]=col
+                            temp=self.clrMat[col][row]
+                        # else:
+                            # areaTemp.append(col)
+
+                elif 1<=(areaTemp[1]-areaTemp[0])<4:
                     if all(temp==self.clrMat[col][row]):
                         areaTemp[1]=col
                     else:
-                        areaTemp.clear()
-                        temp=self.clrMat[col][row]
-                        areaTemp.append(col)
+                        # flag+=1
+                        # if flag==2:
+                            areaTemp.clear()
+                            temp=self.clrMat[col][row]
+                            areaTemp.append(col)
+                        # else:
+                            # areaTemp[1]=col
                 else:
                     if all(temp==self.clrMat[col][row]):
-                        areaTemp[1]=col
+                        areaTemp[1]=row
                     else:
-                        choosenArea.append(areaTemp)
-                        areaTemp.clear()
-                        temp=self.clrMat[col][col+step]
-                        areaTemp.append(col)
-            choosenArea.append(areaTemp)
+                        # flag+=1
+                        # if flag==2:
+                            areaTemp[1]+=1
+                            choosenArea.append(areaTemp)
+                            areaTemp=[]
+                            temp=self.clrMat[col][col+step]
+                            areaTemp.append(col)
+                        # else:
+                            # areaTemp[1]=row
+            if (len(areaTemp)==2) and ((areaTemp[1]-areaTemp[0])>=4):
+                areaTemp[1]+=1
+                choosenArea.append(areaTemp)
+                areaTemp=[]
         
         choosenArea=list(choosenArea)
         return choosenArea
@@ -113,7 +129,6 @@ class diaStep:
         #     return diaLines
         # except:
         choosenAreas = [[0, self.CAAmount]]
-        print(choosenAreas)
         for step in self.steps:
             if step>=40:
                 break

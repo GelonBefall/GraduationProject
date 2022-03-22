@@ -61,6 +61,6 @@ class dsspRead:
 
 
 if __name__ == '__main__':
-    # dR = dsspReader('1a4f')
-    dR = dsspRead('1faw')
+    dR = dsspRead('1a4f')
+    # dR = dsspRead('1faw')
     print(dR.aHelixRange())
