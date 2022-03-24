@@ -14,13 +14,14 @@ from soupsieve import select
 class sqlOP:
     '''The username and password of MySQL are needed from Envionment Variables.
        user's key is "SQLUSER", password's is "SQLPSWD". 
-       Attention: You need to restart you PC to make new Envionment Variables available'''
+       Attention: You need to restart you PC to make new Envionment Variables available.'''
 
     def __init__(self, pdbID='2erk', database='atomdistance'):
         # You need to set which database you will use.
         user = os.environ.get('SQLUSER')
         password = os.environ.get('SQLPSWD')
 
+        self.option = database
         self.pdbID = pdbID
 
         # 打开数据库连接
@@ -30,6 +31,7 @@ class sqlOP:
                                   database=database,
                                   charset='utf8')
         self.cursor = self.db.cursor()
+
         self.entryAmount = self.entryCount()
 
     def tableExist(self):
@@ -66,43 +68,75 @@ class sqlOP:
     def createTable(self, matrixLen):
         # Create new table.
         tableCreateSQL = "CREATE TABLE {}(".format(self.pdbID)
-        for i in range(matrixLen-1):
-            tableCreateSQL = tableCreateSQL + 'Col{} DOUBLE,'.format(i)
-        tableCreateSQL = tableCreateSQL + \
-            'Col{} DOUBLE)'.format(matrixLen-1)
-        if i > 1000:  # Choose MySQL-engine MyISAM.
-            tableCreateSQL = tableCreateSQL+'engine=MyISAM'
+        if self.option == 'atomdistance':
+            for i in range(matrixLen-1):
+                tableCreateSQL = tableCreateSQL + 'Col{} DOUBLE,'.format(i)
+            tableCreateSQL = tableCreateSQL + \
+                'Col{} DOUBLE)'.format(matrixLen-1)
+            if i > 1000:  # Choose MySQL-engine MyISAM.
+                tableCreateSQL = tableCreateSQL+'engine=MyISAM'
 
-        try:
-            self.cursor.execute(tableCreateSQL)
-            self.db.commit()
-            return 0
-        except:
-            self.db.rollback()
-            print("CREATE TABLE ERROR.")
-            sys.exit()
+            try:
+                self.cursor.execute(tableCreateSQL)
+                self.db.commit()
+                return 0
+            except:
+                self.db.rollback()
+                print("CREATE TABLE ERROR.")
+                sys.exit()
+        elif self.option == 'alphaFeatures':
+            tableCreateSQL += ' RANGE VARSIZE(12), ' + \
+                ' MIN DOUBLE, ' + ' MAX DOUBLE )'
+            try:
+                self.cursor.execute(tableCreateSQL)
+                self.db.commit()
+                return 0
+            except:
+                self.db.rollback()
+                print("CREATE TABLE ERROR.")
+                sys.exit()
 
     def saveDisMatrix(self, disMatrix, matrixLen):
         # Preparation for inserting.
         insertPre = 'INSERT INTO {}'.format(self.pdbID)+" VALUES "
         i = 0
         tmp = 0
+        if self.option == 'atomdistance':
+            # Insert data.
+            while i < matrixLen:
+                if tmp == 5:
+                    print("INSERT ERROR")
+                    sys.exit()
+                insertSQL = insertPre + str(tuple(disMatrix[i]))
+                try:
+                    self.cursor.execute(insertSQL)
+                    self.db.commit()
+                    i = i+1
+                    tmp = 0
+                except:
+                    self.db.rollback()
+                    i = i-1
+                    tmp = tmp+1
 
-        # Insert data.
-        while i < matrixLen:
-            if tmp == 5:
-                print("INSERT ERROR")
-                sys.exit()
-            insertSQL = insertPre + str(tuple(disMatrix[i]))
-            try:
-                self.cursor.execute(insertSQL)
-                self.db.commit()
-                i = i+1
-                tmp = 0
-            except:
-                self.db.rollback()
-                i = i-1
-                tmp = tmp+1
+        elif self.option == 'alphaFeatures':
+            # Insert data.
+            while i < matrixLen:
+                if tmp == 5:
+                    print("INSERT ERROR")
+                    sys.exit()
+                insertSQL = insertPre + \
+                    str(tuple(disMatrix[i][0])) + ', ' + \
+                    disMatrix[i][1]+','+disMatrix[i][2]
+                try:
+                    self.cursor.execute(insertSQL)
+                    self.db.commit()
+                    i = i+1
+                    tmp = 0
+                except:
+                    self.db.rollback()
+                    i = i-1
+                    tmp = tmp+1
+
         print("SAVE TO DB SUCCESSFULLY.")
 
     def saveToDB(self, disMatrix):
@@ -126,21 +160,38 @@ class sqlOP:
             self.saveDisMatrix(disMatrix, matrixLen)
 
     def loadFrDB(self):
-        try:
-            disLists = deque()
-            selectSQL = 'SELECT * FROM {}'.format(self.pdbID)
-            self.cursor.execute(selectSQL)
-            data = self.cursor.fetchall()
-            for line in data:
-                tmpDis = list(line)
-                disLists.append(tmpDis)
+        if self.option == 'atomdistance':
+            try:
+                disLists = deque()
+                selectSQL = 'SELECT * FROM {}'.format(self.pdbID)
+                self.cursor.execute(selectSQL)
+                data = self.cursor.fetchall()
+                for line in data:
+                    tmpDis = list(line)
+                    disLists.append(tmpDis)
 
-            disMatrix = np.array(disLists)
-            # print(len(disMatrix))
-            return disMatrix
-        except:
-            print("Fail to load from database. please check it! ")
-            sys.exit()
+                disMatrix = np.array(disLists)
+                # print(len(disMatrix))
+                return disMatrix
+            except:
+                print("Fail to load from database. please check it! ")
+                sys.exit()
+        elif self.option == 'alphaFeatures':
+            try:
+                disLists = []
+                selectSQL = 'SELECT * FROM {}'.format(self.pdbID)
+                self.cursor.execute(selectSQL)
+                data = self.cursor.fetchall()
+                for line in data:
+                    tmpDis = list(line)
+                    tmpDis[0] = tuple(tmpDis[0])
+                    disLists.append(tmpDis)
+
+                # print(len(disMatrix))
+                return disLists
+            except:
+                print("Fail to load from database. please check it! ")
+                sys.exit()
 
 
 if __name__ == '__main__':
