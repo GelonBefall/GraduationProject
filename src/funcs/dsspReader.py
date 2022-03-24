@@ -1,5 +1,4 @@
 import os, sys
-
 from collections import deque
 
 
@@ -14,7 +13,7 @@ class dsspRead:
     def __str__(self):
       return str(self.getAHelix())
     
-    def dsspExist(self):
+    def __dsspExist(self):
         if os.path.exists(self.__dsspFile):
             print("DSSP file exist!")
             return 0
@@ -49,6 +48,7 @@ class dsspRead:
                         aHelix.append(tmp)
                         tmp = []
         aHelix = list(aHelix)
+        # print(aHelix)
         return aHelix
 
     def aHelixRange(self):
@@ -63,4 +63,5 @@ class dsspRead:
 if __name__ == '__main__':
     dR = dsspRead('1a4f')
     # dR = dsspRead('1faw')
+    print(dR.getAHelix())
     print(dR.aHelixRange())

@@ -1,7 +1,7 @@
 from copyreg import pickle
-from src.MatrixAndPNG.matrixMaker import makeMatrix
-from src.MatrixAndPNG.pngMaker import makePNG
-from src.MatrixAndPNG import matrixExecute
+from src.doMatPNG.matrixMaker import makeMatrix
+from src.doMatPNG.pngMaker import makePNG
+from src.doMatPNG import matrixExecute
 from src.funcs.dsspReader import dsspRead
 from src.funcs.pickleOperater import pickleOP
 # from src.funcs.listModer import listMode
@@ -26,7 +26,7 @@ class diaStep:
         self.disMatrix = mE.LASMat()
         self.clrMat = mM.grayMatrix(self.disMatrix, self.clrMaps)
         self.CAAmount = mM.CAAmount
-        self.steps = [x for x in range(1, self.CAAmount)]
+        self.steps = [x for x in range(1, 5)]
 
     def stepAHelixDiaLine(self, step: int):
         '''提取dssp中，所有α螺旋所在结构中，每step个α残基之间的距离。'''
@@ -37,13 +37,13 @@ class diaStep:
         # aHR = dR.aHelixRange()
         for r in range(len(aR)):
             # 遍历所有α螺旋区段.
-            
-            if step>=(aR[r][1]-aR[r][0]):
+
+            if step >= (aR[r][1]-aR[r][0]):
                 # step值大于该区段长度
                 continue
 
             lineTmp = deque()
-            for row in range(aR[r][0],aR[r][1]-step):
+            for row in range(aR[r][0], aR[r][1]-step):
                 # 遍历的是第r个区段.
                 col = row+step
                 lineTmp.append(self.disMatrix[row][col])
@@ -54,72 +54,59 @@ class diaStep:
     def stepAHelixDiaLines(self):
         diaLines = {}
         for step in self.steps:
-            diaLine=self.stepAHelixDiaLine(step)
+            diaLine = self.stepAHelixDiaLine(step)
             if not bool(diaLine):
                 break
             else:
-             diaLines[step] = diaLine
+                diaLines[step] = diaLine
         return diaLines
 
     def stepClrDiaLine(self, step: int, choosenAreas):
         choosenArea = deque()
         print(choosenAreas)
         for area in choosenAreas:
-            if 4<=area[1]-area[0]<step:
+            if 4 <= area[1]-area[0] < step:
                 choosenArea.append(area)
                 continue
-            areaTemp=[]
-            temp=None
-            flag=0 # 允许错误次数
+            areaTemp = []
+            temp = None
             for col in range(area[0], area[1]-step):
                 # 遍历该step线, 连续四个以上距离相同的残基添加入同一组中，作为α螺旋候选。
-                row=col+step
-                
-                if len(areaTemp)==0:
-                    temp=self.clrMat[col][row]
+                row = col+step
+
+                if len(areaTemp) == 0:
+                    temp = self.clrMat[col][row]
                     areaTemp.append(col)
 
-                elif len(areaTemp)==1:
-                    if all(temp==self.clrMat[col][row]):
+                elif len(areaTemp) == 1:
+                    if all(temp == self.clrMat[col][row]):
                         areaTemp.append(col)
                     else:
-                        # flag+=1
-                        # if flag==2:
-                            areaTemp[0]=col
-                            temp=self.clrMat[col][row]
-                        # else:
-                            # areaTemp.append(col)
+                        areaTemp[0] = col
+                        temp = self.clrMat[col][row]
 
-                elif 1<=(areaTemp[1]-areaTemp[0])<4:
-                    if all(temp==self.clrMat[col][row]):
-                        areaTemp[1]=col
+                elif 1 <= (areaTemp[1]-areaTemp[0]) < 4:
+                    if all(temp == self.clrMat[col][row]):
+                        areaTemp[1] = col
                     else:
-                        # flag+=1
-                        # if flag==2:
-                            areaTemp.clear()
-                            temp=self.clrMat[col][row]
-                            areaTemp.append(col)
-                        # else:
-                            # areaTemp[1]=col
+                        areaTemp.clear()
+                        temp = self.clrMat[col][row]
+                        areaTemp.append(col)
                 else:
-                    if all(temp==self.clrMat[col][row]):
-                        areaTemp[1]=row
+                    if all(temp == self.clrMat[col][row]):
+                        areaTemp[1] = row
                     else:
-                        # flag+=1
-                        # if flag==2:
-                            areaTemp[1]+=1
-                            choosenArea.append(areaTemp)
-                            areaTemp=[]
-                            temp=self.clrMat[col][col+step]
-                            areaTemp.append(col)
-                        # else:
-                            # areaTemp[1]=row
-            if (len(areaTemp)==2) and ((areaTemp[1]-areaTemp[0])>=4):
-                areaTemp[1]+=1
+                        areaTemp[1] += 1
+                        choosenArea.append(areaTemp)
+                        areaTemp = []
+                        temp = self.clrMat[col][col+step]
+                        areaTemp.append(col)
+            if (len(areaTemp) == 2) and ((areaTemp[1]-areaTemp[0]) >= 4):
+                areaTemp[1] += 1
                 choosenArea.append(areaTemp)
-                areaTemp=[]
-        
-        choosenArea=list(choosenArea)
+                areaTemp = []
+
+        choosenArea = list(choosenArea)
         return choosenArea
 
     def stepClrDiaLines(self):
@@ -130,7 +117,7 @@ class diaStep:
         # except:
         choosenAreas = [[0, self.CAAmount]]
         for step in self.steps:
-            if step>=40:
+            if step >= 40:
                 break
             choosenAreas = self.stepClrDiaLine(step, choosenAreas)
 

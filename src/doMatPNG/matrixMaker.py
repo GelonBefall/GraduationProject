@@ -5,7 +5,6 @@ import requests
 
 from collections import deque
 from Bio.PDB.PDBParser import PDBParser
-# from Bio import PDB
 
 class makeMatrix:
     '''Before using other function, better to execute "calMatrix()" first.'''
@@ -14,7 +13,7 @@ class makeMatrix:
         self.__pdbPath = "./materials/pdb/"
         self.__pdbFile = os.path.join(self.__pdbPath, "{}.pdb".format(self.pdbID))
 
-        initStatus=self.initPDBFile()
+        initStatus=self.__initPDBFile()
         if initStatus==0:
           self.p = PDBParser() #可选参数PERMISSIVE=1时忽略错误
           self.CAAmount=self.CACount()
@@ -22,7 +21,7 @@ class makeMatrix:
           print("The .pdb file is not existed or can't be downloaded, init class fail.")
           sys.exit()
 
-    def initPDBFile(self):
+    def __initPDBFile(self):
         pdbExist=self.pdbExist()
         if pdbExist==0:
           return 0

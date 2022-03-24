@@ -5,9 +5,10 @@ from collections import Counter
 
 
 class featureExtract:
-    def __init__(self, pdbID='1faw'):
+    def __init__(self, pdbID='1a4f'):
 
         self.dS = diaStep(pdbID)
+        pass
 
     def getMstClr(list_data):
         x1 = sorted(Counter(list_data))
@@ -16,6 +17,7 @@ class featureExtract:
 
     def __feature(self, diaLines):
         lM = listMode()
+        # self.dS = diaStep(pdbID)
         feature = {}
 
         for step in diaLines:
@@ -35,11 +37,26 @@ class featureExtract:
         return feature
 
     def featureOfAHelix(self):
-        '''提取α螺旋每条对角线的特征距离。'''
+        '''提取α螺旋每条对角线的特征距离范围。'''
         diaLines = self.dS.stepAHelixDiaLines()
-        alpahFeature = self.__feature(diaLines)
+        # alpahFeature = self.__feature(diaLines)
+        lM = listMode()
+        alphaFeature = {}
 
-        return alpahFeature
+        for step in diaLines:
+            disRange = []
+            for aRange in diaLines[step]:
+                if not bool(disRange):
+                    disRange = lM.modeDisRange(diaLines[step][aRange])
+                else:
+                    tmp = lM.modeDisRange(diaLines[step][aRange])
+                    if disRange[0] > tmp[0]:
+                        disRange[0] = tmp[0]
+                    if disRange[1] < tmp[1]:
+                        disRange[1] = tmp[1]
+            alphaFeature[step] = disRange
+
+        return alphaFeature
 
     def __featureOfTotal(self):
         pass

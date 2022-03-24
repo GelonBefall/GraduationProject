@@ -1,9 +1,6 @@
-# import sys
-# import numpy as np
-
-from src.MatrixAndPNG.matrixMaker import makeMatrix
-from src.MatrixAndPNG.sqlOperater import sqlOP
-from src.MatrixAndPNG.pngMaker import makePNG
+from src.doMatPNG.matrixMaker import makeMatrix
+from src.operateOfSQL.sqlOperater import sqlOP
+from src.doMatPNG.pngMaker import makePNG
 
 
 class matrixExecute:
