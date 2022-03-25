@@ -85,8 +85,7 @@ class sqlOP:
                 print("CREATE TABLE ERROR.")
                 sys.exit()
         elif self.option == 'alphaFeatures':
-            tableCreateSQL += ' RANGE VARSIZE(12), ' + \
-                ' MIN DOUBLE, ' + ' MAX DOUBLE )'
+            tableCreateSQL += ' STEP TINYINT(10), ALPHARANGES CHAR(12), STEPMINS DOUBLE, STEPMAXS DOUBLE, DIFFERVALUES FLOAT)'
             try:
                 self.cursor.execute(tableCreateSQL)
                 self.db.commit()
@@ -99,10 +98,11 @@ class sqlOP:
     def saveDisMatrix(self, disMatrix, matrixLen):
         # Preparation for inserting.
         insertPre = 'INSERT INTO {}'.format(self.pdbID)+" VALUES "
-        i = 0
+        
         tmp = 0
         if self.option == 'atomdistance':
             # Insert data.
+            i = 0
             while i < matrixLen:
                 if tmp == 5:
                     print("INSERT ERROR")
@@ -120,13 +120,13 @@ class sqlOP:
 
         elif self.option == 'alphaFeatures':
             # Insert data.
+            i = 1
             while i < matrixLen:
                 if tmp == 5:
                     print("INSERT ERROR")
                     sys.exit()
-                insertSQL = insertPre + \
-                    str(tuple(disMatrix[i][0])) + ', ' + \
-                    disMatrix[i][1]+','+disMatrix[i][2]
+                disMatrix[i][1]=str(disMatrix[i][1])
+                insertSQL = insertPre + str(tuple(disMatrix[i]))
                 try:
                     self.cursor.execute(insertSQL)
                     self.db.commit()
@@ -178,17 +178,19 @@ class sqlOP:
                 sys.exit()
         elif self.option == 'alphaFeatures':
             try:
-                disLists = []
+                alphaFeatures = {}
                 selectSQL = 'SELECT * FROM {}'.format(self.pdbID)
                 self.cursor.execute(selectSQL)
                 data = self.cursor.fetchall()
-                for line in data:
-                    tmpDis = list(line)
-                    tmpDis[0] = tuple(tmpDis[0])
-                    disLists.append(tmpDis)
+                for i in range(len(data)):
+                    line=data[i]
+                    line = list(line)
+                    step=line[0]
+                    aRange=eval(line[1])
+                    alphaFeatures[step][aRange]=[line[2]][line[3]]
 
                 # print(len(disMatrix))
-                return disLists
+                return alphaFeatures
             except:
                 print("Fail to load from database. please check it! ")
                 sys.exit()
