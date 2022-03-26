@@ -39,6 +39,7 @@ class featureExtract:
 
     def featureOfAHelixs(self, overWrite=False):
         diaLines = self.dS.stepAHelixDiaLines()
+        # residuesCount=self.dS.residuesCount
         # alpahFeature = self.__feature(diaLines)
         lM = listMode()
         sql = sqlOP(pdbID=self.pdbID, database='alphaFeatures')
@@ -103,6 +104,6 @@ class featureExtract:
 
 
 if __name__ == '__main__':
-    fE = featureExtract(pdbID='6vw1')
+    fE = featureExtract(pdbID='2erk')
     # print(fE.getMstClr([(1,2,3),(1,2,3),(1,2,3),(3,2,1)]))
-    print(fE.featureOfAHelixs(overWrite=True))  # 
+    print(fE.featureOfAHelixs())  # overWrite=True

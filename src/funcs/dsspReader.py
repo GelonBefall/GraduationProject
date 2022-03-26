@@ -1,8 +1,9 @@
 import os, sys
 from collections import deque
+from src.funcs.pdbReader import readPDB
 
 
-class dsspRead:
+class readDSSP:
     def __init__(self, pdbID: str):
         self.dsspID = pdbID.lower()
         self.__dsspPath = "./materials/dssp/"
@@ -23,6 +24,7 @@ class dsspRead:
 
     def getAHelix(self):
         '''返回α螺旋位置。例如[1, 3]为第二个到第四个α残基。'''
+        rPDB=readPDB()
         with open(self.__dsspFile, mode='r') as dF:
             aHelix = deque()
             tmp = []
@@ -61,7 +63,7 @@ class dsspRead:
 
 
 if __name__ == '__main__':
-    dR = dsspRead('1a4f')
+    dR = readDSSP('1a4f')
     # dR = dsspRead('1faw')
     print(dR.getAHelix())
     print(dR.aHelixRange())

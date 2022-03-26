@@ -2,7 +2,7 @@ from copyreg import pickle
 from src.doMatPNG.matrixMaker import makeMatrix
 from src.doMatPNG.pngMaker import makePNG
 from src.doMatPNG import matrixExecute
-from src.funcs.dsspReader import dsspRead
+from src.funcs.dsspReader import readDSSP
 from src.funcs.pickleOperater import pickleOP
 # from src.funcs.listModer import listMode
 
@@ -13,24 +13,25 @@ import numpy
 class diaStep:
     def __init__(self, pdbID='1a4f'):
         '''When the step=0, the program will return 0.'''
-
+        self.pdbID = pdbID.lower()
         # sample
         mkPNG = makePNG()
-        mE = matrixExecute(pdbID)
-        mM = makeMatrix(pdbID)
-        # dR=dsspRead(pdbID)
+        mE = matrixExecute(self.pdbID)
+        mM = makeMatrix(self.pdbID)
+        # dR=readDSSP(pdbID)
         self.pickle = pickleOP()
 
-        self.pdbID = pdbID
+        
         self.clrMaps = mkPNG.colormaps
         self.disMatrix = mE.LASMat()
         self.clrMat = mM.grayMatrix(self.disMatrix, self.clrMaps)
         self.CAAmount = mM.CAAmount
+        # self.residuesCount=mM.residuesCount()
         self.steps = [x for x in range(1, 5)]
 
     def stepAHelixDiaLine(self, step: int):
         '''提取dssp中，所有α螺旋所在结构中，每step个α残基之间的距离。'''
-        dR = dsspRead(self.pdbID)
+        dR = readDSSP(self.pdbID)
 
         diaLine = {}
         aR = dR.getAHelix()

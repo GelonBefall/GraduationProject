@@ -187,7 +187,12 @@ class sqlOP:
                     line = list(line)
                     step=line[0]
                     aRange=eval(line[1])
-                    alphaFeatures[step][aRange]=[line[2]][line[3]]
+
+                    if step in alphaFeatures:
+                        alphaFeatures[step][aRange]=[line[2],line[3]]
+                    else:
+                        alphaFeatures[step]={}
+                        alphaFeatures[step][aRange]=[line[2],line[3]]
 
                 # print(len(disMatrix))
                 return alphaFeatures
