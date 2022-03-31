@@ -8,14 +8,15 @@ from Bio.PDB.PDBParser import PDBParser
 class readPDB:
     def __init__(self, pdbID="2erk"):
         self.pdbID = pdbID
-        self.__pdbPath = "./materials/pdb/"
-        self.__pdbFile = os.path.join(
-            self.__pdbPath, "{}.pdb".format(self.pdbID))
+        self._pdbPath = "./materials/pdb/"
+        self._pdbFile = os.path.join(
+            self._pdbPath, "{}.pdb".format(self.pdbID))
 
         initStatus = self.__initPDBFile()
         if initStatus == 0:
             self.p = PDBParser()  # 可选参数PERMISSIVE=1时忽略错误
             self.CAAmount = self.CACount()
+            print("The CAAmount of {} is {}.".format(self.pdbID, self.CAAmount))
         else:
             print("The .pdb file is not existed or can't be downloaded, init class fail.")
             sys.exit()
@@ -32,7 +33,7 @@ class readPDB:
                 return 1
 
     def pdbExist(self):
-        if os.path.exists(self.__pdbFile):
+        if os.path.exists(self._pdbFile):
             print("PDB file exist!")
             return 0
         else:
@@ -46,7 +47,7 @@ class readPDB:
         for i in range(3):
             if r:
                 print("Downloading {}...".format(self.pdbID))
-                with open(self.__pdbFile, "wb") as pdbFile:
+                with open(self._pdbFile, "wb") as pdbFile:
                     pdbFile.write(r.content)
                 isPDBExist = self.pdbExist()
                 if isPDBExist == 0:
@@ -62,24 +63,31 @@ class readPDB:
 
     def residuesCount(self):
         '''Get CA atoms' count.'''
-        structure = self.p.get_structure(self.pdbID, self.__pdbFile)
+        structure = self.p.get_structure(self.pdbID, self._pdbFile)
         chains = structure.get_chains()
-        counts = []
+        counts = {}
         for chain in chains:
             residues = chain.get_residues()
             count = 0
-
+            # print(chain.id)
             for residue in residues:
                 if residue.has_id("CA"):
                     count = count + 1
-            counts.append(count)
+            counts[chain.id]=count
             print("The CAAmount of {} is {}.".format(chain, count))
         return counts
+
+    # def getFrResiduesCount(self):
+
 
     def CACount(self):
         '''Get CA atoms' count.'''
         count = 0
-        for x in self.residuesCount():
-            count += x
-        print("The CAAmount of {} is {}.".format(self.pdbID, count))
+        counts=self.residuesCount()
+        for id in counts:
+            count += counts[id]
         return count
+
+if __name__=='__main__':
+    rp=readPDB(pdbID='2erk')
+    print(rp.residuesCount())

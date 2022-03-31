@@ -145,7 +145,7 @@ class sqlOP:
         if isExist == 0:
 
             if self.entryAmount == matrixLen:
-                print("You have saved the distance matrix. Do not execute again.")
+                print("You have saved the distance matrix in {}. Do not execute again.".format(self.option))
                 return 0
 
             elif self.entryAmount == 0:

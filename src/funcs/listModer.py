@@ -26,7 +26,7 @@ class listMode:
 
     def modeDisRange(self, uList:numpy.ndarray):
         if len(uList)>=4:
-            uList=uList[1:-2] # 去掉头尾误差
+            uList=uList[1:-1] # 去掉头尾误差
         # print(uList)
         aHRange=[]
         aHRange.append(uList.min())

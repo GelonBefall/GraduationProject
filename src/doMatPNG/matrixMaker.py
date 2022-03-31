@@ -9,7 +9,7 @@ class makeMatrix(readPDB):
 
     def calMatrix(self):
         '''To calculate the distance of CA.'''
-        structure = self.p.get_structure(self.pdbID, self.__pdbFile)
+        structure = self.p.get_structure(self.pdbID, self._pdbFile)
         disLists = deque()
         ListsTemp= deque()
 
@@ -59,5 +59,5 @@ class makeMatrix(readPDB):
 
 if __name__=='__main__':
     NM=makeMatrix(pdbID='2erk')
-    # disMatrix=NM.calMatrix()
+    NM.calMatrix()
     print(NM.residuesCount())
