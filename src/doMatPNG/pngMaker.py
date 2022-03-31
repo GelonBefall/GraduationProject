@@ -38,7 +38,7 @@ class makePNG:
         for i in range(MatrixLen):
             tmp = []
             for j in range(MatrixLen):
-                #each line in colormap has three values,R,G,B
+                #Each line in colormap has three values,R,G,B。
                 for element in clrMatrix[i][j]:
                     tmp.append(element)
             pngData.append(tuple(tmp))

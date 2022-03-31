@@ -120,7 +120,7 @@ class sqlOP:
 
         elif self.option == 'alphaFeatures':
             # Insert data.
-            i = 1
+            i = 0
             while i < matrixLen:
                 if tmp == 5:
                     print("INSERT ERROR")

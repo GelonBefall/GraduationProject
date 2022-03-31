@@ -37,7 +37,7 @@ class readDSSP:
             aHelix = deque()
             tmp = []
             idCount=0
-            switch=0
+            # switch=0
             for line in dF.readlines():
 
                 line = line.split(" ")
@@ -63,12 +63,11 @@ class readDSSP:
                         idCount=idtmp
                         idtmp=residueCount[line[2]]
 
-
                     if len(tmp) < 2:
                         tmp.append(int(line[1])+idCount) 
 
                     elif (line[4] == 'H') and len(tmp) == 2:
-                        tmp[1] = int(line[1])
+                        tmp[1] = int(line[1])+idCount
                     
                     
         aHelix = list(aHelix)
