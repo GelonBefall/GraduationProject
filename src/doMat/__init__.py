@@ -1,6 +1,6 @@
-from src.doMatPNG.matrixMaker import makeMatrix
+from src.doMat.matrixMaker import makeMatrix
 from src.operateOfSQL.sqlOperater import sqlOP
-from src.doMatPNG.pngMaker import makePNG
+from src.doMat.disPNGMaker import makeDisPNG
 
 
 class matrixExecute:
@@ -9,7 +9,7 @@ class matrixExecute:
         self.database = database
 
         self.mkMat = makeMatrix(pdbID=self.pdbID)
-        self.mkPNG = makePNG(colorFilename="gray.rgb")
+        self.mkPNG = makeDisPNG(colorFilename="gray.rgb")
 
     def checkSQL(self):
         CACount = self.mkMat.CAAmount
@@ -20,11 +20,6 @@ class matrixExecute:
             return 0
         else:
             return 1
-
-    def saveMat(self, disMatrix):
-        sql = sqlOP(pdbID=self.pdbID, database=self.database)
-        sql.saveToDB(disMatrix)
-        sql.db.close()
 
     def loadMat(self):
         sql = sqlOP(pdbID=self.pdbID, database=self.database)
@@ -46,23 +41,21 @@ class matrixExecute:
                 # disMatrix=self.mkMat.disMatrix
                 return self.mkMat.disMatrix
 
-    def LASMat(self, dropMode=False):
+    def LASMat(self, overWrite=False):
         '''LAS means load and save the matrix to database.
-           If dropMode==False, Production will drop the table of database first.'''
-
-        if dropMode == True:
-            sql = sqlOP(pdbID=self.pdbID, database=self.database)
-            sql.dropTable()
-            sql.db.close()
+           If overWrite==False, Production will drop the table of database first.'''
+        sql = sqlOP(pdbID=self.pdbID, database=self.database)
         disMatrix = self.loadMat()
-        self.saveMat(disMatrix)
+        sql.saveToDB(disMatrix, overWrite=overWrite)
+        sql.db.close()
+
         return disMatrix
 
-    def mkGrayPNG(self):
+    def doDisPNG(self):
         disMatrix = self.loadMat()
         clrmaps = self.mkPNG.colormaps
         clrMat = self.mkMat.grayMatrix(disMatrix, clrmaps)
-        self.mkPNG.pngPlot(clrMat, self.mkMat.CAAmount, self.pdbID)
+        self.mkPNG.disPlot(clrMat, self.mkMat.CAAmount, self.pdbID)
         return clrMat
 
 
@@ -71,4 +64,4 @@ if __name__ == '__main__':
     # print(op.createTable())
     # print(op.saveToDB())
     # print(matEXE.LASMat())
-    print(matEXE.mkGrayPNG())
+    print(matEXE.doDisPNG())

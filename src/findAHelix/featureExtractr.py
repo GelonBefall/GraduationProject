@@ -64,8 +64,8 @@ class featureExtract:
                 # disRange = []
                 # disRange.append(mR[0])
                 # disRange.append(mR[1])
-                
-                alphaFeature[aRange] = mR # disRange
+
+                alphaFeature[aRange] = mR  # disRange
 
                 disInfo = [step, aRange]
                 disInfo.append(mR[0])
@@ -75,13 +75,13 @@ class featureExtract:
 
             alphaFeatures[step] = alphaFeature
 
-        sql.saveToDB(disMatrix=disInfos)
+        sql.saveToDB(disMatrix=disInfos, overWrite=overWrite)
         sql.db.close()
 
         return alphaFeatures
 
-    def featureOfAllAHelix(self):
-        '''计算某蛋白质每种间隔中，所有α螺旋的距离范围。'''
+    def __featureOfAllAHelix(self):
+        '''计算某蛋白质中，α螺旋的总距离范围。'''
         diaLines = self.dS.stepAHelixDiaLines()
         # alpahFeature = self.__feature(diaLines)
         lM = listMode()
@@ -99,16 +99,13 @@ class featureExtract:
                         disRange[0] = tmp[0]
                     if disRange[1] < tmp[1]:
                         disRange[1] = tmp[1]
-                        
+
             alphaFeature[step] = disRange
 
         return alphaFeature
 
-    def __featureOfTotal(self):
-        pass
-
 
 if __name__ == '__main__':
-    fE = featureExtract(pdbID='1a4f')
+    fE = featureExtract(pdbID='2erk')
     # print(fE.getMstClr([(1,2,3),(1,2,3),(1,2,3),(3,2,1)]))
-    print(fE.featureOfAHelixs(overWrite=True))  # 
+    print(fE.featureOfAHelixs(overWrite=True))  #

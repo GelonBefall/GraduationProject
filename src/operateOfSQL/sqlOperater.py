@@ -139,13 +139,13 @@ class sqlOP:
 
         print("SAVE TO DB SUCCESSFULLY.")
 
-    def saveToDB(self, disMatrix):
+    def saveToDB(self, disMatrix, overWrite=False):
         isExist = self.tableExist()
         matrixLen = len(disMatrix)
         if isExist == 0:
 
-            if self.entryAmount == matrixLen:
-                print("You have saved the distance matrix in {}. Do not execute again.".format(self.option))
+            if (self.entryAmount == matrixLen) and (overWrite == False):
+                print("You have saved the matrix in {}. Do not execute again.".format(self.option))
                 return 0
 
             elif self.entryAmount == 0:

@@ -1,7 +1,7 @@
 from copyreg import pickle
-from src.doMatPNG.matrixMaker import makeMatrix
-from src.doMatPNG.pngMaker import makePNG
-from src.doMatPNG import matrixExecute
+# from src.doMat.matrixMaker import makeMatrix
+# from src.funcs.pngMaker import makePNG
+from src.doMat import matrixExecute
 from src.funcs.dsspReader import readDSSP
 from src.funcs.pickleOperater import pickleOP
 # from src.funcs.listModer import listMode
@@ -15,19 +15,19 @@ class diaStep:
         '''When the step=0, the program will return 0.'''
         self.pdbID = pdbID.lower()
         # sample
-        mkPNG = makePNG()
-        mE = matrixExecute(self.pdbID)
-        mM = makeMatrix(self.pdbID)
+        # mkPNG = makePNG()
+        # mM = makeMatrix(self.pdbID)
         # dR=readDSSP(pdbID)
+        mE = matrixExecute(self.pdbID)
+
         self.pickle = pickleOP()
 
-        
-        self.clrMaps = mkPNG.colormaps
+        self.clrMaps = mE.mkPNG.colormaps  # mkPNG.colormaps
         self.disMatrix = mE.LASMat()
-        self.clrMat = mM.grayMatrix(self.disMatrix, self.clrMaps)
-        self.CAAmount = mM.CAAmount
+        self.clrMat = mE.mkMat.grayMatrix(self.disMatrix, self.clrMaps)
+        self.CAAmount = mE.mkMat.CAAmount
         # self.residuesCount=mM.residuesCount()
-        self.steps = [x for x in range(1, 5)]
+        self.steps = [x for x in range(1, 6)]
 
     def stepAHelixDiaLine(self, step: int):
         '''提取dssp中，所有α螺旋所在结构中，每step个α残基之间的距离。'''

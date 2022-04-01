@@ -6,9 +6,8 @@ materials/rgb/*
 materials/pickle/*
 materials/question/
 src/__pycache__/
-src/doMatPNG/__pycache__/
-src/DSSP/__pycache__/
 src/funcs/__pycache__/
 src/funcs/funcTes/
+src/doMat/__pycache__/
 src/findAHelix/__pycache__/
 src/OperateOfSQL/__pycache__/

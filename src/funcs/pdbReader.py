@@ -7,14 +7,14 @@ from Bio.PDB.PDBParser import PDBParser
 
 class readPDB:
     def __init__(self, pdbID="2erk"):
-        self.pdbID = pdbID
+        self.pdbID = pdbID.lower()
         self._pdbPath = "./materials/pdb/"
         self._pdbFile = os.path.join(
             self._pdbPath, "{}.pdb".format(self.pdbID))
 
         initStatus = self.__initPDBFile()
         if initStatus == 0:
-            self.p = PDBParser()  # 可选参数PERMISSIVE=1时忽略错误
+            self.p = PDBParser(PERMISSIVE=1)  # 可选参数PERMISSIVE=1时忽略错误
             self.CAAmount = self.CACount()
             print("The CAAmount of {} is {}.".format(self.pdbID, self.CAAmount))
         else:
@@ -34,7 +34,7 @@ class readPDB:
 
     def pdbExist(self):
         if os.path.exists(self._pdbFile):
-            print("PDB file exist!")
+            # print("PDB file exist!")
             return 0
         else:
             print("PDB file doesn't exist!")
@@ -46,7 +46,7 @@ class readPDB:
         print(r)
         for i in range(3):
             if r:
-                print("Downloading {}...".format(self.pdbID))
+                print("Downloading {}.pdb...".format(self.pdbID))
                 with open(self._pdbFile, "wb") as pdbFile:
                     pdbFile.write(r.content)
                 isPDBExist = self.pdbExist()
@@ -73,6 +73,8 @@ class readPDB:
             for residue in residues:
                 if residue.has_id("CA"):
                     count = count + 1
+            if count==0:
+                continue
             counts[chain.id]=count
             print("The CAAmount of {} is {}.".format(chain, count))
         return counts
