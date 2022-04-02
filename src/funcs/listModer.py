@@ -1,7 +1,7 @@
 import numpy, os
 
 class listMode:
-    def __init__(self) -> None:
+    def __init__(self):
         self.colormaps = []
         colorFile=os.path.join("./materials/rgb/", "gray.rgb")
         with open(colorFile) as f:
@@ -25,8 +25,8 @@ class listMode:
         return self.colormaps[site]
 
     def modeDisRange(self, uList:numpy.ndarray):
-        if len(uList)>=4:
-            uList=uList[1:-1] # 去掉头尾误差
+        if len(uList)>=6:
+            uList=uList[2:-2] # 去掉头尾误差
         # print(uList)
         aHRange=[]
         aHRange.append(uList.min())

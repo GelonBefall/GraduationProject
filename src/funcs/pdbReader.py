@@ -6,7 +6,7 @@ from Bio.PDB.PDBParser import PDBParser
 
 
 class readPDB:
-    def __init__(self, pdbID="2erk"):
+    def __init__(self, pdbID:str):
         self.pdbID = pdbID.lower()
         self._pdbPath = "./materials/pdb/"
         self._pdbFile = os.path.join(

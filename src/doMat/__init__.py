@@ -4,7 +4,7 @@ from src.doMat.disPNGMaker import makeDisPNG
 
 
 class matrixExecute:
-    def __init__(self, pdbID='1a4f', database='atomdistance'):
+    def __init__(self, pdbID:str, database='atomdistance'):
         self.pdbID = pdbID.lower()
         self.database = database
 
@@ -26,7 +26,7 @@ class matrixExecute:
         isTableExist = sql.tableExist()
         if isTableExist == 1:
             self.mkMat.calMatrix()
-            # disMatrix=self.mkMat.disMatrix
+            sql.saveToDB(self.mkMat.disMatrix)
             sql.db.close()
             return self.mkMat.disMatrix
 
@@ -53,14 +53,14 @@ class matrixExecute:
 
     def doDisPNG(self):
         disMatrix = self.loadMat()
-        clrmaps = self.mkPNG.colormaps
-        clrMat = self.mkMat.grayMatrix(disMatrix, clrmaps)
-        self.mkPNG.disPlot(clrMat, self.mkMat.CAAmount, self.pdbID)
-        return clrMat
+        # clrmaps = self.mkPNG.colormaps
+        grayMat = self.mkPNG.grayMatrix(disMatrix=disMatrix,matLen=self.mkMat.CAAmount)
+        self.mkPNG.disPlot(grayMat, self.mkMat.CAAmount, self.pdbID)
+        return grayMat
 
 
 if __name__ == '__main__':
-    matEXE = matrixExecute()  # default pdbID='6vw1'
+    matEXE = matrixExecute(pdbID='1a4f')  # pdbID='1a4f'
     # print(op.createTable())
     # print(op.saveToDB())
     # print(matEXE.LASMat())

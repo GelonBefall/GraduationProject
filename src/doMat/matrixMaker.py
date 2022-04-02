@@ -38,23 +38,11 @@ class makeMatrix(readPDB):
         self.disMatrix = np.array(disLists)
         # return disMatrix
 
-    def grayMatrix(self, disMatrix, clrmaps):
-        clrLists = deque()
+    # def grayMatrix(self, disMatrix, clrmaps):
+        
 
-        for i in range(self.CAAmount):
-            tmp = deque()
-
-            for m in range(self.CAAmount):
-                checked = 0
-                if disMatrix[i][m] >= 30:
-                    checked = 30
-                else:
-                    checked = round(disMatrix[i][m])
-                tmp.append(clrmaps[9-checked//3])
-            clrLists.append(tmp)
-
-        clrMatrix = np.array(clrLists)
-        return clrMatrix
+    #     clrMatrix = np.array(clrLists)
+    #     return clrMatrix
 
 
 if __name__ == '__main__':

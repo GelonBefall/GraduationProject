@@ -5,37 +5,16 @@ from src.operateOfSQL.sqlOperater import sqlOP
 from collections import Counter
 
 
-class featureExtract:
-    def __init__(self, pdbID='2erk'):
+class extractAHelix:
+    def __init__(self, pdbID:str, overWrite=False):
 
-        self.dS = diaStep(pdbID)
+        self.dS = diaStep(pdbID, overWrite=overWrite)
         self.pdbID = pdbID
 
     def getMstClr(list_data):
         x1 = sorted(Counter(list_data))
         print(x1)
         return x1[0]
-
-    def __feature(self, diaLines):
-        lM = listMode()
-        # self.dS = diaStep(pdbID)
-        feature = {}
-
-        for step in diaLines:
-            counts = {}
-            for ranged in diaLines[step]:
-                mode = lM.modeClr(diaLines[step][ranged])
-
-                if mode not in counts:
-                    counts[mode] = 1
-                else:
-                    counts[mode] += 1
-            # print(counts)
-            mstFreq = max(counts, key=counts.get)
-            # alpahFeature[step]=rangedFeature
-            feature[step] = mstFreq
-
-        return feature
 
     def featureOfAHelixs(self, overWrite=False):
         '''分组计算某蛋白质每种间隔中，所有α螺旋的距离范围。'''
@@ -80,32 +59,59 @@ class featureExtract:
 
         return alphaFeatures
 
-    def __featureOfAllAHelix(self):
-        '''计算某蛋白质中，α螺旋的总距离范围。'''
-        diaLines = self.dS.stepAHelixDiaLines()
-        # alpahFeature = self.__feature(diaLines)
-        lM = listMode()
-        alphaFeature = {}
+    # def featureMatrix(self):
 
-        for step in diaLines:
-            disRange = []
-            for aRange in diaLines[step]:
-                if not bool(disRange):
-                    disRange = lM.modeDisRange(diaLines[step][aRange])
-                else:
-                    tmp = lM.modeDisRange(diaLines[step][aRange])
 
-                    if disRange[0] > tmp[0]:
-                        disRange[0] = tmp[0]
-                    if disRange[1] < tmp[1]:
-                        disRange[1] = tmp[1]
 
-            alphaFeature[step] = disRange
+    # def __feature(self, diaLines):
+    #     lM = listMode()
+    #     # self.dS = diaStep(pdbID)
+    #     feature = {}
 
-        return alphaFeature
+    #     for step in diaLines:
+    #         counts = {}
+    #         for ranged in diaLines[step]:
+    #             mode = lM.modeClr(diaLines[step][ranged])
+
+    #             if mode not in counts:
+    #                 counts[mode] = 1
+    #             else:
+    #                 counts[mode] += 1
+    #         # print(counts)
+    #         mstFreq = max(counts, key=counts.get)
+    #         # alpahFeature[step]=rangedFeature
+    #         feature[step] = mstFreq
+
+    #     return feature
+
+    # 
+
+    # def __featureOfAllAHelix(self):
+    #     '''计算某蛋白质中，α螺旋的总距离范围。'''
+    #     diaLines = self.dS.stepAHelixDiaLines()
+    #     # alpahFeature = self.__feature(diaLines)
+    #     lM = listMode()
+    #     alphaFeature = {}
+
+    #     for step in diaLines:
+    #         disRange = []
+    #         for aRange in diaLines[step]:
+    #             if not bool(disRange):
+    #                 disRange = lM.modeDisRange(diaLines[step][aRange])
+    #             else:
+    #                 tmp = lM.modeDisRange(diaLines[step][aRange])
+
+    #                 if disRange[0] > tmp[0]:
+    #                     disRange[0] = tmp[0]
+    #                 if disRange[1] < tmp[1]:
+    #                     disRange[1] = tmp[1]
+
+    #         alphaFeature[step] = disRange
+
+    #     return alphaFeature
 
 
 if __name__ == '__main__':
-    fE = featureExtract(pdbID='2erk')
+    fE = extractAHelix(pdbID='2erk')
     # print(fE.getMstClr([(1,2,3),(1,2,3),(1,2,3),(3,2,1)]))
     print(fE.featureOfAHelixs(overWrite=True))  #

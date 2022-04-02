@@ -11,19 +11,20 @@ import numpy
 
 
 class diaStep:
-    def __init__(self, pdbID='1a4f'):
-        '''When the step=0, the program will return 0.'''
+    def __init__(self, pdbID: str, overWrite=False):
+        '''遍历矩阵中平行对角线的所有斜线上的Cα原子坐标。'''
         self.pdbID = pdbID.lower()
         # sample
         # mkPNG = makePNG()
         # mM = makeMatrix(self.pdbID)
         # dR=readDSSP(pdbID)
         mE = matrixExecute(self.pdbID)
+        self.dR = readDSSP(self.pdbID)
+        # self.pickle = pickleOP()
 
-        self.pickle = pickleOP()
-
+        self.aR = self.dR.getAHelix()
         self.clrMaps = mE.mkPNG.colormaps  # mkPNG.colormaps
-        self.disMatrix = mE.LASMat()
+        self.disMatrix = mE.LASMat(overWrite=overWrite)
         self.clrMat = mE.mkMat.grayMatrix(self.disMatrix, self.clrMaps)
         self.CAAmount = mE.mkMat.CAAmount
         # self.residuesCount=mM.residuesCount()
@@ -31,25 +32,24 @@ class diaStep:
 
     def stepAHelixDiaLine(self, step: int):
         '''提取dssp中，所有α螺旋所在结构中，每step个α残基之间的距离。'''
-        dR = readDSSP(self.pdbID)
+        # dR = readDSSP(self.pdbID)
 
         diaLine = {}
-        aR = dR.getAHelix()
         # aHR = dR.aHelixRange()
-        for r in range(len(aR)):
+        for r in range(len(self.aR)):
             # 遍历所有α螺旋区段.
 
-            if step >= (aR[r][1]-aR[r][0]):
-                # step值大于该区段长度
+            if step >= (self.aR[r][1]-self.aR[r][0]):
+                # 若step值大于该区段长度
                 continue
 
             lineTmp = deque()
-            for row in range(aR[r][0], aR[r][1]-step):
+            for row in range(self.aR[r][0], self.aR[r][1]-step):
                 # 遍历的是第r个区段.
                 col = row+step
                 lineTmp.append(self.disMatrix[row][col])
 
-            diaLine[tuple(aR[r])] = numpy.array(lineTmp)
+            diaLine[tuple(self.aR[r])] = numpy.array(lineTmp)
         return diaLine
 
     def stepAHelixDiaLines(self):
