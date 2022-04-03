@@ -22,7 +22,6 @@ class readDSSP:
             # print("DSSP file exist!")
             return 0
         else:
-            # print("DSSP file doesn't exist!")
             sys.exit("DSSP file doesn't exist!")
 
     def getAHelix(self):

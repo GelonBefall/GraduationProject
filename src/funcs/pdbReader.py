@@ -79,9 +79,6 @@ class readPDB:
             print("The CAAmount of {} is {}.".format(chain, count))
         return counts
 
-    # def getFrResiduesCount(self):
-
-
     def CACount(self):
         '''Get CA atoms' count.'''
         count = 0

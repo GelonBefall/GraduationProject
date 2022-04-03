@@ -26,8 +26,6 @@ class makeMatrix(readPDB):
                     CA2 = residue2["CA"]
                     distance = CA1 - CA2
                     ListsTemp.append(distance)
-                    # if distance <0:
-                    #   raise '有数据小于0！'
                     # # print(ListsTemp)
                 else:
                     continue
@@ -37,12 +35,6 @@ class makeMatrix(readPDB):
             ListsTemp = deque()
         self.disMatrix = np.array(disLists)
         # return disMatrix
-
-    # def grayMatrix(self, disMatrix, clrmaps):
-        
-
-    #     clrMatrix = np.array(clrLists)
-    #     return clrMatrix
 
 
 if __name__ == '__main__':

@@ -30,13 +30,12 @@ class makePNG:
             for line in f:
                 # colormapMatrix.insert(0,list(map(int,line.split())))
                 colormaps.append(tuple(map(int, line.split(","))))
-        self.colormaps = colormaps
-        # self.colormaps = np.array(colormaps)
+        self.colormaps = colormaps # np.array(colormaps)
         # print(self.colormaps)
 
-    def _pngPlot(self, clrMatrix, matLen, pdbID, pngPath):
+    def _pngPlot(self, clrMatrix, matLen, pngFile):
         # pngPath="./production/png"
-        pngFile = os.path.join(pngPath, pdbID+".png")
+        # pngFile = os.path.join(pngPath, pdbID+".png")
         pngData = []
         for i in range(matLen):
             tmp = []
