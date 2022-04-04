@@ -88,5 +88,5 @@ class readPDB:
         return count
 
 if __name__=='__main__':
-    rp=readPDB(pdbID='2erk')
+    rp=readPDB(pdbID='2wfv')
     print(rp.residuesCount())

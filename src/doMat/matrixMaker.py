@@ -38,6 +38,6 @@ class makeMatrix(readPDB):
 
 
 if __name__ == '__main__':
-    NM = makeMatrix(pdbID='2erk')
+    NM = makeMatrix(pdbID='3INS')
     NM.calMatrix()
     print(NM.residuesCount())

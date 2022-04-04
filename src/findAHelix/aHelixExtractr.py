@@ -1,12 +1,12 @@
 from src.findAHelix.diagonalSteper import diaStep
-from src.funcs.listModer import listMode
+from src.funcs.listAnalyst import anaList
 from src.operateOfSQL.sqlOperater import sqlOP
 
 from collections import Counter
 
 
 class extractAHelix:
-    def __init__(self, pdbID:str, overWrite=False):
+    def __init__(self, pdbID: str, overWrite=False):
 
         self.dS = diaStep(pdbID, overWrite=overWrite)
         self.pdbID = pdbID
@@ -18,8 +18,8 @@ class extractAHelix:
 
     def featureOfAHelixs(self, overWrite=False):
         '''分组计算某蛋白质每种间隔中，所有α螺旋的距离范围。'''
-        diaLines = self.dS.stepAHelixDiaLines()
-        lM = listMode()
+        diaLines = self.dS.stepDiaLines()
+        lM = anaList()
         sql = sqlOP(pdbID=self.pdbID, database='alphaFeatures')
 
         if overWrite == False:
@@ -35,14 +35,15 @@ class extractAHelix:
 
             for aRange in diaLines[step]:
 
-                mR = lM.modeDisRange(diaLines[step][aRange])
+                mR = lM.rangeDis(diaLines[step][aRange])
 
-                alphaFeature[aRange] = mR  # disRange
+                alphaFeature[aRange] = mR  # 范围内的最大最小值
 
                 disInfo = [step, aRange]
-                disInfo.append(mR[0])
-                disInfo.append(mR[1])
-                disInfo.append(mR[1]-mR[0])
+                disInfo.append(mR[0])  # 相差几个
+                disInfo.append(mR[1])  # α螺旋开始点
+                disInfo.append(mR[1]-mR[0])  # α螺旋结束点
+
                 disInfos.append(disInfo)
 
             alphaFeatures[step] = alphaFeature
@@ -54,6 +55,6 @@ class extractAHelix:
 
 
 if __name__ == '__main__':
-    fE = extractAHelix(pdbID='2erk')
+    fE = extractAHelix(pdbID='2WFV')
     # print(fE.getMstClr([(1,2,3),(1,2,3),(1,2,3),(3,2,1)]))
     print(fE.featureOfAHelixs(overWrite=True))  #

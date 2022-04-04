@@ -16,7 +16,7 @@ class sqlOP:
        user's key is "SQLUSER", password's is "SQLPSWD". 
        Attention: You need to restart you PC to make new Envionment Variables available.'''
 
-    def __init__(self, pdbID='2erk', database='atomdistance'):
+    def __init__(self, pdbID, database):
         # You need to set which database you will use.
         user = os.environ.get('SQLUSER')
         password = os.environ.get('SQLPSWD')
@@ -202,7 +202,7 @@ class sqlOP:
 
 
 if __name__ == '__main__':
-    op = sqlOP()  # pdbID='6vw1'
+    op = sqlOP('2erk')  # pdbID='6vw1'
     # op.dropTable()
     print(op.entryAmount)
     # print(op.createTable())

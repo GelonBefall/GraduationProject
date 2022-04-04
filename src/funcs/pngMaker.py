@@ -78,13 +78,8 @@ class makePNG:
                     checked = 2
                 elif 3.5 <= disMatrix[i][m] <= 4.0:
                     checked = 1
-                # elif 3.0 <= disMatrix[i][m] < 3.5:
-                #     checked = 3
                 elif disMatrix[i][m] < 3.5:
                     checked = 0
-
-                # else:
-                #     checked=round(disMatrix[i][m])
                 tmp.append(self.colormaps[9-checked])
             grayLists.append(tmp)
         

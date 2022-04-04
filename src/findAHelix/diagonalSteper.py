@@ -1,10 +1,5 @@
-from copyreg import pickle
-# from src.doMat.matrixMaker import makeMatrix
-# from src.funcs.pngMaker import makePNG
 from src.doMat import matrixExecute
 from src.funcs.dsspReader import readDSSP
-from src.funcs.pickleOperater import pickleOP
-# from src.funcs.listModer import listMode
 
 from collections import deque
 import numpy
@@ -21,17 +16,17 @@ class diaStep:
         self.clrMaps = mE.mkPNG.colormaps  # mkPNG.colormaps
         self.disMatrix = mE.LASMat(overWrite=overWrite)
         self.CAAmount = mE.mkMat.CAAmount
-        self.steps = [x for x in range(1, 6)]
+        self.steps = [x for x in range(1, 5)]
 
-    def stepAHelixDiaLine(self, step: int):
+    def stepDiaLine(self, step: int):
         '''提取dssp中，所有α螺旋所在结构中，每step个α残基之间的距离。'''
         diaLine = {}
         # aHR = dR.aHelixRange()
         for r in range(len(self.aR)):
             # 遍历所有α螺旋区段.
 
-            if step >= (self.aR[r][1]-self.aR[r][0]):
-                # 若step值大于该区段长度
+            if 6 >= (self.aR[r][1]-self.aR[r][0]):
+                # 若step值 or 6大于该区段长度，跳过
                 continue
 
             lineTmp = deque()
@@ -43,10 +38,10 @@ class diaStep:
             diaLine[tuple(self.aR[r])] = numpy.array(lineTmp)
         return diaLine
 
-    def stepAHelixDiaLines(self):
+    def stepDiaLines(self):
         diaLines = {}
         for step in self.steps:
-            diaLine = self.stepAHelixDiaLine(step)
+            diaLine = self.stepDiaLine(step)
             if not bool(diaLine):
                 break
             else:
@@ -56,5 +51,5 @@ class diaStep:
 
 if __name__ == '__main__':
     dS = diaStep()
-    print(dS.stepClrDiaLines())
+    # print(dS.stepClrDiaLines())
     # print(dS.disMatDiaLines())
