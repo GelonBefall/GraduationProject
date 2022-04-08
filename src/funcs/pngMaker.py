@@ -50,6 +50,12 @@ class makePNG:
         w.write(f, pngData)
         f.close()
     
+    def getMyChecks(self, RGB):
+        RGB=tuple(RGB)
+        index= self.colormaps.index(RGB)
+        check= 9-index
+        return check
+    
     def grayMatrix(self, disMatrix, matLen):
         grayLists = deque()
         

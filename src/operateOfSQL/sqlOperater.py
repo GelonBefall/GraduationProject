@@ -85,7 +85,7 @@ class sqlOP:
                 print("CREATE TABLE ERROR.")
                 sys.exit()
         elif self.option == 'alphaFeatures':
-            tableCreateSQL += ' STEP TINYINT(10), ALPHARANGES CHAR(12), STEPMINS DOUBLE, STEPMAXS DOUBLE, DIFFERVALUES FLOAT)'
+            tableCreateSQL += ' STEP TINYINT(10), ALPHARANGES CHAR(12), STEPMINS DOUBLE, STEPMAXS DOUBLE, DIFFERVALUES FLOAT, MEAN FLOAT, VARIANCE FLOAT)'
             try:
                 self.cursor.execute(tableCreateSQL)
                 self.db.commit()

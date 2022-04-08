@@ -42,6 +42,7 @@ class readDSSP:
                 line = line.split(" ")
                 if "H" not in line:
                     if tmp != []:
+                        # if tmp[1]-tmp[0]>6:
                         tmp[0] -= 1
                         tmp[1] -= 1
                         aHelix.append(tmp)

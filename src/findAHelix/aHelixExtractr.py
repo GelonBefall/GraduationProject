@@ -31,18 +31,29 @@ class extractAHelix:
         alphaFeatures = {}
         disInfos = []
         for step in diaLines:
+            #以间隔长短遍历
             alphaFeature = {}
 
             for aRange in diaLines[step]:
+                #以α螺旋范围遍历
+                uList=diaLines[step][aRange]
 
-                mR = lM.rangeDis(diaLines[step][aRange])
+                if len(uList)<=6:
+                    continue
+                mR = lM.rangeDis(uList)
+                mD = lM.meanDis(uList)
+                vD =lM.varDis(uList)
+                if mR==0 or mD==0 or vD==0:
+                    continue
 
                 alphaFeature[aRange] = mR  # 范围内的最大最小值
 
-                disInfo = [step, aRange]
-                disInfo.append(mR[0])  # 相差几个
-                disInfo.append(mR[1])  # α螺旋开始点
-                disInfo.append(mR[1]-mR[0])  # α螺旋结束点
+                disInfo = [step, aRange] # 相差位数， 范围
+                disInfo.append(mR[0])  # α螺旋最小距离
+                disInfo.append(mR[1])  # α螺旋最大距离
+                disInfo.append(mR[1]-mR[0])  # 距离差值
+                disInfo.append(mD) # 平均数
+                disInfo.append(vD) # 方差
 
                 disInfos.append(disInfo)
 
@@ -55,6 +66,10 @@ class extractAHelix:
 
 
 if __name__ == '__main__':
-    fE = extractAHelix(pdbID='2WFV')
-    # print(fE.getMstClr([(1,2,3),(1,2,3),(1,2,3),(3,2,1)]))
-    print(fE.featureOfAHelixs(overWrite=True))  #
+    # from src.funcs.dirWalker import getPDBID
+    # pdbIDs=getPDBID()
+    # for pdbID in pdbIDs:
+        pdbID='2erk'
+        fE = extractAHelix(pdbID,True)
+        # print(fE.getMstClr([(1,2,3),(1,2,3),(1,2,3),(3,2,1)]))
+        print(fE.featureOfAHelixs(overWrite=True))  #

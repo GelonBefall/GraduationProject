@@ -9,7 +9,7 @@ class matrixExecute:
         self.database = database
 
         self.mkMat = makeMatrix(pdbID=self.pdbID)
-        self.mkPNG = makeDisPNG(colorFilename="gray.rgb")
+        self.mkPNG = makeDisPNG()
 
     def checkSQL(self):
         CACount = self.mkMat.CAAmount
