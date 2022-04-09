@@ -6,7 +6,7 @@ from Bio.PDB.PDBParser import PDBParser
 
 
 class readPDB:
-    def __init__(self, pdbID:str):
+    def __init__(self, pdbID: str):
         self.pdbID = pdbID.lower()
         self._pdbPath = "./materials/pdb/"
         self._pdbFile = os.path.join(
@@ -73,20 +73,21 @@ class readPDB:
             for residue in residues:
                 if residue.has_id("CA"):
                     count = count + 1
-            if count==0:
+            if count == 0:
                 continue
-            counts[chain.id]=count
+            counts[chain.id] = count
             print("The CAAmount of {} is {}.".format(chain, count))
         return counts
 
     def CACount(self):
         '''Get CA atoms' count.'''
         count = 0
-        counts=self.residuesCount()
+        counts = self.residuesCount()
         for id in counts:
             count += counts[id]
         return count
 
-if __name__=='__main__':
-    rp=readPDB(pdbID='2wfv')
+
+if __name__ == '__main__':
+    rp = readPDB(pdbID='2wfv')
     print(rp.residuesCount())

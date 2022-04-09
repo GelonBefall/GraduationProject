@@ -98,7 +98,7 @@ class sqlOP:
     def saveDisMatrix(self, disMatrix, matrixLen):
         # Preparation for inserting.
         insertPre = 'INSERT INTO {}'.format(self.pdbID)+" VALUES "
-        
+
         tmp = 0
         if self.option == 'atomdistance':
             # Insert data.
@@ -125,7 +125,7 @@ class sqlOP:
                 if tmp == 5:
                     print("INSERT ERROR")
                     sys.exit()
-                disMatrix[i][1]=str(disMatrix[i][1])
+                disMatrix[i][1] = str(disMatrix[i][1])
                 insertSQL = insertPre + str(tuple(disMatrix[i]))
                 try:
                     self.cursor.execute(insertSQL)
@@ -145,7 +145,8 @@ class sqlOP:
         if isExist == 0:
 
             if (self.entryAmount == matrixLen) and (overWrite == False):
-                print("You have saved the matrix in {}. Do not execute again.".format(self.option))
+                print("You have saved the matrix in {}. Do not execute again.".format(
+                    self.option))
                 return 0
 
             elif self.entryAmount == 0:
@@ -183,16 +184,16 @@ class sqlOP:
                 self.cursor.execute(selectSQL)
                 data = self.cursor.fetchall()
                 for i in range(len(data)):
-                    line=data[i]
+                    line = data[i]
                     line = list(line)
-                    step=line[0]
-                    aRange=eval(line[1])
+                    step = line[0]
+                    aRange = eval(line[1])
 
                     if step in alphaFeatures:
-                        alphaFeatures[step][aRange]=[line[2],line[3]]
+                        alphaFeatures[step][aRange] = [line[2], line[3]]
                     else:
-                        alphaFeatures[step]={}
-                        alphaFeatures[step][aRange]=[line[2],line[3]]
+                        alphaFeatures[step] = {}
+                        alphaFeatures[step][aRange] = [line[2], line[3]]
 
                 # print(len(disMatrix))
                 return alphaFeatures

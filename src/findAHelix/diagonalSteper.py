@@ -14,7 +14,7 @@ class diaStep:
         self.pdbID = pdbID.lower()
         self.mE = matrixExecute(self.pdbID)
         self.dR = readDSSP(self.pdbID)
-        self.pickle=pickleOP()
+        self.pickle = pickleOP()
         self.aR = self.dR.getAHelix()
 
         self.clrMaps = self.mE.mkPNG.colormaps  # mkPNG.colormaps
@@ -55,46 +55,39 @@ class diaStep:
     def stepClrDiaLine(self, step: int, choosenAreas, grayMat):
         '''遍历灰度矩阵'''
         choosenArea = []
-        
+
         # print(choosenAreas)
         for area in choosenAreas:
-            start=-1
-            end=-1
+            start = area[0]
+            end = area[0]
             for row in range(area[0], area[1]-step+1):
                 # 遍历该step线, 连续七个以上距离相同的残基添加入同一组中，作为α螺旋候选。
-                col = row+step
-
-                if (end!=-1) and (row<(end+1)):
+                if row < start:
                     continue
-                if start==-1:
-                    start=row
-
-                if self.mE.mkPNG.getMyChecks(grayMat[row][col])==step:
+                col = row+step
+                if step in self.mE.mkPNG.getMyChecks(grayMat[row][col]):
                     continue
                 else:
-                    if (col-start) >6:
-                        end=col-1
+                    end = col - 1
+                    if (end-start) > 7:
                         choosenArea.append((start, end))
-                        start = -1
-                    else:
-                        end=col-1
-                        start=-1
-            if (col-start) >6 and (start!=-1):
-                choosenArea.append((start, col)) # 结尾处理
+                    start = col+1
+            if (col-start) > 7:
+                choosenArea.append((start, col))  # 结尾处理
 
         return choosenArea
 
     def stepClrDiaLines(self, overWrite=False):
-        steps=[1,2,3]
+        steps = [1, 2, 3]
         pickleName = self.pdbID+"_chosenArea"
         try:
             choosenAreas = self.pickle.loadPickle(pickleName)
-            if (bool(choosenAreas)) and (overWrite==False):
+            if (bool(choosenAreas)) and (overWrite == False):
                 return choosenAreas
             else:
                 raise print('pickle存储为空或程序为覆盖写模式。')
         except:
-            grayMat=self.mE.mkPNG.grayMatrix(self.disMatrix,self.CAAmount)
+            grayMat = self.mE.mkPNG.grayMatrix(self.disMatrix, self.CAAmount)
             choosenAreas = [(0, self.CAAmount-1)]
         for step in steps:
             choosenAreas = self.stepClrDiaLine(step, choosenAreas, grayMat)
@@ -104,6 +97,6 @@ class diaStep:
 
 
 if __name__ == '__main__':
-    dS = diaStep('1a4f',True)
+    dS = diaStep('6vw1',)  # True
     print(dS.stepClrDiaLines(overWrite=True))
     # print(dS.disMatDiaLines())

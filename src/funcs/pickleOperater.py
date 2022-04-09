@@ -4,8 +4,8 @@ import os
 
 class pickleOP:
     def savePickle(self, diaLines: dict, pickleName: str, overWrite=False):
-        path="./materials/pickle/"+pickleName
-        if overWrite==True:
+        path = "./materials/pickle/"+pickleName
+        if overWrite == True:
             with open(path, "wb") as pk:
                 # pickles=pickle.dumps(diaLines)
                 pickle.dump(diaLines, pk)
@@ -14,11 +14,11 @@ class pickleOP:
                 print("pickle文件已存在，若要覆盖，请使用覆盖模式。")
             else:
                 with open(path, "wb") as pk:
-                # pickles=pickle.dumps(diaLines)
+                    # pickles=pickle.dumps(diaLines)
                     pickle.dump(diaLines, pk)
 
     def loadPickle(self, pickleName: str) -> dict:
-        path="./materials/pickle/"+pickleName
+        path = "./materials/pickle/"+pickleName
         with open(path, "rb") as pk:
             # pickles=pickle.dumps(diaLines)
             diaLines = pickle.load(pk)

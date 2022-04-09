@@ -13,6 +13,7 @@ src/funcs/__pycache__/
 src/funcs/funcTes/
 src/funcs/baks/
 
+src/deepLearning/tests/
 src/doMat/__pycache__/
 
 src/findAHelix/__pycache__/

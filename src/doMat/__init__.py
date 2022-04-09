@@ -4,7 +4,7 @@ from src.doMat.disPNGMaker import makeDisPNG
 
 
 class matrixExecute:
-    def __init__(self, pdbID:str, database='atomdistance'):
+    def __init__(self, pdbID: str, database='atomdistance'):
         self.pdbID = pdbID.lower()
         self.database = database
 
@@ -54,7 +54,8 @@ class matrixExecute:
     def doDisPNG(self):
         disMatrix = self.loadMat()
         # clrmaps = self.mkPNG.colormaps
-        grayMat = self.mkPNG.grayMatrix(disMatrix=disMatrix,matLen=self.mkMat.CAAmount)
+        grayMat = self.mkPNG.grayMatrix(
+            disMatrix=disMatrix, matLen=self.mkMat.CAAmount)
         self.mkPNG.disPlot(grayMat, self.mkMat.CAAmount, self.pdbID)
         return grayMat
 

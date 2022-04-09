@@ -16,10 +16,14 @@ class aHelixExecute:
         grayMat = self.mH.grayMatrix(disMatrix, matLen)
 
         self.mH.plotAHelixPNGs(grayMat, aList, self.pdbID)
-        
+
         return grayMat
 
+    def findAHelix(self, overWrite=False):
+        return self.eA.dS.stepClrDiaLines(overWrite)
+
+
 if __name__ == '__main__':
-    fE = aHelixExecute(pdbID='2erk')
+    fE = aHelixExecute('1faw',True) # 
     # print(fE.getMstClr([(1,2,3),(1,2,3),(1,2,3),(3,2,1)]))
-    fE.doAHelixPNGs()
+    print(fE.findAHelix(True)) # 

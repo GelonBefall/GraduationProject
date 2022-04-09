@@ -5,6 +5,7 @@ import numpy
 
 from collections import deque
 
+
 class makePNG:
     def __init__(self, colorFilename="gray.rgb"):
 
@@ -30,7 +31,7 @@ class makePNG:
             for line in f:
                 # colormapMatrix.insert(0,list(map(int,line.split())))
                 colormaps.append(tuple(map(int, line.split(","))))
-        self.colormaps = colormaps # np.array(colormaps)
+        self.colormaps = colormaps  # np.array(colormaps)
         # print(self.colormaps)
 
     def _pngPlot(self, clrMatrix, matLen, pngFile):
@@ -49,26 +50,31 @@ class makePNG:
         w = png.Writer(matLen, matLen, greyscale=False)
         w.write(f, pngData)
         f.close()
-    
+
     def getMyChecks(self, RGB):
-        RGB=tuple(RGB)
-        index= self.colormaps.index(RGB)
-        check= 9-index
+        RGB = tuple(RGB)
+        check = []
+        index = self.colormaps.index(RGB)
+        check.append(9-index)
+        if (2 in check) or (3 in check):
+            check = [2, 3]
+        elif 4 in check:
+            check = [4, 5]
         return check
-    
+
     def grayMatrix(self, disMatrix, matLen):
         grayLists = deque()
-        
+
         for i in range(matLen):
             tmp = deque()
 
             for m in range(matLen):
                 checked = 0
                 if 23 < disMatrix[i][m]:
-                    checked=10
-                elif 15 < disMatrix[i][m]<=23:
+                    checked = 10
+                elif 15 < disMatrix[i][m] <= 23:
                     checked = 9
-                elif 10.4 < disMatrix[i][m]<=15:
+                elif 10.4 < disMatrix[i][m] <= 15:
                     checked = 8
                 elif 9.2 < disMatrix[i][m] <= 10.4:
                     checked = 7
@@ -88,7 +94,7 @@ class makePNG:
                     checked = 0
                 tmp.append(self.colormaps[9-checked])
             grayLists.append(tmp)
-        
+
         grayMatrix = numpy.array(grayLists)
         return grayMatrix
 
