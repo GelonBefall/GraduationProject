@@ -24,6 +24,7 @@ class aHelixExecute:
 
 
 if __name__ == '__main__':
-    fE = aHelixExecute('1faw',True) # 
+    fE = aHelixExecute('1a4f') # 
     # print(fE.getMstClr([(1,2,3),(1,2,3),(1,2,3),(3,2,1)]))
-    print(fE.findAHelix(True)) # 
+    # print(fE.findAHelix(True)) # 
+    print(fE.doAHelixPNGs())

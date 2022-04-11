@@ -36,7 +36,7 @@ class sqlOP:
 
     def tableExist(self):
         try:
-            describeSQL = "DESCRIBE {}".format(self.pdbID)
+            describeSQL = "DESCRIBE pdb_{}".format(self.pdbID)
             self.cursor.execute(describeSQL)
             return 0
         except:
@@ -44,7 +44,7 @@ class sqlOP:
 
     def entryCount(self):
         try:
-            isEmptySQL = 'SELECT COUNT(1) FROM {}'.format(self.pdbID)
+            isEmptySQL = 'SELECT COUNT(1) FROM pdb_{}'.format(self.pdbID)
             self.cursor.execute(isEmptySQL)
             data = self.cursor.fetchone()
             print("The entrys you have saved is {}".format(data[0]))
@@ -55,7 +55,7 @@ class sqlOP:
 
     def dropTable(self):
         try:
-            deleteTableSQL = "DROP TABLE {}".format(self.pdbID)
+            deleteTableSQL = "DROP TABLE pdb_{}".format(self.pdbID)
             self.cursor.execute(deleteTableSQL)
             self.db.commit()
             print("DROP TABLE SUCCESSFULLY.")
@@ -67,7 +67,7 @@ class sqlOP:
 
     def createTable(self, matrixLen):
         # Create new table.
-        tableCreateSQL = "CREATE TABLE {}(".format(self.pdbID)
+        tableCreateSQL = "CREATE TABLE pdb_{}(".format(self.pdbID)
         if self.option == 'atomdistance':
             for i in range(matrixLen-1):
                 tableCreateSQL = tableCreateSQL + 'Col{} DOUBLE,'.format(i)
@@ -84,6 +84,7 @@ class sqlOP:
                 self.db.rollback()
                 print("CREATE TABLE ERROR.")
                 sys.exit()
+
         elif self.option == 'alphaFeatures':
             tableCreateSQL += ' STEP TINYINT(10), ALPHARANGES CHAR(12), STEPMINS DOUBLE, STEPMAXS DOUBLE, DIFFERVALUES FLOAT, MEAN FLOAT, VARIANCE FLOAT)'
             try:
@@ -97,7 +98,7 @@ class sqlOP:
 
     def saveDisMatrix(self, disMatrix, matrixLen):
         # Preparation for inserting.
-        insertPre = 'INSERT INTO {}'.format(self.pdbID)+" VALUES "
+        insertPre = 'INSERT INTO pdb_{}'.format(self.pdbID)+" VALUES "
 
         tmp = 0
         if self.option == 'atomdistance':
@@ -145,11 +146,15 @@ class sqlOP:
         if isExist == 0:
 
             if (self.entryAmount == matrixLen) and (overWrite == False):
-                print("You have saved the matrix in {}. Do not execute again.".format(
-                    self.option))
+                print("You have saved the matrix in {}. {}. Do not execute again.".format(
+                    self.option,self.pdbID))
                 return 0
 
             elif self.entryAmount == 0:
+                self.saveDisMatrix(disMatrix, matrixLen)
+            
+            elif self.entryAmount == -1:
+                self.createTable(matrixLen)
                 self.saveDisMatrix(disMatrix, matrixLen)
 
             else:
@@ -161,10 +166,10 @@ class sqlOP:
             self.saveDisMatrix(disMatrix, matrixLen)
 
     def loadFrDB(self):
+        selectSQL = 'SELECT * FROM pdb_{}'.format(self.pdbID)
         if self.option == 'atomdistance':
             try:
                 disLists = deque()
-                selectSQL = 'SELECT * FROM {}'.format(self.pdbID)
                 self.cursor.execute(selectSQL)
                 data = self.cursor.fetchall()
                 for line in data:
@@ -180,7 +185,6 @@ class sqlOP:
         elif self.option == 'alphaFeatures':
             try:
                 alphaFeatures = {}
-                selectSQL = 'SELECT * FROM {}'.format(self.pdbID)
                 self.cursor.execute(selectSQL)
                 data = self.cursor.fetchall()
                 for i in range(len(data)):

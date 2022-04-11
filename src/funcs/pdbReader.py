@@ -76,7 +76,7 @@ class readPDB:
             if count == 0:
                 continue
             counts[chain.id] = count
-            print("The CAAmount of {} is {}.".format(chain, count))
+            # print("The CAAmount of {} is {}.".format(chain, count))
         return counts
 
     def CACount(self):
@@ -89,5 +89,5 @@ class readPDB:
 
 
 if __name__ == '__main__':
-    rp = readPDB(pdbID='2wfv')
+    rp = readPDB(pdbID='100d')
     print(rp.residuesCount())

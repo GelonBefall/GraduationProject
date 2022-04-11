@@ -62,6 +62,23 @@ class makePNG:
             check = [4, 5]
         return check
 
+    def getChecked(self, dis):
+        def getCheck(dis): return {
+            23 < dis: 10,
+            13 < dis <= 23: 9,
+            10.0 < dis <= 13: 8,
+            9.0 < dis <= 10.0: 7,
+            8.0 <= dis <= 9.0: 6,
+            7.0 < dis < 8.0: 5,
+            6.0 <= dis <= 7.0: 4,
+            5.0 <= dis < 6.0: 3,
+            4.0 < dis < 5.0: 2,
+            3.0 <= dis <= 4.0: 1,
+            dis < 3.0: 0
+        }
+        checked = getCheck(dis)[True]
+        return checked
+
     def grayMatrix(self, disMatrix, matLen):
         grayLists = deque()
 
@@ -69,29 +86,7 @@ class makePNG:
             tmp = deque()
 
             for m in range(matLen):
-                checked = 0
-                if 23 < disMatrix[i][m]:
-                    checked = 10
-                elif 15 < disMatrix[i][m] <= 23:
-                    checked = 9
-                elif 10.4 < disMatrix[i][m] <= 15:
-                    checked = 8
-                elif 9.2 < disMatrix[i][m] <= 10.4:
-                    checked = 7
-                elif 8.2 <= disMatrix[i][m] <= 9.2:
-                    checked = 6
-                elif 6.7 < disMatrix[i][m] < 8.2:
-                    checked = 5
-                elif 5.8 <= disMatrix[i][m] <= 6.7:
-                    checked = 4
-                elif 4.8 <= disMatrix[i][m] < 5.8:
-                    checked = 3
-                elif 4.0 < disMatrix[i][m] < 4.8:
-                    checked = 2
-                elif 3.5 <= disMatrix[i][m] <= 4.0:
-                    checked = 1
-                elif disMatrix[i][m] < 3.5:
-                    checked = 0
+                checked = self.getChecked(disMatrix[i][m])
                 tmp.append(self.colormaps[9-checked])
             grayLists.append(tmp)
 

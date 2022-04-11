@@ -81,6 +81,6 @@ class readDSSP:
 
 
 if __name__ == '__main__':
-    dR = readDSSP('1a4f')
+    dR = readDSSP('6vw1')
     print(dR.getAHelix())
     print(dR.aHelixRange())

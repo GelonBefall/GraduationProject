@@ -12,13 +12,18 @@ class diaStep:
     def __init__(self, pdbID: str, overWrite=False):
         '''遍历矩阵中平行对角线的所有斜线上的Cα原子坐标。'''
         self.pdbID = pdbID.lower()
+
         self.mE = matrixExecute(self.pdbID)
+        self.disMatrix = self.mE.LASMat(overWrite=overWrite)
+        if type(self.disMatrix) == bool:
+            return None
+
         self.dR = readDSSP(self.pdbID)
         self.pickle = pickleOP()
         self.aR = self.dR.getAHelix()
 
         self.clrMaps = self.mE.mkPNG.colormaps  # mkPNG.colormaps
-        self.disMatrix = self.mE.LASMat(overWrite=overWrite)
+        
         self.CAAmount = self.mE.mkMat.CAAmount
         self.steps = [x for x in range(1, 5)]
 

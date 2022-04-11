@@ -7,9 +7,9 @@ from collections import Counter
 
 class extractAHelix:
     def __init__(self, pdbID: str, overWrite=False):
-
-        self.dS = diaStep(pdbID, overWrite=overWrite)
-        self.pdbID = pdbID
+        self.pdbID = pdbID.lower()
+        
+        self.dS = diaStep(self.pdbID, overWrite=overWrite)
 
     def getMstClr(list_data):
         x1 = sorted(Counter(list_data))
