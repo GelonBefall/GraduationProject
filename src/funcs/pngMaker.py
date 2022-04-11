@@ -63,6 +63,7 @@ class makePNG:
         return check
 
     def getChecked(self, dis):
+        '''划分距离区间，数字化选择上色颜色。'''
         def getCheck(dis): return {
             23 < dis: 10,
             13 < dis <= 23: 9,

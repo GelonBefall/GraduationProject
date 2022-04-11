@@ -19,6 +19,9 @@ class aHelixExecute:
 
         return grayMat
 
+    def aHelixFeatures(self):
+        return self.eA.featureOfAHelixs()
+
     def findAHelix(self, overWrite=False):
         return self.eA.dS.stepClrDiaLines(overWrite)
 

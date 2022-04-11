@@ -2,7 +2,7 @@ from src.findAHelix.diagonalSteper import diaStep
 from src.funcs.listAnalyst import anaList
 from src.operateOfSQL.sqlOperater import sqlOP
 
-from collections import Counter
+# from collections import Counter
 
 
 class extractAHelix:
@@ -10,11 +10,6 @@ class extractAHelix:
         self.pdbID = pdbID.lower()
         
         self.dS = diaStep(self.pdbID, overWrite=overWrite)
-
-    def getMstClr(list_data):
-        x1 = sorted(Counter(list_data))
-        print(x1)
-        return x1[0]
 
     def featureOfAHelixs(self, overWrite=False):
         '''分组计算某蛋白质每种间隔中，所有α螺旋的距离范围。'''

@@ -102,6 +102,6 @@ class diaStep:
 
 
 if __name__ == '__main__':
-    dS = diaStep('6vw1',)  # True
+    dS = diaStep('1a4f',)  # True
     print(dS.stepClrDiaLines(overWrite=True))
     # print(dS.disMatDiaLines())

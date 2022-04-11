@@ -57,7 +57,7 @@ class matrixExecute:
 
     def doDisPNG(self):
         # sql = sqlOP(pdbID=self.pdbID, database=self.database)
-        disMatrix = self.loadMat()
+        disMatrix = self.loadMat(False)
         # sql.db.close()
         # clrmaps = self.mkPNG.colormaps
         grayMat = self.mkPNG.grayMatrix(
