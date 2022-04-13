@@ -6,10 +6,10 @@ from src.operateOfSQL.sqlOperater import sqlOP
 
 
 class extractAHelix:
-    def __init__(self, pdbID: str, overWrite=False):
+    def __init__(self, pdbID: str, overWrite=False, dsspPath=None):
         self.pdbID = pdbID.lower()
-        
-        self.dS = diaStep(self.pdbID, overWrite=overWrite)
+
+        self.dS = diaStep(self.pdbID, overWrite=overWrite, dsspPath=dsspPath)
 
     def featureOfAHelixs(self, overWrite=False):
         '''分组计算某蛋白质每种间隔中，所有α螺旋的距离范围。'''

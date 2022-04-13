@@ -1,4 +1,4 @@
-from src.funcs.pngMaker import makePNG
+from src.operateOfPNG.pngMaker import makePNG
 import os
 
 

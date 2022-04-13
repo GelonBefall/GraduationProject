@@ -1,15 +1,20 @@
 import os
 import sys
 from collections import deque
+from pathlib import Path
 
-from sympy import residue
 from src.funcs.pdbReader import readPDB
 
 
 class readDSSP:
-    def __init__(self, pdbID: str):
+    def __init__(self, pdbID: str, dsspPath=None):
         self.dsspID = pdbID.lower()
-        self.__dsspPath = "./materials/dssp/"
+        
+        if dsspPath:
+            self.__dsspPath = dsspPath
+        else:
+            self.__dsspPath = self.__dsspFinder()
+
         self.__dsspFile = os.path.join(
             self.__dsspPath, "{}.dssp".format(self.dsspID))
         self.__dsspExist()
@@ -23,6 +28,16 @@ class readDSSP:
             return 0
         else:
             sys.exit("DSSP file doesn't exist!")
+
+    def __dsspFinder(self):
+        __dsspPath = "./materials/dssp/"
+        dsspPath = Path(__dsspPath)
+        dsspFile = self.dsspID+'.dssp'
+
+        result = list(dsspPath.rglob(dsspFile))
+
+        dsspPath = __dsspPath+result[0]._cparts[2]
+        return dsspPath
 
     def getAHelix(self):
         '''返回α螺旋位置，下标从0开始。例如[1, 3]为第二个到第四个α残基。'''
@@ -81,6 +96,7 @@ class readDSSP:
 
 
 if __name__ == '__main__':
-    dR = readDSSP('6vw1')
-    print(dR.getAHelix())
-    print(dR.aHelixRange())
+    dR = readDSSP('1a0e')
+    # print(dR.getAHelix())
+    # print(dR.aHelixRange())
+    # print(dR.dsspFinder())

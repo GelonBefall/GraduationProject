@@ -3,9 +3,9 @@ from src.findAHelix.aHelixPNGMaker import makeAHelixPNG
 
 
 class aHelixExecute:
-    def __init__(self, pdbID: str, overWrite=False):
+    def __init__(self, pdbID: str, overWrite=False, dsspPath=None):
         self.pdbID = pdbID.lower()
-        self.eA = extractAHelix(self.pdbID, overWrite=overWrite)
+        self.eA = extractAHelix(self.pdbID, overWrite=overWrite, dsspPath=dsspPath)
         self.mH = makeAHelixPNG()
 
     def doAHelixPNGs(self):

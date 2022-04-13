@@ -4,16 +4,19 @@ import os
 
 class pickleOP:
     def savePickle(self, diaLines: dict, pickleName: str, overWrite=False):
-        path = "./materials/pickle/"+pickleName
+        path = "./materials/pickle/"
+        pickleFile = path+pickleName
+        if not os.path.exists(path):
+            os.makedirs(path)
         if overWrite == True:
-            with open(path, "wb") as pk:
+            with open(pickleFile, "wb") as pk:
                 # pickles=pickle.dumps(diaLines)
                 pickle.dump(diaLines, pk)
         else:
-            if os.path.exists(path):
+            if os.path.exists(pickleFile):
                 print("pickle文件已存在，若要覆盖，请使用覆盖模式。")
             else:
-                with open(path, "wb") as pk:
+                with open(pickleFile, "wb") as pk:
                     # pickles=pickle.dumps(diaLines)
                     pickle.dump(diaLines, pk)
 

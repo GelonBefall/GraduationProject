@@ -3,11 +3,10 @@ from src.funcs.accuracyRater import getAccuRate
 
 
 class application:
-    def __init__(self, pdbID: str, overWrite=False):
+    def __init__(self, pdbID: str, overWrite=False, dsspPath=None):
         self.pdbID=pdbID.lower()
-        self.aE = aHelixExecute(self.pdbID, overWrite)
+        self.aE = aHelixExecute(self.pdbID, overWrite, dsspPath=dsspPath)
         
-
     def __bool__(self):
         if type(self.aE.eA.dS.disMatrix) == bool:
             return False

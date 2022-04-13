@@ -2,14 +2,13 @@ from src.doMat import matrixExecute
 from src.funcs.dsspReader import readDSSP
 from src.funcs.pickleOperater import pickleOP
 
-from copyreg import pickle
 from collections import deque
 
 import numpy
 
 
 class diaStep:
-    def __init__(self, pdbID: str, overWrite=False):
+    def __init__(self, pdbID: str, overWrite=False, dsspPath=None):
         '''遍历矩阵中平行对角线的所有斜线上的Cα原子坐标。'''
         self.pdbID = pdbID.lower()
 
@@ -18,7 +17,7 @@ class diaStep:
         if type(self.disMatrix) == bool:
             return None
 
-        self.dR = readDSSP(self.pdbID)
+        self.dR = readDSSP(self.pdbID, dsspPath)
         self.pickle = pickleOP()
         self.aR = self.dR.getAHelix()
 
@@ -90,9 +89,11 @@ class diaStep:
             if (bool(choosenAreas)) and (overWrite == False):
                 return choosenAreas
             else:
-                raise print('pickle存储为空或程序为覆盖写模式。')
+                print('pickle存储为空或程序为覆盖写模式。')
+                raise
         except:
-            grayMat = self.mE.mkPNG.grayMatrix(self.disMatrix, self.CAAmount)
+            # grayMat = self.mE.mkPNG.grayMatrix(self.disMatrix, self.CAAmount)
+            grayMat = self.mE.loadGrayMat()
             choosenAreas = [(0, self.CAAmount-1)]
         for step in steps:
             choosenAreas = self.stepClrDiaLine(step, choosenAreas, grayMat)

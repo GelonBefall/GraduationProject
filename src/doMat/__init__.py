@@ -62,9 +62,19 @@ class matrixExecute:
         # clrmaps = self.mkPNG.colormaps
         grayMat = self.mkPNG.grayMatrix(
             disMatrix=disMatrix, matLen=self.mkMat.CAAmount)
-        self.mkPNG.disPlot(grayMat, self.mkMat.CAAmount, self.pdbID)
+        stutus=self.mkPNG.disPlot(grayMat, self.mkMat.CAAmount, self.pdbID)
+        if stutus==0:
+            print('已生成过{}的灰度矩阵图，已自动跳过。'.format(self.pdbID))
 
         return grayMat
+
+    def loadGrayMat(self):
+        # grayMat=self.mkPNG.loadGrayMat(self.pdbID)
+        try:
+            return self.mkPNG.loadGrayMat(self.pdbID)
+        except:
+            return self.doDisPNG()
+             
 
 
 if __name__ == '__main__':
@@ -72,4 +82,5 @@ if __name__ == '__main__':
     # print(op.createTable())
     # print(op.saveToDB())
     # print(matEXE.LASMat())
-    print(matEXE.doDisPNG())
+    # print(matEXE.doDisPNG())
+    print(matEXE.loadGrayMat())
