@@ -18,6 +18,7 @@ src/funcs/baks/
 
 src/deepLearning/tests/
 src/doMat/__pycache__/
+src/doMat/baks/
 
 src/findAHelix/__pycache__/
 src/findAHelix/baks/

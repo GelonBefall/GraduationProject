@@ -66,7 +66,11 @@ class readPDB:
         structure = self.p.get_structure(self.pdbID, self._pdbFile)
         chains = structure.get_chains()
         counts = {}
+        chainIDs=[]
         for chain in chains:
+            if chain.id in chainIDs:
+                break
+            chainIDs.append(chain.id)
             residues = chain.get_residues()
             count = 0
             # print(chain.id)
@@ -89,5 +93,5 @@ class readPDB:
 
 
 if __name__ == '__main__':
-    rp = readPDB(pdbID='100d')
+    rp = readPDB(pdbID='1a03')
     print(rp.residuesCount())
