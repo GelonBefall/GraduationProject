@@ -1,42 +1,61 @@
 import sys
-import numpy
 
-from collections import deque
 from src.operateOfSQL import sqlOP
 
+
 class aHelixSQLOP(sqlOP):
-    
-    def createTable(self, matrixLen):
+
+    def createTable(self):
         # Create new table.
         tableCreateSQL = "CREATE TABLE pdb_{}(".format(self.pdbID)
-        for i in range(matrixLen-1):
-            tableCreateSQL = tableCreateSQL + 'Col{} DOUBLE,'.format(i)
-        tableCreateSQL = tableCreateSQL + \
-            'Col{} DOUBLE)'.format(matrixLen-1)
-        if i > 1000:  # Choose MySQL-engine MyISAM.
-            tableCreateSQL = tableCreateSQL+'engine=MyISAM'
-
+        tableCreateSQL += ' STEP TINYINT(10), ALPHARANGES CHAR(12), STEPMINS DOUBLE, STEPMAXS DOUBLE, DIFFERVALUES FLOAT, MEAN FLOAT, VARIANCE FLOAT)'
         try:
             self.cursor.execute(tableCreateSQL)
             self.db.commit()
             return 0
         except:
             self.db.rollback()
-            print("CREATE TABLE ERROR.")
+            print("CREATE TABLE OF {} ERROR.".format(self.database))
             sys.exit()
-    
-    def saveDisMatrix(self, disMatrix, matrixLen):
+
+    def loadFrDB(self):
+        selectSQL = 'SELECT * FROM pdb_{}'.format(self.pdbID)
+        try:
+            alphaFeatures = {}
+            self.cursor.execute(selectSQL)
+            data = self.cursor.fetchall()
+
+            for i in range(len(data)):
+                line = data[i]
+                line = list(line)
+                step = line[0]
+                aRange = eval(line[1])
+
+                if step in alphaFeatures:
+                    alphaFeatures[step][aRange] = [line[2], line[3]]
+                else:
+                    alphaFeatures[step] = {}
+                    alphaFeatures[step][aRange] = [line[2], line[3]]
+
+            return alphaFeatures
+        except:
+            print("Fail to load from database {}. please check it! ".format(
+                self.database))
+            sys.exit()
+
+    def saveAlphaFeatures(self, alphaFeatures, featureLen):
         # Preparation for inserting.
         insertPre = 'INSERT INTO pdb_{}'.format(self.pdbID)+" VALUES "
         tmp = 0
 
         # Insert data.
         i = 0
-        while i < matrixLen:
+        while i < featureLen:
             if tmp == 5:
-                print("INSERT ERROR")
+                print("INSERT DATA IN {} ERROR".format(self.database))
                 sys.exit()
-            insertSQL = insertPre + str(tuple(disMatrix[i]))
+            alphaFeatures[i][1] = str(alphaFeatures[i][1])
+            insertSQL = insertPre + str(tuple(alphaFeatures[i]))
             try:
                 self.cursor.execute(insertSQL)
                 self.db.commit()
@@ -47,21 +66,31 @@ class aHelixSQLOP(sqlOP):
                 i = i-1
                 tmp = tmp+1
 
-        print("SAVE TO DB SUCCESSFULLY.")
+        print("Save features of α-Helix to DB successfully.")
+        return 0
 
-    def loadFrDB(self):
-        selectSQL = 'SELECT * FROM pdb_{}'.format(self.pdbID)
-        try:
-            disLists = deque()
-            self.cursor.execute(selectSQL)
-            data = self.cursor.fetchall()
-            for line in data:
-                tmpDis = list(line)
-                disLists.append(tmpDis)
+    def saveToDB(self, alphaFeatures, overWrite=False):
+        isExist = self.tableExist()
+        featuresLen = len(alphaFeatures)
+        if isExist == True:
 
-            disMatrix = numpy.array(disLists)
-            # print(len(disMatrix))
-            return disMatrix
-        except:
-            print("Fail to load from database. please check it! ")
-            sys.exit()
+            if (self.entryAmount == featuresLen) and (overWrite == False):
+                print("You have saved the features of α-Helix in {}. pdb_{}. Do not execute again.".format(
+                    self.database, self.pdbID))
+                return 0
+
+            elif self.entryAmount == 0:
+                self.saveAlphaFeatures(alphaFeatures, featuresLen)
+
+            elif self.entryAmount == -1:
+                self.createTable()
+                self.saveAlphaFeatures(alphaFeatures, featuresLen)
+
+            else:
+                self.dropTable()
+                self.createTable()
+                self.saveAlphaFeatures(alphaFeatures, featuresLen)
+        else:
+            self.createTable()
+            self.saveAlphaFeatures(alphaFeatures, featuresLen)
+        return 0

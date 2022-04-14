@@ -23,5 +23,7 @@ src/doMat/baks/
 src/findAHelix/__pycache__/
 src/findAHelix/baks/
 
-src/OperateOfSQL/__pycache__/
-src/operateOfPNG/__pycache__
+src/operateOfSQL/__pycache__/
+src/operateOfSQL/baks/
+
+src/operateOfPNG/__pycache__/

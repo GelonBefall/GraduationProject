@@ -20,7 +20,8 @@ class application:
         return self.aE.doAHelixPNGs()
 
     def aHelixFeatures(self):
-        return self.aE.aHelixFeatures()
+        return (self.aE.aHelixFeatures())
+        # print
     
     def getAccuRate(self):
         dsspRange=self.aE.eA.dS.dR.getAHelix()
