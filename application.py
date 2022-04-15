@@ -4,9 +4,9 @@ from src.funcs.accuracyRater import getAccuRate
 
 class application:
     def __init__(self, pdbID: str, overWrite=False, dsspPath=None):
-        self.pdbID=pdbID.lower()
+        self.pdbID = pdbID.lower()
         self.aE = aHelixExecute(self.pdbID, overWrite, dsspPath=dsspPath)
-        
+
     def __bool__(self):
         if type(self.aE.eA.dS.disMatrix) == bool:
             return False
@@ -22,8 +22,8 @@ class application:
     def aHelixFeatures(self):
         return (self.aE.aHelixFeatures())
         # print
-    
+
     def getAccuRate(self):
-        dsspRange=self.aE.eA.dS.dR.getAHelix()
-        assignRange=self.aE.eA.dS.stepClrDiaLines()
+        dsspRange = self.aE.eA.dS.dR.getAHelix()
+        assignRange = self.aE.eA.dS.stepClrDiaLines()
         return getAccuRate(self.pdbID, dsspRange, assignRange)

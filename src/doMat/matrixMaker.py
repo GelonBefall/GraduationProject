@@ -49,29 +49,6 @@ class makeMatrix(readPDB):
                 ListsTemp = deque()
         self.disMatrix = np.array(self.disMatrix)
 
-        # residues1 = structure.get_residues()
-        # for residue1 in residues1:
-        #     residues2 = structure.get_residues()
-        #     if residue1.has_id("CA"):
-        #         CAlpha1 = residue1['CA']
-        #     else:
-        #         continue
-
-        #     for residue2 in residues2:
-        #         if residue2.has_id("CA"):
-        #             CAlpha2 = residue2["CA"]
-        #             distance = CAlpha1 - CAlpha2
-        #             ListsTemp.append(distance)
-        #             # # print(ListsTemp)
-        #         else:
-        #             continue
-
-        #     disLists.append(ListsTemp)
-        #     # print(disLists)
-        #     ListsTemp = deque()
-        # self.disMatrix = np.array(disLists)
-        # return disMatrix
-
 
 if __name__ == '__main__':
     NM = makeMatrix(pdbID='3INS')

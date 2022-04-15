@@ -26,11 +26,12 @@ class matrixExecute:
         checkRes = self.checkSQL(sql)
 
         if isTableExist == False or checkRes == False:
-            self.mkMat.calMatrix()
 
-            if self.mkMat.CAAmount <= 10:
+            if self.mkMat.CAAmount <= 10 or self.mkMat.CAAmount >= 1000:
+                print('该蛋白过小或过大！')
                 return False
             else:
+                self.mkMat.calMatrix()
                 sql.saveToDB(self.mkMat.disMatrix, overWrite)
                 sql.db.close()
                 return self.mkMat.disMatrix
@@ -53,15 +54,18 @@ class matrixExecute:
         return disMatrix
 
     def doDisPNG(self):
-        disMatrix = self.LASMat(False)
+        try:
+            grayMat=self.mkPNG.loadGrayMat(self.pdbID)
+        except:
+            disMatrix = self.LASMat(False)
 
-        grayMat = self.mkPNG.grayMatrix(
-            disMatrix=disMatrix, matLen=self.mkMat.CAAmount)
+            grayMat = self.mkPNG.newGrayMatrix(
+                disMatrix=disMatrix, matLen=self.mkMat.CAAmount)
 
-        stutus = self.mkPNG.disPlot(
-            grayMat, self.mkMat.CAAmount, self.pdbID)  # 返回作图之后的状态
-        if stutus == 0:
-            print('已生成过{}的灰度矩阵图，已自动跳过。'.format(self.pdbID))
+            stutus = self.mkPNG.disPlot(
+                grayMat, self.mkMat.CAAmount, self.pdbID)  # 返回作图之后的状态
+            if stutus == 0:
+                print('已生成过{}的灰度矩阵图，已自动跳过。'.format(self.pdbID))
 
         return grayMat
 

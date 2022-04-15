@@ -5,7 +5,8 @@ from src.findAHelix.aHelixPNGMaker import makeAHelixPNG
 class aHelixExecute:
     def __init__(self, pdbID: str, overWrite=False, dsspPath=None):
         self.pdbID = pdbID.lower()
-        self.eA = extractAHelix(self.pdbID, overWrite=overWrite, dsspPath=dsspPath)
+        self.eA = extractAHelix(
+            self.pdbID, overWrite=overWrite, dsspPath=dsspPath)
         self.mH = makeAHelixPNG()
 
     def doAHelixPNGs(self):
@@ -13,7 +14,7 @@ class aHelixExecute:
         disMatrix = self.eA.dS.disMatrix
         matLen = self.eA.dS.CAAmount
 
-        grayMat = self.mH.grayMatrix(disMatrix, matLen)
+        grayMat = self.mH.newGrayMatrix(disMatrix, matLen)
 
         self.mH.plotAHelixPNGs(grayMat, aList, self.pdbID)
 
@@ -27,7 +28,7 @@ class aHelixExecute:
 
 
 if __name__ == '__main__':
-    fE = aHelixExecute('1a4f') # 
+    fE = aHelixExecute('1a4f')
     # print(fE.getMstClr([(1,2,3),(1,2,3),(1,2,3),(3,2,1)]))
-    # print(fE.findAHelix(True)) # 
+    # print(fE.findAHelix(True)) #
     print(fE.doAHelixPNGs())

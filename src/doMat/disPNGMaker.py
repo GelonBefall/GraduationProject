@@ -15,26 +15,31 @@ class makeDisPNG(makePNG):
         __pngFile = os.path.join(__pngPath, __pngFile)
 
         if os.path.exists(__pngFile):
-            return 0
+            return {True: __pngFile}
         else:
-            return __pngFile
+            return {False: __pngFile}
 
     def disPlot(self, clrMatrix, matLen, pdbID: str):
         __pngFile = self.__pathExe(pdbID)
 
-        if __pngFile == 0:
+        if True in __pngFile.keys():
             return 0
 
         else:
+            __pngFile = __pngFile[False]
             self._pngPlot(clrMatrix, matLen, pngFile=__pngFile)
 
     def loadGrayMat(self, pdbID: str):
         __pngFile = self.__pathExe(pdbID)
-        if __pngFile != 0:
+        if False in __pngFile.keys():
             print('未生成过{}的灰度矩阵图，将自动生成。'.format(pdbID))
             raise
             # return
         else:
+            print('已生成过{}的灰度矩阵图，将自动读取。'.format(pdbID))
+            __pngFile = __pngFile[True]
             reader = readPNG()
             grayMat = reader.loadGrayMat(__pngFile)
+            if type(grayMat) == bool:
+                raise
             return grayMat

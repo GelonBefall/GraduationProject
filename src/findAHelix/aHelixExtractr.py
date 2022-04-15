@@ -21,7 +21,7 @@ class extractAHelix:
             alphaFeatures = sql.loadFrDB()
             sql.db.close()
             return alphaFeatures
-        
+
         else:
             alphaFeatures = {}
             disInfos = []

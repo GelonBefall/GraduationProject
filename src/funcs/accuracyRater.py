@@ -15,5 +15,5 @@ def getAccuRate(pdbID, dsspRange, assignRange):
                     break
         value = accu/lenAssign
         accuRate = {pdbID: value}
-        
+
     return accuRate

@@ -66,7 +66,8 @@ class readPDB:
         structure = self.p.get_structure(self.pdbID, self._pdbFile)
         chains = structure.get_chains()
         counts = {}
-        chainIDs=[]
+        chainIDs = []
+        
         for chain in chains:
             if chain.id in chainIDs:
                 break

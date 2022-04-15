@@ -36,7 +36,7 @@ class makePNG(pngInit):
             check = [4, 5]
         return check
 
-    def grayMatrix(self, disMatrix, matLen):
+    def newGrayMatrix(self, disMatrix, matLen):
         grayLists = deque()
 
         for i in range(matLen):
@@ -53,5 +53,5 @@ class makePNG(pngInit):
 
 if __name__ == '__main__':
     mkPNG = makePNG()
-    pngfile='.\\production\\png\\matPNG\\1a4f.png'
+    pngfile = '.\\production\\png\\matPNG\\1a4f.png'
     print(mkPNG._pngPlot())

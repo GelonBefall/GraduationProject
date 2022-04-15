@@ -9,7 +9,7 @@ from src.funcs.pdbReader import readPDB
 class readDSSP:
     def __init__(self, pdbID: str, dsspPath=None):
         self.dsspID = pdbID.lower()
-        
+
         if dsspPath:
             self.__dsspPath = dsspPath
         else:

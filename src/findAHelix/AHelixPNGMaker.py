@@ -26,11 +26,13 @@ class makeAHelixPNG(makePNG):
             if len(files) == len(aHelixList):
                 print('已生成过{}的α螺旋灰度矩阵图，已自动跳过。'.format(pdbID))
                 return 0
+            else:
+                print('未生成过{}的α螺旋灰度矩阵图，将自动生成。'.format(pdbID))
 
         for aHelix in aHelixList:
             __pngFile = os.path.join(
                 __pngPath, pdbID+"_{}.png".format(str(aHelix)))
-            
+
             start = aHelix[0]
             end = aHelix[1]+1
             clrMatPiece = clrMatrix[start:end, start:end]

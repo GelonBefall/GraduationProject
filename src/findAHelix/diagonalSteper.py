@@ -22,7 +22,7 @@ class diaStep:
         self.aR = self.dR.getAHelix()
 
         self.clrMaps = self.mE.mkPNG.colormaps  # mkPNG.colormaps
-        
+
         self.CAAmount = self.mE.mkMat.CAAmount
         self.steps = [x for x in range(1, 5)]
 

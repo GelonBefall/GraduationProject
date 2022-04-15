@@ -44,7 +44,8 @@ class sqlOP:
             isEmptySQL = 'SELECT COUNT(1) FROM pdb_{}'.format(self.pdbID)
             self.cursor.execute(isEmptySQL)
             data = self.cursor.fetchone()
-            print("The entrys of {} you have saved is {}".format(self.database, data[0]))
+            print("The entrys of {} you have saved is {}".format(
+                self.database, data[0]))
             return data[0]
         except:
             print("Cant found the table in {}.".format(self.database))
@@ -59,9 +60,10 @@ class sqlOP:
             return 0
         except:
             self.db.rollback()
-            print("DROP TABLE IN {} ERROR, please check your database.".format(self.database))
+            print("DROP TABLE IN {} ERROR, please check your database.".format(
+                self.database))
             sys.exit()
-            
+
 
 if __name__ == '__main__':
     op = sqlOP('2erk')  # pdbID='6vw1'

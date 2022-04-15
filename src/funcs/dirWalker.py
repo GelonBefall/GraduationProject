@@ -25,8 +25,9 @@ def getDSSP(start=0, end=None):
         for __subPath in dirs:
             __subPath = os.path.join(root, __subPath)+'/'
             dsspTmps = []
-            
-            subPath = Path(__subPath) # for subroot, subdirs, subfiles in os.walk(__subPath):
+
+            # for subroot, subdirs, subfiles in os.walk(__subPath):
+            subPath = Path(__subPath)
             subfiles = subPath.glob('*.dssp')
             for dssp in subfiles:
                 dsspID = dssp.stem
