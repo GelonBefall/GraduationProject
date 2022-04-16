@@ -4,8 +4,10 @@ production/png/*
 production/json/*
 production/abosrb/*
 
-materials/dssp/*
 materials/pdb/*
+materials/big_pdb/*
+materials/dssp/*
+materials/big_dssp/*
 materials/rgb/*
 materials/pickle/*
 materials/question/

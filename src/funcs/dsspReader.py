@@ -1,5 +1,7 @@
 import os
 import sys
+import shutil
+
 from collections import deque
 from pathlib import Path
 
@@ -43,6 +45,10 @@ class readDSSP:
         os.remove(self.__dsspFile)
         print("已成功删除{}的dssp文件！".format(self.dsspID))
 
+    def dsspMover(self):
+        __newFile=os.path.join("./materials/big_dssp/", "{}.dssp".format(self.dsspID))
+        shutil.move(self.__dsspFile, __newFile)
+    
     def getAHelix(self):
         '''返回α螺旋位置，下标从0开始。例如[1, 3]为第二个到第四个α残基。'''
         rPDB = readPDB(self.dsspID)
@@ -110,7 +116,8 @@ class readDSSP:
 
 
 if __name__ == '__main__':
-    dR = readDSSP('1a0n')
-    print(dR.getAHelix())
+    dR = readDSSP('1a02')
+    # print(dR.getAHelix())
     # print(dR.aHelixRange())
     # print(dR.dsspFinder())
+    print(dR.dsspMover())

@@ -15,8 +15,12 @@ class aHelixExecute:
 
             self.mH.pngDeleter(self.pdbID)
             self.eA.dS.pickle.deletePickle(pickleName)
-            self.eA.dS.mE.dropPDB()
-            self.eA.dS.dR.dsspDeleter()
+            if self.eA.dS.CAAmount >= 1000:
+                self.eA.dS.mE.mkMat.pdbMover()
+                self.eA.dS.dR.dsspMover()
+            else:
+                self.eA.dS.mE.dropPDB()
+                self.eA.dS.dR.dsspDeleter()
             return False
         else:
             return True

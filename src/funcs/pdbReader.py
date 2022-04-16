@@ -1,6 +1,8 @@
 import os
 import sys
 import requests
+import shutil
+
 
 from Bio.PDB.PDBParser import PDBParser
 
@@ -35,6 +37,10 @@ class readPDB:
     def pdbDeleter(self):
         os.remove(self._pdbFile)
         print("已成功删除{}的pdb文件！".format(self.pdbID))
+
+    def pdbMover(self):
+        __newFile=os.path.join("./materials/big_pdb/", "{}.pdb".format(self.pdbID))
+        shutil.move(self._pdbFile, __newFile)
 
     def pdbExist(self):
         if os.path.exists(self._pdbFile):
@@ -99,4 +105,4 @@ class readPDB:
 
 if __name__ == '__main__':
     rp = readPDB(pdbID='1a02')
-    print(rp.residuesCount())
+    print(rp.pdbMover())

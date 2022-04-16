@@ -2,10 +2,6 @@ from src.doMat import matrixExecute
 from src.funcs.dsspReader import readDSSP
 from src.funcs.pickleOperater import pickleOP
 
-from collections import deque
-
-import numpy
-
 
 class diaStep:
     def __init__(self, pdbID: str, overWrite=False, dsspPath=None):
@@ -24,44 +20,15 @@ class diaStep:
         self.pickle = pickleOP()
         self.clrMaps = self.mE.mkPNG.colormaps  # mkPNG.colormaps
 
-        self.steps = [x for x in range(1, 5)]
-
     def __bool__(self):
-        if type(self.disMatrix) == bool or self.aR == [] or self.CAAmount < self.aR[-1][-1]:
-            print('该蛋白DSSP或PDB文件错误，或蛋白质过大/过小，已自动跳过并即将删除该文件。')
+        if self.disMatrix == 1000:
+            print('该蛋白过大，已自动跳过并即将转移该文件。')
+            return False
+        elif type(self.disMatrix) == bool or self.aR == [] or self.CAAmount < self.aR[-1][-1]:
+            print('该蛋白DSSP或PDB文件错误，或该蛋白没有Cα原子或α螺旋，已自动跳过并即将删除该文件。')
             return False
         else:
             return True
-
-    def stepDiaLine(self, step: int):
-        '''提取dssp中，所有α螺旋所在结构中，两个隔step个Cα残基的Cα残基之间的距离。'''
-        diaLine = {}
-        # aHR = dR.aHelixRange()
-        for r in range(len(self.aR)):
-            # 遍历所有α螺旋区段.
-
-            if 6 >= (self.aR[r][1]-self.aR[r][0]):
-                # 若step值 or 6大于该区段长度，跳过
-                continue
-
-            lineTmp = deque()
-            for row in range(self.aR[r][0], self.aR[r][1]-step+1):
-                # 遍历的是第r个区段.
-                col = row+step
-                lineTmp.append(self.disMatrix[row][col])
-
-            diaLine[tuple(self.aR[r])] = numpy.array(lineTmp)
-        return diaLine
-
-    def stepDiaLines(self):
-        diaLines = {}
-        for step in self.steps:
-            diaLine = self.stepDiaLine(step)
-            if not bool(diaLine):
-                break
-            else:
-                diaLines[step] = diaLine
-        return diaLines
 
     def stepClrDiaLine(self, step: int, choosenAreas, grayMat):
         '''遍历灰度矩阵'''
@@ -76,6 +43,7 @@ class diaStep:
                 if row < start:
                     continue
                 col = row+step
+
                 if step in self.mE.mkPNG.getMyChecks(grayMat[row][col]):
                     continue
                 else:
@@ -83,6 +51,7 @@ class diaStep:
                     if (end-start) > 7:
                         choosenArea.append((start, end))
                     start = col+1
+
             if (col-start) > 7:
                 choosenArea.append((start, col))  # 结尾处理
 

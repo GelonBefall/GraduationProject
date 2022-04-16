@@ -36,8 +36,10 @@ class matrixExecute:
 
         if isTableExist == False or checkRes == False:
 
-            if self.mkMat.CAAmount <= 10 or self.mkMat.CAAmount >= 1000:
+            if self.mkMat.CAAmount == 0:
                 return False
+            elif self.mkMat.CAAmount >= 1000:
+                return 1000
             else:
                 self.mkMat.calMatrix()
                 sql.saveToDB(self.mkMat.disMatrix, overWrite)
