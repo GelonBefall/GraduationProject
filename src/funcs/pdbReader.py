@@ -32,6 +32,10 @@ class readPDB:
             else:
                 return 1
 
+    def pdbDeleter(self):
+        os.remove(self._pdbFile)
+        print("已成功删除{}的pdb文件！".format(self.pdbID))
+
     def pdbExist(self):
         if os.path.exists(self._pdbFile):
             # print("PDB file exist!")
@@ -43,7 +47,7 @@ class readPDB:
     def __pdbDownload(self):
         url = "https://files.rcsb.org/download/" + self.pdbID + ".pdb"
         r = requests.get(url)
-        print(r)
+        # print(r)
         for i in range(3):
             if r:
                 print("Downloading {}.pdb...".format(self.pdbID))
@@ -67,7 +71,7 @@ class readPDB:
         chains = structure.get_chains()
         counts = {}
         chainIDs = []
-        
+
         for chain in chains:
             if chain.id in chainIDs:
                 break
@@ -94,5 +98,5 @@ class readPDB:
 
 
 if __name__ == '__main__':
-    rp = readPDB(pdbID='1a03')
+    rp = readPDB(pdbID='1a02')
     print(rp.residuesCount())

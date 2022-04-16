@@ -8,7 +8,7 @@ class application:
         self.aE = aHelixExecute(self.pdbID, overWrite, dsspPath=dsspPath)
 
     def __bool__(self):
-        if type(self.aE.eA.dS.disMatrix) == bool:
+        if bool(self.aE) == False:
             return False
         else:
             return True

@@ -10,11 +10,21 @@ class makeAHelixPNG(makePNG):
 
     def __pathExe(self, pdbID: str):
         __pngPath = "./production/png/aHelixPNG/"
-        self.__mkdir(__pngPath)
         __pngPath += pdbID
         self.__mkdir(__pngPath)
 
         return __pngPath
+
+    def pngDeleter(self, pdbID: str):
+        __pngPath = self.__pathExe(pdbID)
+        
+        for root, dirs, files in os.walk(__pngPath):
+            if list(files):
+                for file in files:
+                    file=os.path.join(__pngPath, file)
+                    os.remove(file)
+        os.rmdir(__pngPath)
+        print("已成功删除{}的α螺旋灰度图片集！".format(pdbID))
 
     def __plotAHelixPNG(self, clrMatrix, matLen, __pngFile):
         self._pngPlot(clrMatrix, matLen, __pngFile)

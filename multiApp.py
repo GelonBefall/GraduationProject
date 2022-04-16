@@ -1,6 +1,7 @@
 from application import application
 from src.funcs.dirWalker import getPDBID, getDSSP
 
+
 if __name__ == '__main__':
     start = 0
     end = 1
@@ -11,15 +12,14 @@ if __name__ == '__main__':
 
     count = 0
     for dssp in dssps:
-        count += 1
-        if count == 150:
-            break
-
         path = list(dssp.keys())[0]
         print(path)
         pdbIDs = dssp[path]
 
         for pdbID in pdbIDs:
+            count += 1
+            if count == 150:
+                break
             app = application(pdbID, overWrite, path)
             if bool(app) == True:
                 app.doMatPNG()

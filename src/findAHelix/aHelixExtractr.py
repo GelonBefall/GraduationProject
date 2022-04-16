@@ -11,6 +11,12 @@ class extractAHelix:
 
         self.dS = diaStep(self.pdbID, overWrite=overWrite, dsspPath=dsspPath)
 
+    def __bool__(self):
+        if bool(self.dS) == False:
+            return False
+        else:
+            return True
+
     def featureOfAHelixs(self, overWrite=False):
         '''分组计算某蛋白质每种间隔中，所有α螺旋的距离范围。'''
         diaLines = self.dS.stepDiaLines()
@@ -63,7 +69,7 @@ if __name__ == '__main__':
     # from src.funcs.dirWalker import getPDBID
     # pdbIDs=getPDBID()
     # for pdbID in pdbIDs:
-    pdbID = '2erk'
+    pdbID = '117e'
     fE = extractAHelix(pdbID, True)
     # print(fE.getMstClr([(1,2,3),(1,2,3),(1,2,3),(3,2,1)]))
     print(fE.featureOfAHelixs(overWrite=True))  #

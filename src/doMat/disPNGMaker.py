@@ -19,6 +19,15 @@ class makeDisPNG(makePNG):
         else:
             return {False: __pngFile}
 
+    def pngDeleter(self, pdbID: str):
+        __pngFile = self.__pathExe(pdbID)
+        if False in __pngFile.keys():
+            return 0
+        else:
+            __pngFile = __pngFile[True]
+            os.remove(__pngFile)
+            print("已成功删除{}的灰度矩阵图！".format(pdbID))
+
     def disPlot(self, clrMatrix, matLen, pdbID: str):
         __pngFile = self.__pathExe(pdbID)
 

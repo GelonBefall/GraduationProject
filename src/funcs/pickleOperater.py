@@ -7,8 +7,10 @@ class pickleOP:
     def savePickle(self, diaLines: dict, pickleName: str, overWrite=False):
         path = "./materials/pickle/"
         pickleFile = path+pickleName
+        
         if not os.path.exists(path):
             os.makedirs(path)
+
         if overWrite == True:
             with open(pickleFile, "wb") as pk:
                 # pickles=pickle.dumps(diaLines)
@@ -32,6 +34,12 @@ class pickleOP:
 
         print("从pickle文件读入数据。")
         return diaLines
+
+    def deletePickle(self, pickleName: str):
+        path = "./materials/pickle/"+pickleName
+        if os.path.exists(path):
+            os.remove(path)
+            print("已成功删除{}！".format(pickleName))
 
     # def __saveJson(self,diaLines:dict, jsonName:str):
     #     with open("./materials/json/"+jsonName, "wb") as js:

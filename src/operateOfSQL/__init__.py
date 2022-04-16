@@ -52,6 +52,9 @@ class sqlOP:
             return -1
 
     def dropTable(self):
+        if self.entryAmount == -1:
+            print("pdb_{}在数据库{}中不存在，无需删除。".format(self.pdbID, self.database))
+            return 0
         try:
             deleteTableSQL = "DROP TABLE pdb_{}".format(self.pdbID)
             self.cursor.execute(deleteTableSQL)

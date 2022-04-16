@@ -1,7 +1,7 @@
 from application import application
 
 if __name__ == '__main__':
-    pdbID = '1a4f'  # input()1a4f
+    pdbID = '1a2b'  # input()1a4f
     overWrite = False
     app = application(pdbID, overWrite)
     accuRates = []
@@ -17,4 +17,4 @@ if __name__ == '__main__':
             key, value = accuRate.popitem()
             values += value
             print('{}的正确率为{}'.format(key, value))
-#  1a03 12e8
+#  1a03 12e8 117e 1a02 169l 1a0d 1a0n 1a2b

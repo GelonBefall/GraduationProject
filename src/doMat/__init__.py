@@ -11,6 +11,15 @@ class matrixExecute:
         self.mkMat = makeMatrix(pdbID=self.pdbID)
         self.mkPNG = makeDisPNG()
 
+    def dropPDB(self):
+        self.mkPNG.pngDeleter(self.pdbID)
+
+        sql = matSQLOP(pdbID=self.pdbID, database=self.database)
+        sql.dropTable()
+        sql.db.close()
+
+        self.mkMat.pdbDeleter()
+
     def checkSQL(self, sql: matSQLOP):
         CACount = self.mkMat.CAAmount
         entryCount = sql.entryAmount
@@ -28,7 +37,6 @@ class matrixExecute:
         if isTableExist == False or checkRes == False:
 
             if self.mkMat.CAAmount <= 10 or self.mkMat.CAAmount >= 1000:
-                print('该蛋白过小或过大！')
                 return False
             else:
                 self.mkMat.calMatrix()
@@ -55,7 +63,7 @@ class matrixExecute:
 
     def doDisPNG(self):
         try:
-            grayMat=self.mkPNG.loadGrayMat(self.pdbID)
+            grayMat = self.mkPNG.loadGrayMat(self.pdbID)
         except:
             disMatrix = self.LASMat(False)
 

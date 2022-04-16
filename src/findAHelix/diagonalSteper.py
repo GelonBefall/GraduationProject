@@ -14,17 +14,24 @@ class diaStep:
 
         self.mE = matrixExecute(self.pdbID)
         self.disMatrix = self.mE.LASMat(overWrite=overWrite)
-        if type(self.disMatrix) == bool:
-            return None
 
         self.dR = readDSSP(self.pdbID, dsspPath)
-        self.pickle = pickleOP()
         self.aR = self.dR.getAHelix()
+        self.CAAmount = self.mE.mkMat.CAAmount
+        if self.__bool__ == False:
+            return None
 
+        self.pickle = pickleOP()
         self.clrMaps = self.mE.mkPNG.colormaps  # mkPNG.colormaps
 
-        self.CAAmount = self.mE.mkMat.CAAmount
         self.steps = [x for x in range(1, 5)]
+
+    def __bool__(self):
+        if type(self.disMatrix) == bool or self.aR == [] or self.CAAmount < self.aR[-1][-1]:
+            print('该蛋白DSSP或PDB文件错误，或蛋白质过大/过小，已自动跳过并即将删除该文件。')
+            return False
+        else:
+            return True
 
     def stepDiaLine(self, step: int):
         '''提取dssp中，所有α螺旋所在结构中，两个隔step个Cα残基的Cα残基之间的距离。'''
@@ -103,6 +110,6 @@ class diaStep:
 
 
 if __name__ == '__main__':
-    dS = diaStep('1a4f',)  # True
+    dS = diaStep('117e',)  # True
     print(dS.stepClrDiaLines(overWrite=True))
     # print(dS.disMatDiaLines())

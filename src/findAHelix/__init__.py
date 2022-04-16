@@ -9,6 +9,18 @@ class aHelixExecute:
             self.pdbID, overWrite=overWrite, dsspPath=dsspPath)
         self.mH = makeAHelixPNG()
 
+    def __bool__(self):
+        if bool(self.eA) == False:
+            pickleName = self.pdbID+'_chosenArea'
+
+            self.mH.pngDeleter(self.pdbID)
+            self.eA.dS.pickle.deletePickle(pickleName)
+            self.eA.dS.mE.dropPDB()
+            self.eA.dS.dR.dsspDeleter()
+            return False
+        else:
+            return True
+
     def doAHelixPNGs(self):
         aList = self.eA.dS.dR.getAHelix()
         disMatrix = self.eA.dS.disMatrix
@@ -28,7 +40,7 @@ class aHelixExecute:
 
 
 if __name__ == '__main__':
-    fE = aHelixExecute('1a4f')
+    fE = aHelixExecute('117e')
     # print(fE.getMstClr([(1,2,3),(1,2,3),(1,2,3),(3,2,1)]))
     # print(fE.findAHelix(True)) #
     print(fE.doAHelixPNGs())
