@@ -1,45 +1,65 @@
 import os
-import sys
+# import sys
 import requests
 import shutil
 
-
+from pathlib import Path
 from Bio.PDB.PDBParser import PDBParser
 
 
 class readPDB:
-    def __init__(self, pdbID: str):
+    def __init__(self, pdbID: str, pdbPath=None):
         self.pdbID = pdbID.lower()
-        self._pdbPath = "./materials/pdb/"
+        self.__initPDBFile(pdbPath)
+
         self._pdbFile = os.path.join(
-            self._pdbPath, "{}.pdb".format(self.pdbID))
+            self.__pdbPath, "{}.pdb".format(self.pdbID))
 
-        initStatus = self.__initPDBFile()
-        if initStatus == 0:
-            self.p = PDBParser(PERMISSIVE=1)  # 可选参数PERMISSIVE=1时忽略错误
-            self.CAAmount = self.CACount()
-            print("The CAAmount of {} is {}.".format(self.pdbID, self.CAAmount))
-        else:
-            print("The .pdb file is not existed or can't be downloaded, init class fail.")
-            sys.exit()
+        self.p = PDBParser(PERMISSIVE=1)  # 可选参数PERMISSIVE=1时忽略错误
+        self.CAAmount = self.CACount()
+        print("The CAAmount of {} is {}.".format(self.pdbID, self.CAAmount))
+        # if initStatus == 0:
+        # else:
+        #     print("The .pdb file is not existed or can't be downloaded, init class fail.")
+        #     sys.exit()
 
-    def __initPDBFile(self):
-        pdbExist = self.pdbExist()
-        if pdbExist == 0:
-            return 0
-        else:
-            dlStatus = self.__pdbDownload()
-            if dlStatus == 0:
+    def __initPDBFile(self, pdbPath):
+        self.__pdbPath = pdbPath
+        if pdbPath: # 如果路径存在
+            self.__pdbPath = pdbPath
+            self._pdbFile = os.path.join(self.__pdbPath, "{}.pdb".format(self.pdbID))
+            if self.pdbExist() == 0:  # 如果pdb文件存在
                 return 0
             else:
-                return 1
+                self.__pdbPath == None
+        else:
+            self.__pdbPath = self.__pdbFinder()
+
+        if self.__pdbPath == None:
+            self.__pdbDownload()
+            self.__initPDBFile()
+        else:
+            self._pdbFile = os.path.join(self.__pdbPath, "{}.pdb".format(self.pdbID))
+
+    def __pdbFinder(self):
+        __pdbPath = "./materials/pdb/"
+        pdbPath = Path(__pdbPath)
+        pdbFile = self.pdbID+'.pdb'
+
+        result = list(pdbPath.rglob(pdbFile))
+        if len(result) == 0:
+            return None
+
+        pdbPath = __pdbPath + result[0]._cparts[2]
+        return pdbPath
 
     def pdbDeleter(self):
         os.remove(self._pdbFile)
         print("已成功删除{}的pdb文件！".format(self.pdbID))
 
     def pdbMover(self):
-        __newFile=os.path.join("./materials/big_pdb/", "{}.pdb".format(self.pdbID))
+        __newFile = os.path.join(
+            "./materials/big_pdb/", "{}.pdb".format(self.pdbID))
         shutil.move(self._pdbFile, __newFile)
 
     def pdbExist(self):
@@ -51,25 +71,30 @@ class readPDB:
             return 1
 
     def __pdbDownload(self):
-        url = "https://files.rcsb.org/download/" + self.pdbID + ".pdb"
-        r = requests.get(url)
-        # print(r)
-        for i in range(3):
-            if r:
-                print("Downloading {}.pdb...".format(self.pdbID))
-                with open(self._pdbFile, "wb") as pdbFile:
-                    pdbFile.write(r.content)
-                isPDBExist = self.pdbExist()
-                if isPDBExist == 0:
-                    print("PDB file download successfully!")
-                    return 0
-            else:
-                isPDBExist = self.pdbExist()
-                if isPDBExist == 0:
-                    return 0
-            if i == 2:
-                print("PDB file doesn't download successfully, please check!")
-                return 1
+        for root, dirs, files in os.walk("./materials/pdb/"): # 开始遍历pdb文件夹
+            for __subPath in dirs: # 遍历子文件夹
+                __subPath = os.path.join(root, __subPath)+'/'
+                
+                for subRoot, ssDirs, subFiles in os.walk(__subPath): # 查看子文件夹下面的文件数量
+                    if len(list(subFiles))>=2000:
+                        break
+                    
+                    else:
+                        url = "https://files.rcsb.org/download/" + self.pdbID + ".pdb"
+                        r = requests.get(url)
+                        # print(r)
+                        for i in range(3):
+                            if r:
+                                print("Downloading {}.pdb...".format(self.pdbID))
+                                with open(self._pdbFile, "wb") as pdbFile:
+                                    pdbFile.write(r.content)
+                                isPDBExist = self.pdbExist()
+                                if isPDBExist == 0:
+                                    print("PDB file download successfully!")
+                                    return 0
+                            if i == 2:
+                                print("PDB file can't download or doesn't exist, please check!")
+                                return 1
 
     def residuesCount(self):
         '''Get CA atoms' count.'''
@@ -104,5 +129,5 @@ class readPDB:
 
 
 if __name__ == '__main__':
-    rp = readPDB(pdbID='1a02')
-    print(rp.pdbMover())
+    rp = readPDB(pdbID='1a00')
+    print(rp.pdbFinder())

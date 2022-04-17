@@ -1,5 +1,5 @@
 import os
-import sys
+# import sys
 import shutil
 
 from collections import deque
@@ -19,17 +19,17 @@ class readDSSP:
 
         self.__dsspFile = os.path.join(
             self.__dsspPath, "{}.dssp".format(self.dsspID))
-        self.__dsspExist()
+        # self.__dsspExist()
 
     def __str__(self):
         return str(self.getAHelix())
 
-    def __dsspExist(self):
-        if os.path.exists(self.__dsspFile):
-            # print("DSSP file exist!")
-            return 0
-        else:
-            sys.exit("DSSP file doesn't exist!")
+    # def __dsspExist(self):
+    #     if os.path.exists(self.__dsspFile):
+    #         # print("DSSP file exist!")
+    #         return 0
+    #     else:
+    #         sys.exit("DSSP file doesn't exist!")
 
     def __dsspFinder(self):
         __dsspPath = "./materials/dssp/"
@@ -38,7 +38,7 @@ class readDSSP:
 
         result = list(dsspPath.rglob(dsspFile))
 
-        dsspPath = __dsspPath+result[0]._cparts[2]
+        dsspPath = __dsspPath + result[0]._cparts[2]
         return dsspPath
 
     def dsspDeleter(self):
@@ -46,9 +46,10 @@ class readDSSP:
         print("已成功删除{}的dssp文件！".format(self.dsspID))
 
     def dsspMover(self):
-        __newFile=os.path.join("./materials/big_dssp/", "{}.dssp".format(self.dsspID))
+        __newFile = os.path.join(
+            "./materials/big_dssp/", "{}.dssp".format(self.dsspID))
         shutil.move(self.__dsspFile, __newFile)
-    
+
     def getAHelix(self):
         '''返回α螺旋位置，下标从0开始。例如[1, 3]为第二个到第四个α残基。'''
         rPDB = readPDB(self.dsspID)
