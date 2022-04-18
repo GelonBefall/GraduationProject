@@ -1,6 +1,7 @@
 /__pycache__/
 
-production/png/*
+production/matPNG/*
+production/aHelixPNG/*
 production/json/*
 production/abosrb/*
 

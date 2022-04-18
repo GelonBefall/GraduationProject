@@ -25,9 +25,10 @@ class readPDB:
 
     def __initPDBFile(self, pdbPath):
         self.__pdbPath = pdbPath
-        if pdbPath: # 如果路径存在
+        if pdbPath:  # 如果路径存在
             self.__pdbPath = pdbPath
-            self._pdbFile = os.path.join(self.__pdbPath, "{}.pdb".format(self.pdbID))
+            self._pdbFile = os.path.join(
+                self.__pdbPath, "{}.pdb".format(self.pdbID))
             if self.pdbExist() == 0:  # 如果pdb文件存在
                 return 0
             else:
@@ -36,10 +37,11 @@ class readPDB:
             self.__pdbPath = self.__pdbFinder()
 
         if self.__pdbPath == None:
-            self.__pdbDownload()
-            self.__initPDBFile()
+            path = self.__pdbDownload()
+            self.__initPDBFile(path)
         else:
-            self._pdbFile = os.path.join(self.__pdbPath, "{}.pdb".format(self.pdbID))
+            self._pdbFile = os.path.join(
+                self.__pdbPath, "{}.pdb".format(self.pdbID))
 
     def __pdbFinder(self):
         __pdbPath = "./materials/pdb/"
@@ -71,14 +73,15 @@ class readPDB:
             return 1
 
     def __pdbDownload(self):
-        for root, dirs, files in os.walk("./materials/pdb/"): # 开始遍历pdb文件夹
-            for __subPath in dirs: # 遍历子文件夹
+        for root, dirs, files in os.walk("./materials/pdb/"):  # 开始遍历pdb文件夹
+            for __subPath in dirs:  # 遍历子文件夹
                 __subPath = os.path.join(root, __subPath)+'/'
-                
-                for subRoot, ssDirs, subFiles in os.walk(__subPath): # 查看子文件夹下面的文件数量
-                    if len(list(subFiles))>=2000:
+
+                # 查看子文件夹下面的文件数量
+                for subRoot, ssDirs, subFiles in os.walk(__subPath):
+                    if len(list(subFiles)) >= 2000:
                         break
-                    
+
                     else:
                         url = "https://files.rcsb.org/download/" + self.pdbID + ".pdb"
                         r = requests.get(url)
@@ -86,14 +89,19 @@ class readPDB:
                         for i in range(3):
                             if r:
                                 print("Downloading {}.pdb...".format(self.pdbID))
+
+                                self._pdbFile = os.path.join(
+                                    __subPath, self.pdbID + ".pdb")
                                 with open(self._pdbFile, "wb") as pdbFile:
                                     pdbFile.write(r.content)
+
                                 isPDBExist = self.pdbExist()
                                 if isPDBExist == 0:
                                     print("PDB file download successfully!")
-                                    return 0
+                                    return __subPath
                             if i == 2:
-                                print("PDB file can't download or doesn't exist, please check!")
+                                print(
+                                    "PDB file can't download or doesn't exist, please check!")
                                 return 1
 
     def residuesCount(self):
