@@ -7,13 +7,13 @@ class aHelixExecute:
         self.pdbID = pdbID.lower()
         self.eA = extractAHelix(
             self.pdbID, overWrite=overWrite, dsspPath=dsspPath)
-        self.mH = makeAHelixPNG()
+        self.mH = makeAHelixPNG(self.pdbID)
 
     def __bool__(self):
         if bool(self.eA) == False:
             pickleName = self.pdbID+'_chosenArea'
 
-            self.mH.pngDeleter(self.pdbID)
+            self.mH.pngDeleter()
             self.eA.dS.pickle.deletePickle(pickleName)
             if self.eA.dS.CAAmount >= 1000:
                 self.eA.dS.mE.mkMat.pdbMover()
@@ -32,7 +32,7 @@ class aHelixExecute:
 
         grayMat = self.mH.newGrayMatrix(disMatrix, matLen)
 
-        self.mH.plotAHelixPNGs(grayMat, aList, self.pdbID)
+        self.mH.plotAHelixPNGs(grayMat, aList)
 
         return grayMat
 

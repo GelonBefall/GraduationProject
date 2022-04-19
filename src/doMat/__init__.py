@@ -9,10 +9,10 @@ class matrixExecute:
         self.database = database
 
         self.mkMat = makeMatrix(pdbID=self.pdbID)
-        self.mkPNG = makeDisPNG()
+        self.mkPNG = makeDisPNG(pdbID=self.pdbID)
 
     def dropPDB(self):
-        self.mkPNG.pngDeleter(self.pdbID)
+        self.mkPNG.pngDeleter()
 
         sql = matSQLOP(pdbID=self.pdbID, database=self.database)
         sql.dropTable()
@@ -63,15 +63,15 @@ class matrixExecute:
 
     def doDisPNG(self):
         try:
-            grayMat = self.mkPNG.loadGrayMat(self.pdbID)
+            grayMat = self.mkPNG.loadGrayMat()
         except:
             disMatrix = self.LASMat(False)
 
             grayMat = self.mkPNG.newGrayMatrix(
                 disMatrix=disMatrix, matLen=self.mkMat.CAAmount)
-
-            stutus = self.mkPNG.disPlot(
-                grayMat, self.mkMat.CAAmount, self.pdbID)  # 返回作图之后的状态
+                
+            # 返回作图之后的状态
+            stutus = self.mkPNG.disPlot(grayMat, self.mkMat.CAAmount)
             if stutus == 0:
                 print('已生成过{}的灰度矩阵图，已自动跳过。'.format(self.pdbID))
 
@@ -80,7 +80,7 @@ class matrixExecute:
     def loadGrayMat(self):
         # grayMat=self.mkPNG.loadGrayMat(self.pdbID)
         try:
-            return self.mkPNG.loadGrayMat(self.pdbID)
+            return self.mkPNG.loadGrayMat()
         except:
             return self.doDisPNG()
 

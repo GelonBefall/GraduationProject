@@ -21,7 +21,7 @@ class diaStep:
         self.clrMaps = self.mE.mkPNG.colormaps  # mkPNG.colormaps
 
     def __bool__(self):
-        if type(self.disMatrix) != bool and self.disMatrix.size >= 1000:
+        if type(self.disMatrix) != bool and self.disMatrix.shape[0] >= 1000:
             print('该蛋白过大，已自动跳过并即将转移pdb文件及dssp文件。')
             return False
         elif type(self.disMatrix) == bool or self.aR == [] or self.CAAmount < self.aR[-1][-1]:

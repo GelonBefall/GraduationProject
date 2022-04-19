@@ -18,13 +18,9 @@ class readPDB:
         self.p = PDBParser(PERMISSIVE=1)  # 可选参数PERMISSIVE=1时忽略错误
         self.CAAmount = self.CACount()
         print("The CAAmount of {} is {}.".format(self.pdbID, self.CAAmount))
-        # if initStatus == 0:
-        # else:
-        #     print("The .pdb file is not existed or can't be downloaded, init class fail.")
-        #     sys.exit()
 
     def __initPDBFile(self, pdbPath):
-        self.__pdbPath = pdbPath
+
         if pdbPath:  # 如果路径存在
             self.__pdbPath = pdbPath
             self._pdbFile = os.path.join(
@@ -39,9 +35,6 @@ class readPDB:
         if self.__pdbPath == None:
             path = self.__pdbDownload()
             self.__initPDBFile(path)
-        else:
-            self._pdbFile = os.path.join(
-                self.__pdbPath, "{}.pdb".format(self.pdbID))
 
     def __pdbFinder(self):
         __pdbPath = "./materials/pdb/"
@@ -137,5 +130,6 @@ class readPDB:
 
 
 if __name__ == '__main__':
-    rp = readPDB(pdbID='1a00')
-    print(rp.pdbFinder())
+    rp = readPDB(pdbID='1a02')
+    print(rp.residuesCount())
+    print(rp.pdbDeleter())
