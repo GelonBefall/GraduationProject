@@ -36,8 +36,10 @@ class matrixExecute:
 
         if isTableExist == False or checkRes == False:
 
-            if self.mkMat.CAAmount == 0:
+            if self.mkMat.CAAmount <= 4:
                 return False
+            elif self.mkMat.CAAmount >= 1000:
+                return self.mkMat.CAAmount
             else:
                 self.mkMat.calMatrix()
                 sql.saveToDB(self.mkMat.disMatrix, overWrite)
@@ -86,7 +88,7 @@ class matrixExecute:
 
 
 if __name__ == '__main__':
-    matEXE = matrixExecute(pdbID='1a4f')  # pdbID='1a4f'
+    matEXE = matrixExecute(pdbID='1914')  # pdbID='1a4f'
     # print(op.createTable())
     # print(op.saveToDB())
     # print(matEXE.LASMat())

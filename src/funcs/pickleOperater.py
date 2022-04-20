@@ -3,13 +3,12 @@ import os
 
 
 class pickleOP:
+    def __init__(self):
+        self.__path = os.path.join(os.getcwd(), "materials/pickle/")
 
     def savePickle(self, diaLines: dict, pickleName: str, overWrite=False):
-        path = "./materials/pickle/"
-        pickleFile = path+pickleName
-        
-        if not os.path.exists(path):
-            os.makedirs(path)
+
+        pickleFile = self.__path+pickleName
 
         if overWrite == True:
             with open(pickleFile, "wb") as pk:
@@ -26,9 +25,9 @@ class pickleOP:
                     pickle.dump(diaLines, pk)
 
     def loadPickle(self, pickleName: str) -> dict:
-        path = "./materials/pickle/"+pickleName
+        pickleFile = self.__path+pickleName
 
-        with open(path, "rb") as pk:
+        with open(pickleFile, "rb") as pk:
             # pickles=pickle.dumps(diaLines)
             diaLines = pickle.load(pk)
 
@@ -36,9 +35,9 @@ class pickleOP:
         return diaLines
 
     def deletePickle(self, pickleName: str):
-        path = "./materials/pickle/"+pickleName
-        if os.path.exists(path):
-            os.remove(path)
+        pickleFile = self.__path+pickleName
+        if os.path.exists(pickleFile):
+            os.remove(pickleFile)
             print("已成功删除{}！".format(pickleName))
 
     # def __saveJson(self,diaLines:dict, jsonName:str):

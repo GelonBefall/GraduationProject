@@ -14,32 +14,23 @@ class readDSSP:
 
         if dsspPath:
             self.__dsspPath = dsspPath
+            self.__dsspFile = os.path.join(
+                self.__dsspPath, "{}.dssp".format(self.dsspID))
         else:
-            self.__dsspPath = self.__dsspFinder()
-
-        self.__dsspFile = os.path.join(
-            self.__dsspPath, "{}.dssp".format(self.dsspID))
-        # self.__dsspExist()
+            self.__dsspFile = self.__dsspFinder()
 
     def __str__(self):
         return str(self.getAHelix())
 
-    # def __dsspExist(self):
-    #     if os.path.exists(self.__dsspFile):
-    #         # print("DSSP file exist!")
-    #         return 0
-    #     else:
-    #         sys.exit("DSSP file doesn't exist!")
-
     def __dsspFinder(self):
-        __dsspPath = "./materials/dssp/"
+        __dsspPath = os.path.join(os.getcwd(), "materials/dssp/")
         dsspPath = Path(__dsspPath)
         dsspFile = self.dsspID+'.dssp'
 
         result = list(dsspPath.rglob(dsspFile))
 
-        dsspPath = __dsspPath + result[0]._cparts[2]
-        return dsspPath
+        dsspFile = os.path.join(__dsspPath, result[0])  # ._cparts[2]
+        return dsspFile
 
     def dsspDeleter(self):
         os.remove(self.__dsspFile)
@@ -47,7 +38,7 @@ class readDSSP:
 
     def dsspMover(self):
         __newFile = os.path.join(
-            "./materials/big_dssp/", "{}.dssp".format(self.dsspID))
+            os.getcwd(), "materials/big_dssp/", "{}.dssp".format(self.dsspID))
         shutil.move(self.__dsspFile, __newFile)
 
     def getAHelix(self):
@@ -117,7 +108,7 @@ class readDSSP:
 
 
 if __name__ == '__main__':
-    dR = readDSSP('1a02')
+    dR = readDSSP('12ca')
     # print(dR.getAHelix())
     # print(dR.aHelixRange())
     # print(dR.dsspFinder())

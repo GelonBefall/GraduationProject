@@ -27,11 +27,8 @@ class aHelixExecute:
 
     def doAHelixPNGs(self):
         aList = self.eA.dS.dR.getAHelix()
-        disMatrix = self.eA.dS.disMatrix
-        matLen = self.eA.dS.CAAmount
-
-        grayMat = self.mH.newGrayMatrix(disMatrix, matLen)
-
+        grayMat = self.eA.dS.mE.loadGrayMat()
+        
         self.mH.plotAHelixPNGs(grayMat, aList)
 
         return grayMat

@@ -14,8 +14,8 @@ class matSQLOP(sqlOP):
             tableCreateSQL = tableCreateSQL + 'Col{} DOUBLE,'.format(i)
         tableCreateSQL = tableCreateSQL + \
             'Col{} DOUBLE)'.format(matrixLen-1)
-        if i > 1000:  # Choose MySQL-engine MyISAM.
-            tableCreateSQL = tableCreateSQL+'engine=MyISAM'
+        # if i > 1000:  # Choose MySQL-engine MyISAM.
+        #     tableCreateSQL = tableCreateSQL+'engine=MyISAM'
 
         try:
             self.cursor.execute(tableCreateSQL)

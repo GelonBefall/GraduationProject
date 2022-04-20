@@ -10,10 +10,8 @@ from Bio.PDB.PDBParser import PDBParser
 class readPDB:
     def __init__(self, pdbID: str, pdbPath=None):
         self.pdbID = pdbID.lower()
+        self.__pdbPath = os.path.join(os.getcwd(), "materials/pdb/")
         self.__initPDBFile(pdbPath)
-
-        self._pdbFile = os.path.join(
-            self.__pdbPath, "{}.pdb".format(self.pdbID))
 
         self.p = PDBParser(PERMISSIVE=1)  # 可选参数PERMISSIVE=1时忽略错误
         self.CAAmount = self.CACount()
@@ -22,31 +20,32 @@ class readPDB:
     def __initPDBFile(self, pdbPath):
 
         if pdbPath:  # 如果路径存在
-            self.__pdbPath = pdbPath
+            # self.__pdbPath = pdbPath
             self._pdbFile = os.path.join(
                 self.__pdbPath, "{}.pdb".format(self.pdbID))
             if self.pdbExist() == 0:  # 如果pdb文件存在
                 return 0
             else:
-                self.__pdbPath == None
+                self._pdbFile == None
         else:
-            self.__pdbPath = self.__pdbFinder()
+            self._pdbFile = self.__pdbFinder()
 
-        if self.__pdbPath == None:
+        if self._pdbFile == None:
             path = self.__pdbDownload()
             self.__initPDBFile(path)
 
     def __pdbFinder(self):
-        __pdbPath = "./materials/pdb/"
-        pdbPath = Path(__pdbPath)
+        # __pdbPath = os.path.join(os.getcwd(), "materials/pdb/")
+        pdbPath = Path(self.__pdbPath)
         pdbFile = self.pdbID+'.pdb'
 
         result = list(pdbPath.rglob(pdbFile))
         if len(result) == 0:
             return None
 
-        pdbPath = __pdbPath + result[0]._cparts[2]
-        return pdbPath
+        else:
+            pdbFile = os.path.join(self.__pdbPath, result[0])  # ._cparts[2]
+            return pdbFile
 
     def pdbDeleter(self):
         os.remove(self._pdbFile)
@@ -54,7 +53,7 @@ class readPDB:
 
     def pdbMover(self):
         __newFile = os.path.join(
-            "./materials/big_pdb/", "{}.pdb".format(self.pdbID))
+            os.getcwd(), "materials/big_pdb/", "{}.pdb".format(self.pdbID))
         shutil.move(self._pdbFile, __newFile)
 
     def pdbExist(self):
@@ -66,7 +65,8 @@ class readPDB:
             return 1
 
     def __pdbDownload(self):
-        for root, dirs, files in os.walk("./materials/pdb/"):  # 开始遍历pdb文件夹
+
+        for root, dirs, files in os.walk(self.__pdbPath):  # 开始遍历pdb文件夹
             for __subPath in dirs:  # 遍历子文件夹
                 __subPath = os.path.join(root, __subPath)+'/'
 
@@ -130,6 +130,7 @@ class readPDB:
 
 
 if __name__ == '__main__':
-    rp = readPDB(pdbID='1a02')
+    rp = readPDB(pdbID='12ca')
     print(rp.residuesCount())
-    print(rp.pdbDeleter())
+    # print(rp.pdbDeleter())
+    print(rp.pdbMover())

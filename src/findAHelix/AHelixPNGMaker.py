@@ -16,11 +16,12 @@ class makeAHelixPNG(makePNG):
 
     def __pathExe(self):
         __pngPath = os.path.join(os.getcwd(), "production/aHelixPNG/")
-        subdir = Path(dir)
+        subdir = Path(__pngPath)
+
         result = list(subdir.rglob(self.pdbID))
         if len(result) != 0:
             __pngPath =str(result[0]) # 如果找到了已存在的文件夹，返回路径。
-            return  __pngPath 
+            return  __pngPath
 
         else:
             for root, dirs, files in os.walk(__pngPath):  # 选择存储图片的位置
@@ -34,12 +35,12 @@ class makeAHelixPNG(makePNG):
 
                         else:
                             __pngPath = os.path.join(dirPath, self.pdbID)
-                            self.__mkdir(__pngPath)
                             return __pngPath
 
     def pngDeleter(self):
         # __pngPath = self.__pathExe(pdbID)
-        shutil.rmtree(self.__path)
+        if os.path.exists(self.__path):
+            shutil.rmtree(self.__path)
         # for root, dirs, files in os.walk(self.__path):
         #     if list(files):
         #         for file in files:
@@ -53,8 +54,8 @@ class makeAHelixPNG(makePNG):
         self._pngPlot(clrMatrix, matLen, __pngFile)
 
     def plotAHelixPNGs(self, clrMatrix, aHelixList: list):
-        # __pngPath = self.__pathExe(pdbID)
 
+        self.__mkdir(self.__path)
         for root, dirs, files in os.walk(self.__path):
             if len(files) == len(aHelixList):
                 print('已生成过{}的α螺旋灰度矩阵图，已自动跳过。'.format(self.pdbID))
@@ -75,3 +76,6 @@ class makeAHelixPNG(makePNG):
                 self.__plotAHelixPNG(clrMatPiece, matLen, __pngFile)
             except:
                 print("生成图片错误的蛋白质：", self.pdbID)
+
+if __name__=='__main__':
+    mah=makeAHelixPNG('1a4f')
