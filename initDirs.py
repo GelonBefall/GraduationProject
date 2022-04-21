@@ -17,6 +17,8 @@ class makeMyDirs:
         producPath = os.path.join(self.cwd, "production/")
         self.__mkdir(producPath)
         self.makePNG(producPath)
+        self.makePickle(producPath)
+        self.makeSQLBackup(producPath)
 
     def makePNG(self, producPath):
 
@@ -40,11 +42,18 @@ class makeMyDirs:
             subMatPath = os.path.join(aHelixPath, subDir)
             self.__mkdir(subMatPath)
 
+    def makePickle(self, producPath):
+        picklePath = os.path.join(producPath, 'pickle/')
+        self.__mkdir(picklePath)
+
+    def makeSQLBackup(self, producPath):
+        sqlPath = os.path.join(producPath, 'sqlBackUp/')
+        self.__mkdir(sqlPath)
+    
     def makeMaterials(self):
         materialsPath = os.path.join(self.cwd, "materials/")
         self.makeBig(materialsPath)
         self.makePDB(materialsPath)
-        self.makePickle(materialsPath)
         self.makeRGB(materialsPath)
         self.makeRGB(materialsPath)
         self.makeDSSP(materialsPath)
@@ -64,10 +73,6 @@ class makeMyDirs:
             subDir = "pdb_{:0>2d}/".format(i)
             subMatPath = os.path.join(pdbPath, subDir)
             self.__mkdir(subMatPath)
-
-    def makePickle(self, materialsPath):
-        picklePath = os.path.join(materialsPath, 'pickle/')
-        self.__mkdir(picklePath)
 
     def makeRGB(self, materialsPath):
         rgbPath = os.path.join(materialsPath, 'rgb/')

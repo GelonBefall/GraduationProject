@@ -4,13 +4,14 @@ production/matPNG/*
 production/aHelixPNG/*
 production/json/*
 production/abosrb/*
+production/pickle/*
+production/sqlBackUp/*
 
 materials/pdb/*
 materials/big_pdb/*
 materials/dssp/*
 materials/big_dssp/*
 materials/rgb/*
-materials/pickle/*
 materials/question/
 
 src/__pycache__/

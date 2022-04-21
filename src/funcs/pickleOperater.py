@@ -4,7 +4,7 @@ import os
 
 class pickleOP:
     def __init__(self):
-        self.__path = os.path.join(os.getcwd(), "materials/pickle/")
+        self.__path = os.path.join(os.getcwd(), "production/pickle/")
 
     def savePickle(self, diaLines: dict, pickleName: str, overWrite=False):
 
