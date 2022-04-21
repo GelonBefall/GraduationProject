@@ -1,5 +1,5 @@
 from src.findAHelix import aHelixExecute
-from src.funcs.accuracyRater import getAccuRate
+from src.funcs.accuracyRater import getAccuRate, getAccuRate2
 
 
 class application:
@@ -26,4 +26,4 @@ class application:
     def getAccuRate(self):
         dsspRange = self.aE.eA.dS.dR.getAHelix()
         assignRange = self.aE.eA.dS.stepClrDiaLines()
-        return getAccuRate(self.pdbID, dsspRange, assignRange)
+        return getAccuRate2(self.pdbID, dsspRange, assignRange)

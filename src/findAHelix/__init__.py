@@ -20,7 +20,7 @@ class aHelixExecute:
                 self.eA.dS.dR.dsspMover()
             else:
                 self.eA.dS.mE.dropPDB()
-                self.eA.dS.dR.dsspDeleter()
+                self.eA.dropDSSP()
             return False
         else:
             return True

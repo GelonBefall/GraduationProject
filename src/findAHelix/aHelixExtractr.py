@@ -17,6 +17,13 @@ class extractAHelix:
         else:
             return True
 
+    def dropDSSP(self):
+        sql = aHelixSQLOP(pdbID=self.pdbID, database='alphaFeatures')
+        sql.dropTable()
+        sql.db.close()
+        
+        self.dS.dR.dsspDeleter()
+    
     def featureOfAHelixs(self, overWrite=False):
         '''分组计算某蛋白质每种间隔中，所有α螺旋的距离范围。'''
         diaLines = self.dS.stepDiaLines()

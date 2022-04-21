@@ -108,8 +108,8 @@ class readDSSP:
 
 
 if __name__ == '__main__':
-    dR = readDSSP('12ca')
-    # print(dR.getAHelix())
+    dR = readDSSP('1a00')
+    print(dR.getAHelix())
     # print(dR.aHelixRange())
     # print(dR.dsspFinder())
-    print(dR.dsspMover())
+    # print(dR.dsspMover())

@@ -6,6 +6,7 @@ from src.funcs.pickleOperater import pickleOP
 
 from collections import deque
 
+
 class diaStep:
     def __init__(self, pdbID: str, overWrite=False, dsspPath=None):
         '''遍历矩阵中平行对角线的所有斜线上的Cα原子坐标。'''
@@ -73,7 +74,7 @@ class diaStep:
             start = area[0]
             end = area[0]
             for row in range(area[0], area[1]-step+1):
-                # 遍历该step线, 连续七个以上距离相同的残基添加入同一组中，作为α螺旋候选。
+                # 遍历该step线, 连续5个以上距离相同的残基添加入同一组中，作为α螺旋候选。
                 if row < start:
                     continue
                 col = row+step
@@ -83,12 +84,12 @@ class diaStep:
                 else:
                     # end = row - 1
                     end = col - 1
-                    if (end-start) > 7:
+                    if (end-start) >= 5:
                         # end = col - 1
                         choosenArea.append((start, end))
                     start = col+1
 
-            if (col-start) > 7:
+            if (col-start) >= 5:
                 choosenArea.append((start, col))  # 结尾处理
 
         return choosenArea
@@ -99,30 +100,47 @@ class diaStep:
 
         # print(choosenAreas)
         for area in choosenAreas:
-            start = area[0]
-            end = area[0]
-            length=0
+
+            length = 0
+            notChoosenArea = []
             for row in range(area[0], area[1]-step+1):
                 # 遍历该step线, 如果是两个以内距离不同的残基，可以视作α螺旋内。
-                if row < start:
-                    continue
-                col = row+step
+                # if row<
+                col = row + step
 
-                if step in self.mE.mkPNG.getMyChecks(grayMat[row][col]):
-                    if length>2:
-                        choosenArea.append((start, end))
-                        length=0
+                if step not in self.mE.mkPNG.getMyChecks(grayMat[row][col]):
+                    if length == 0:
                         start = row
-                    continue
+                    else:
+                        end = row
+                    length += 1
                 else:
-                    if length<=2:
-                        end = row - 1
-                    if (end-start) > 7:
-                        
-                        start = col+1
+                    if length > 2:
+                        notChoosenArea.append((start, end))
+                        length = 0
+                    else:
+                        length = 0
 
-            if (col-start) > 7:
-                choosenArea.append((start, col))  # 结尾处理
+            start = area[0]
+            end = area[1]
+            if len(notChoosenArea) != 0:
+                for notArea in notChoosenArea:
+                    head = start
+                    tail = notArea[0]-1
+
+                    if tail <= head:
+                        start = notArea[1]+1
+                        continue
+
+                    else:
+                        if (tail-head) > 7:
+                            choosenArea.append((head, tail))
+                            start = notArea[1]+1
+                if (end-start) > 7:
+                    choosenArea.append((start, end))
+
+            else:
+                choosenArea.append(area)
 
         return choosenArea
 

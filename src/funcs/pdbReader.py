@@ -21,8 +21,7 @@ class readPDB:
 
         if pdbPath:  # 如果路径存在
             # self.__pdbPath = pdbPath
-            self._pdbFile = os.path.join(
-                self.__pdbPath, "{}.pdb".format(self.pdbID))
+            self._pdbFile = os.path.join(pdbPath, "{}.pdb".format(self.pdbID))
             if self.pdbExist() == 0:  # 如果pdb文件存在
                 return 0
             else:
@@ -130,7 +129,7 @@ class readPDB:
 
 
 if __name__ == '__main__':
-    rp = readPDB(pdbID='12ca')
+    rp = readPDB(pdbID='100d')
     print(rp.residuesCount())
     # print(rp.pdbDeleter())
-    print(rp.pdbMover())
+    # print(rp.pdbMover())
