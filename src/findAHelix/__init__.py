@@ -15,7 +15,7 @@ class aHelixExecute:
 
             self.mH.pngDeleter()
             self.eA.dS.pickle.deletePickle(pickleName)
-            if self.eA.dS.CAAmount >= 1000:
+            if self.eA.dS.CAAmount >= 800:
                 self.eA.dS.mE.mkMat.pdbMover()
                 self.eA.dS.dR.dsspMover()
             else:

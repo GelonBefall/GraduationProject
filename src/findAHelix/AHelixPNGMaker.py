@@ -1,8 +1,8 @@
-from src.operateOfPNG.pngMaker import makePNG
 import os
 import shutil
 from pathlib import Path
 
+from src.operateOfPNG.pngMaker import makePNG
 
 class makeAHelixPNG(makePNG):
     def __init__(self, pdbID: str, colorFilename="gray.rgb"):

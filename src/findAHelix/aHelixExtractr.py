@@ -2,8 +2,6 @@ from src.findAHelix.diagonalSteper import diaStep
 from src.funcs.listAnalyst import anaList
 from src.operateOfSQL.aHelixSQLOperater import aHelixSQLOP
 
-# from collections import Counter
-
 
 class extractAHelix:
     def __init__(self, pdbID: str, overWrite=False, dsspPath=None):

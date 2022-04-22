@@ -1,4 +1,7 @@
 /__pycache__/
+/.360cache
+/报告
+/desktop.ini
 
 production/matPNG/*
 production/aHelixPNG/*

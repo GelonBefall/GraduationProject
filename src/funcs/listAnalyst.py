@@ -1,6 +1,5 @@
 from cv2 import mean
 import numpy
-import os
 
 
 class anaList:

@@ -1,5 +1,4 @@
 import os
-# import sys
 import requests
 import shutil
 
@@ -129,7 +128,7 @@ class readPDB:
 
 
 if __name__ == '__main__':
-    rp = readPDB(pdbID='100d')
+    rp = readPDB(pdbID='1aom')
     print(rp.residuesCount())
     # print(rp.pdbDeleter())
     # print(rp.pdbMover())
