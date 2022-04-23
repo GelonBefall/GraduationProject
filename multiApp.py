@@ -31,8 +31,8 @@ if __name__ == '__main__':
     for accuRate in accuRates:
         key, value = accuRate.popitem()
         values += value
-        print('{}的二级结构指定正确率为{}'.format(key, value))
+        print('{}的二级结构范围指定的相似度为{}'.format(key, value))
 
     num = len(accuRates)
     meanAccu = values/num
-    print('一共有', num, '个样本，指定二级结构平均正确率为', meanAccu)
+    print('一共有', num, '个样本，指定二级结构范围的平均相似度为', meanAccu)
