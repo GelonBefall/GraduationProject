@@ -128,7 +128,8 @@ class readPDB:
 
 
 if __name__ == '__main__':
-    rp = readPDB(pdbID='1aom')
+    rp = readPDB(pdbID='1a2c')
     print(rp.residuesCount())
+    print(rp.CAAmount)
     # print(rp.pdbDeleter())
     # print(rp.pdbMover())

@@ -17,9 +17,9 @@ if __name__ == '__main__':
         pdbIDs = dssp[path]
 
         for pdbID in pdbIDs:
-            # count += 1
-            # if count == 159:
-            #     break
+            count += 1
+            if count == 151:
+                break
             app = application(pdbID, overWrite, path)
             if bool(app) == True:
                 app.doMatPNG()
