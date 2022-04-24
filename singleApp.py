@@ -1,7 +1,7 @@
 from application import application
 
 if __name__ == '__main__':
-    pdbID = '1apx'  # input()1a4f
+    pdbID = '1a22'  # input()1a4f
     overWrite = False
     app = application(pdbID, overWrite)
     accuRates = []

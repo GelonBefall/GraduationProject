@@ -84,7 +84,7 @@ class diaStep:
                 else:
                     # end = row - 1
                     end = col - 1
-                    if (end-start) >= 5:
+                    if (end-start) >= 4:
                         # end = col - 1
                         choosenArea.append((start, end))
                     start = col+1
@@ -144,7 +144,7 @@ class diaStep:
 
         return choosenArea
 
-    def stepClrDiaLines(self, overWrite=False):
+    def stepClrDiaLines(self, overWrite=True):
         steps = [1, 2, 3]
         pickleName = self.pdbID+"_chosenArea"
         try:
@@ -166,6 +166,6 @@ class diaStep:
 
 
 if __name__ == '__main__':
-    dS = diaStep('12ca',)  # True
+    dS = diaStep('1a22',)  # True
     print(dS.stepClrDiaLines(overWrite=True))
     # print(dS.disMatDiaLines())
