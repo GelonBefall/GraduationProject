@@ -43,17 +43,6 @@ class pngInit:
             4.0 < dis < 5.0: 2,
             3.0 <= dis <= 4.0: 1,
             dis < 3.0: 0
-            # 23 < dis: 10,
-            # 15 < dis <= 23: 9,
-            # 10.4 < dis <= 15: 8,
-            # 9.2 < dis <= 10.4: 7,
-            # 8.2 <= dis <= 9.2: 6,
-            # 6.7 < dis < 8.2: 5,
-            # 5.8 <= dis <= 6.7: 4,
-            # 4.8 <= dis < 5.8: 3,
-            # 4.0 < dis < 4.8: 2,
-            # 3.5 <= dis <= 4.0: 1,
-            # dis < 3.5: 0
         }
         checked = getCheck(dis)[True]
         return checked

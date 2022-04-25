@@ -27,17 +27,15 @@ class aHelixExecute:
 
     def doAHelixPNGs(self):
         aList = self.eA.dS.dR.getAHelix()
-        grayMat = self.eA.dS.mE.loadGrayMat()
+        # grayMat = self.eA.dS.mE.grayMat
         
-        self.mH.plotAHelixPNGs(grayMat, aList)
-
-        return grayMat
+        self.mH.plotAHelixPNGs(self.eA.dS.mE.grayMat, aList)
 
     def aHelixFeatures(self):
         return self.eA.featureOfAHelixs()
 
-    def findAHelix(self, overWrite=False):
-        return self.eA.dS.stepClrDiaLines(overWrite)
+    # def findAHelix(self, overWrite=False):
+    #     return self.eA.dS.stepClrDiaLines(overWrite)
 
 
 if __name__ == '__main__':

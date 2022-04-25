@@ -71,4 +71,5 @@ class makeDisPNG(makePNG):
 
 
 if __name__ == "__main__":
-    mdp = makeDisPNG('1145')
+    mdp = makeDisPNG('1b93')
+    mdp.loadGrayMat()

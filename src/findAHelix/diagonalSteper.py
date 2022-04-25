@@ -28,7 +28,7 @@ class diaStep:
         if type(self.disMatrix) != bool and self.mE.mkMat.CAAmount >= 800:
             print('该蛋白过大，已自动跳过并即将转移pdb文件及dssp文件。')
             return False
-        elif type(self.disMatrix) == bool or self.aR == [] or self.CAAmount < self.aR[-1][-1]:
+        elif type(self.disMatrix) == bool or self.aR == [] or self.CAAmount <= self.aR[-1][-1]:
             print('该蛋白DSSP或PDB文件错误，或该蛋白没有Cα原子或α螺旋，已自动跳过并即将删除该文件。')
             return False
         else:
@@ -41,8 +41,8 @@ class diaStep:
         for r in range(len(self.aR)):
             # 遍历所有α螺旋区段.
 
-            if 6 >= (self.aR[r][1]-self.aR[r][0]):
-                # 若step值 or 6大于该区段长度，跳过
+            if 5 >= (self.aR[r][1]-self.aR[r][0]):
+                # 若step值 or 5大于该区段长度，跳过
                 continue
 
             lineTmp = deque()
@@ -83,13 +83,13 @@ class diaStep:
                     continue
                 else:
                     # end = row - 1
-                    end = col - 1
+                    end = col - 2
                     if (end-start) >= 4:
                         # end = col - 1
                         choosenArea.append((start, end))
-                    start = col+1
+                    start = col
 
-            if (col-start) >= 5:
+            if (col-start) >= 4:
                 choosenArea.append((start, col))  # 结尾处理
 
         return choosenArea
@@ -103,9 +103,9 @@ class diaStep:
 
             length = 0
             notChoosenArea = []
+            end = 0
             for row in range(area[0], area[1]-step+1):
                 # 遍历该step线, 如果是两个以内距离不同的残基，可以视作α螺旋内。
-                # if row<
                 col = row + step
 
                 if step not in self.mE.mkPNG.getMyChecks(grayMat[row][col]):
@@ -115,14 +115,13 @@ class diaStep:
                         end = row
                     length += 1
                 else:
-                    if length > 2:
+                    if length > 1:
                         notChoosenArea.append((start, end))
                         length = 0
                     else:
                         length = 0
 
             start = area[0]
-            end = area[1]
             if len(notChoosenArea) != 0:
                 for notArea in notChoosenArea:
                     head = start
@@ -133,10 +132,11 @@ class diaStep:
                         continue
 
                     else:
-                        if (tail-head) > 7:
+                        if (tail-head) >= 9 :
                             choosenArea.append((head, tail))
                             start = notArea[1]+1
-                if (end-start) > 7:
+                end = area[1]
+                if (end-start) >= 9:
                     choosenArea.append((start, end))
 
             else:
@@ -144,9 +144,9 @@ class diaStep:
 
         return choosenArea
 
-    def stepClrDiaLines(self, overWrite=True):
+    def stepClrDiaLines1(self, overWrite=False):
         steps = [1, 2, 3]
-        pickleName = self.pdbID+"_chosenArea"
+        pickleName = self.pdbID+"_chosenArea1"
         try:
             choosenAreas = self.pickle.loadPickle(pickleName)
             if (bool(choosenAreas)) and (overWrite == False):
@@ -156,7 +156,7 @@ class diaStep:
                 raise
         except:
             # grayMat = self.mE.mkPNG.grayMatrix(self.disMatrix, self.CAAmount)
-            grayMat = self.mE.loadGrayMat()
+            grayMat = self.mE.grayMat
             choosenAreas = [(0, self.CAAmount-1)]
         for step in steps:
             choosenAreas = self.stepClrDiaLine1(step, choosenAreas, grayMat)
@@ -164,8 +164,29 @@ class diaStep:
         self.pickle.savePickle(choosenAreas, pickleName, overWrite=overWrite)
         return choosenAreas
 
+    def stepClrDiaLines2(self, overWrite=False):
+        steps = [1, 2, 3, 4]
+        pickleName = self.pdbID+"_chosenArea2"
+        try:
+            choosenAreas = self.pickle.loadPickle(pickleName)
+            if (bool(choosenAreas)) and (overWrite == False):
+                return choosenAreas
+            else:
+                print('pickle存储为空或程序为覆盖写模式。')
+                raise
+        except:
+            # grayMat = self.mE.mkPNG.grayMatrix(self.disMatrix, self.CAAmount)
+            grayMat = self.mE.grayMat
+            choosenAreas = [(0, self.CAAmount-1)]
+        for step in steps:
+            choosenAreas = self.stepClrDiaLine2(step, choosenAreas, grayMat)
+
+        self.pickle.savePickle(choosenAreas, pickleName, overWrite=overWrite)
+        return choosenAreas
+
 
 if __name__ == '__main__':
-    dS = diaStep('1a22',)  # True
-    print(dS.stepClrDiaLines(overWrite=True))
-    # print(dS.disMatDiaLines())
+    dS = diaStep('1bdr',)  # True
+    print(dS.stepClrDiaLines1(overWrite=True))
+    print(dS.stepClrDiaLines2(overWrite=True))
+    # print(dS.stepDiaLines())

@@ -74,7 +74,7 @@ if __name__ == '__main__':
     # from src.funcs.dirWalker import getPDBID
     # pdbIDs=getPDBID()
     # for pdbID in pdbIDs:
-    pdbID = '1a2c'
+    pdbID = '1a30'
     fE = extractAHelix(pdbID, True)
     # print(fE.getMstClr([(1,2,3),(1,2,3),(1,2,3),(3,2,1)]))
     print(fE.featureOfAHelixs(overWrite=True))  #

@@ -10,6 +10,7 @@ class matrixExecute:
 
         self.mkMat = makeMatrix(pdbID=self.pdbID)
         self.mkPNG = makeDisPNG(pdbID=self.pdbID)
+        self.grayMat = self.loadGrayMat()
 
     def dropPDB(self):
         self.mkPNG.pngDeleter()
