@@ -1,17 +1,20 @@
 from application import application
 
 if __name__ == '__main__':
-    pdbID = '1bh3'  # input()1a4f
+    pdbID = '12ca'  # input()1a4f
     overWrite = False
     app = application(pdbID, overWrite)
     accuRates = []
     accuValues=[]
-
+    app.aE.eA.dS.stepClrDiaLines1(True)
+    app.aE.eA.dS.stepClrDiaLines2(True)
     if bool(app) == True:
         app.doMatPNG()
         app.doAHelixPNGs()
         app.aHelixFeatures()
-        accuRates.append(app.accuRater())
+
+        rate=app.accuRater()
+        accuRates.append(rate)
         accuValues.append(app.accuValuer())
 
     values = 0

@@ -24,7 +24,7 @@ class accuRater:
                 flag = 0
                 dsspHelix = self.dsspRange[indexB]
 
-                if (dsspHelix[0]-2) <= assignHelix[0] <= (dsspHelix[0]+2) and (dsspHelix[1]-2) <= assignHelix[1] <= (dsspHelix[1]+2):
+                if (dsspHelix[0]-3) <= assignHelix[0] <= (dsspHelix[0]+3) and (dsspHelix[1]-3) <= assignHelix[1] <= (dsspHelix[1]+3):
                     # accu += 1 # 如果指定结果能在指定范围内，得分增加1
                     flag = 1
                     break

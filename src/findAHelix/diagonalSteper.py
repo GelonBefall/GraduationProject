@@ -73,14 +73,15 @@ class diaStep:
         for area in choosenAreas:
             start = area[0]
             end = area[0]
-            for row in range(area[0], area[1]-step+1):
+            row=area[0]
+            while row<area[1]-step+1:
                 # 遍历该step线, 连续5个以上距离相同的残基添加入同一组中，作为α螺旋候选。
-                if row < start:
-                    continue
+                # if row < start:
+                #     continue
                 col = row+step
 
                 if step in self.mE.mkPNG.getMyChecks(grayMat[row][col]):
-                    continue
+                    row += 1
                 else:
                     # end = row - 1
                     end = col - 2
@@ -88,6 +89,7 @@ class diaStep:
                         # end = col - 1
                         choosenArea.append((start, end))
                     start = col
+                    row = start
 
             if (col-start) >= 4:
                 choosenArea.append((start, col))  # 结尾处理
@@ -100,51 +102,47 @@ class diaStep:
 
         # print(choosenAreas)
         for area in choosenAreas:
-
-            length = 0
-            notChoosenArea = []
-            end = 0
-            for row in range(area[0], area[1]-step+1):
-                # 遍历该step线, 如果是两个以内距离不同的残基，可以视作α螺旋内。
-                col = row + step
-
-                if step not in self.mE.mkPNG.getMyChecks(grayMat[row][col]):
-                    if length == 0:
-                        start = row
-                    else:
-                        end = row
-                    length += 1
-                else:
-                    if length > 1:
-                        notChoosenArea.append((start, end))
-                        length = 0
-                    else:
-                        length = 0
-
             start = area[0]
-            if len(notChoosenArea) != 0:
-                for notArea in notChoosenArea:
-                    head = start
-                    tail = notArea[0]-1
+            end = area[0]
+            row=area[0]
+            while row<area[1]-step+1:
+                # 遍历该step线, 连续5个以上距离相同的残基添加入同一组中，作为α螺旋候选。
+                # if row < start:
+                #     continue
+                col = row+step
 
-                    if tail <= head:
-                        start = notArea[1]+1
-                        continue
-
+                if step in self.mE.mkPNG.getMyChecks(grayMat[row][col]):
+                    row+=1
+                else:
+                    # end = row - 1
+                    end = col -1
+                    if (end-start) >= 4:
+                        # end = col - 1
+                        choosenArea.append((start, end))
+                        start = end-2
+                        row = start
                     else:
-                        if (tail-head) >= 9 :
-                            choosenArea.append((head, tail))
-                            start = notArea[1]+1
-                end = area[1]
-                if (end-start) >= 9:
-                    choosenArea.append((start, end))
+                        start=end-1
+                        row+=1
 
-            else:
-                choosenArea.append(area)
-
+            if (col-start) >= 4:
+                choosenArea.append((start, col))  # 结尾处理
+        if len(choosenArea)>1:
+            i=0
+            tmp=list(choosenArea[0])
+            tmps=[]
+            while i<=len(choosenArea)-2:
+                if tmp[1]>=choosenArea[i+1][0]:
+                    tmp[1]=choosenArea[i+1][1]
+                else:
+                    tmps.append(tuple(tmp))
+                    tmp=list(choosenArea[i+1])
+                i+=1
+            tmps.append(tuple(tmp))
+            choosenArea=tmps
         return choosenArea
 
-    def stepClrDiaLines1(self, overWrite=False):
+    def stepClrDiaLines1(self, overWrite=False) -> list:
         steps = [1, 2, 3]
         pickleName = self.pdbID+"_chosenArea1"
         try:
@@ -158,13 +156,18 @@ class diaStep:
             # grayMat = self.mE.mkPNG.grayMatrix(self.disMatrix, self.CAAmount)
             grayMat = self.mE.grayMat
             choosenAreas = [(0, self.CAAmount-1)]
+        # tmp = choosenAreas
         for step in steps:
             choosenAreas = self.stepClrDiaLine1(step, choosenAreas, grayMat)
+            if choosenAreas==[]:
+                choosenAreas=tmp
+            else:
+                tmp=choosenAreas
 
         self.pickle.savePickle(choosenAreas, pickleName, overWrite=overWrite)
         return choosenAreas
 
-    def stepClrDiaLines2(self, overWrite=False):
+    def stepClrDiaLines2(self, overWrite=False) -> list:
         steps = [1, 2, 3, 4]
         pickleName = self.pdbID+"_chosenArea2"
         try:
@@ -178,15 +181,20 @@ class diaStep:
             # grayMat = self.mE.mkPNG.grayMatrix(self.disMatrix, self.CAAmount)
             grayMat = self.mE.grayMat
             choosenAreas = [(0, self.CAAmount-1)]
+        tmp = choosenAreas
         for step in steps:
             choosenAreas = self.stepClrDiaLine2(step, choosenAreas, grayMat)
-
+            if choosenAreas==[]:
+                choosenAreas=tmp
+            else:
+                tmp=choosenAreas
         self.pickle.savePickle(choosenAreas, pickleName, overWrite=overWrite)
         return choosenAreas
 
 
 if __name__ == '__main__':
-    dS = diaStep('1bdr',)  # True
+    dS = diaStep('1b55',)  # True
+    print(dS.aR)
     print(dS.stepClrDiaLines1(overWrite=True))
     print(dS.stepClrDiaLines2(overWrite=True))
     # print(dS.stepDiaLines())

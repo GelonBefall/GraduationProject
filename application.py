@@ -26,24 +26,47 @@ class application:
         # print
 
     def writeLowAccu(self, dsspRange, assignRange):
-        __filePath=os.path.join(os.getcwd(), 'production/lowAccu.txt')
+        __filePath = os.path.join(os.getcwd(), 'production/lowAccu.txt')
         with open(__filePath, 'a+', encoding='utf-8') as f:
-            writed=[self.pdbID+'\n', 'dssp范围：'+str(dsspRange)+'\n', '程序指定范围：'+str(assignRange)+'\n\n']
+            writed = [self.pdbID+'\n', 'dssp范围：' +
+                      str(dsspRange)+'\n', '程序指定范围：'+str(assignRange)+'\n\n']
             f.writelines(writed)
 
     def accuRater(self):
         dsspRange = self.aE.eA.dS.aR
-        assignRange = self.aE.eA.dS.stepClrDiaLines1() # 算法 1
-        
-        if len(assignRange)==0:
-            assignRange = self.aE.eA.dS.stepClrDiaLines2() # 算法 2
+        assignRange1 = self.aE.eA.dS.stepClrDiaLines1()  # 算法 1
+        assignRange2 = self.aE.eA.dS.stepClrDiaLines2()  # 算法 2
 
-        self.accR=accuRater(self.pdbID, dsspRange, assignRange)
+        if assignRange1 == []:
+            assignRange = assignRange2
+        elif assignRange2 == []:
+            assignRange = assignRange1
+        else:
+
+            assignRange = []
+            copy_assignRange1 = assignRange1.copy()
+            # copy_assignRange2 = assignRange2.copy()
+            for range1 in assignRange1:
+                for range2 in assignRange2:
+                    if abs(range2[0] - range1[0]) <= 4 and abs(range2[1] - range1[1]) <= 4:
+                        newRange = []
+                        newRange.append(round((range2[0]+range1[0])//2))
+                        newRange.append(round((range2[1]+range1[1])//2))
+                        assignRange.append(tuple(newRange))
+                        copy_assignRange1.remove(range1)
+                        assignRange2.remove(range2)
+                        break
+            if len(assignRange)+len(copy_assignRange1)+len(assignRange2) <= 4:
+                assignRange += (copy_assignRange1+assignRange2)
+            else:
+                assignRange += copy_assignRange1
+
+        self.accR = accuRater(self.pdbID, dsspRange, assignRange)
         accuRate = self.accR.getAccuRate()
-        
-        if accuRate[self.pdbID] == 0:
+
+        if accuRate[self.pdbID] <= 0.3:
             self.writeLowAccu(dsspRange, assignRange)
-        return  accuRate
+        return accuRate
 
     def accuValuer(self):
         # dsspRange = self.aE.eA.dS.dR.getAHelix()

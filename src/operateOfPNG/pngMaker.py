@@ -36,6 +36,17 @@ class makePNG(pngInit):
             check = [4, 5]
         return check
 
+    def getMyCheck(self, RGB):
+        RGB = tuple(RGB)
+        check = []
+        index = self.colormaps.index(RGB)
+        check=(9-index)
+        if 2== check:
+            check = 3
+        elif 3 == check:
+            check =2
+        return check
+
     def newGrayMatrix(self, disMatrix, matLen):
         grayLists = deque()
 
