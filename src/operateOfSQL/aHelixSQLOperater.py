@@ -45,6 +45,11 @@ class aHelixSQLOP(sqlOP):
 
     def saveAlphaFeatures(self, alphaFeatures, featureLen):
         # Preparation for inserting.
+        if featureLen == 0:
+            print("No features of α-Helix to save to DB.")
+            self.dropTable()
+            return 0
+
         insertPre = 'INSERT INTO pdb_{}'.format(self.pdbID)+" VALUES "
         tmp = 0
 
@@ -65,7 +70,6 @@ class aHelixSQLOP(sqlOP):
                 self.db.rollback()
                 i = i-1
                 tmp = tmp+1
-
         print("Save features of α-Helix to DB successfully.")
         return 0
 

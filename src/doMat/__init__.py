@@ -10,7 +10,6 @@ class matrixExecute:
 
         self.mkMat = makeMatrix(pdbID=self.pdbID)
         self.mkPNG = makeDisPNG(pdbID=self.pdbID)
-        self.grayMat = self.loadGrayMat()
 
     def dropPDB(self):
         self.mkPNG.pngDeleter()
@@ -39,7 +38,7 @@ class matrixExecute:
 
             if self.mkMat.CAAmount <= 4:
                 return False
-            elif self.mkMat.CAAmount >= 800:
+            elif self.mkMat.CAAmount > 500:
                 return self.mkMat.CAAmount
             else:
                 self.mkMat.calMatrix()
@@ -55,12 +54,9 @@ class matrixExecute:
     def LASMat(self, overWrite=False):
         '''LAS means load and save the matrix to database.
            If overWrite==False, Production will drop the table of database first.'''
-        # sql = matSQLOP(pdbID=self.pdbID, database=self.database)
         disMatrix = self.loadMat(overWrite)
         if type(disMatrix) == bool:
             return False
-        # sql.saveToDB(disMatrix, overWrite=overWrite)
-        # sql.db.close()
 
         return disMatrix
 
@@ -72,7 +68,7 @@ class matrixExecute:
 
             grayMat = self.mkPNG.newGrayMatrix(
                 disMatrix=disMatrix, matLen=self.mkMat.CAAmount)
-                
+
             # 返回作图之后的状态
             stutus = self.mkPNG.disPlot(grayMat, self.mkMat.CAAmount)
             if stutus == 0:
@@ -81,7 +77,6 @@ class matrixExecute:
         return grayMat
 
     def loadGrayMat(self):
-        # grayMat=self.mkPNG.loadGrayMat(self.pdbID)
         try:
             return self.mkPNG.loadGrayMat()
         except:

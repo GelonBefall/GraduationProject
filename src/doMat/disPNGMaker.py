@@ -44,6 +44,7 @@ class makeDisPNG(makePNG):
             __pngFile = self.__pngFile[True]
             os.remove(__pngFile)
             print("已成功删除{}的灰度矩阵图！".format(self.pdbID))
+            self.__pngFile = {False: __pngFile}
 
     def disPlot(self, clrMatrix, matLen):
 
@@ -53,6 +54,7 @@ class makeDisPNG(makePNG):
         else:
             __pngFile = self.__pngFile[False]
             self._pngPlot(clrMatrix, matLen, pngFile=__pngFile)
+            self.__pngFile = {True: __pngFile}
 
     def loadGrayMat(self):
 

@@ -9,13 +9,13 @@ class matSQLOP(sqlOP):
 
     def createTable(self, matrixLen):
         # Create new table.
+        if matrixLen > 500:
+            return 0
         tableCreateSQL = "CREATE TABLE pdb_{}(".format(self.pdbID)
         for i in range(matrixLen-1):
             tableCreateSQL = tableCreateSQL + 'Col{} DOUBLE,'.format(i)
         tableCreateSQL = tableCreateSQL + \
             'Col{} DOUBLE)'.format(matrixLen-1)
-        # if i > 1000:  # Choose MySQL-engine MyISAM.
-        #     tableCreateSQL = tableCreateSQL+'engine=MyISAM'
 
         try:
             self.cursor.execute(tableCreateSQL)

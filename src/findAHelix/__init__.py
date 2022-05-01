@@ -11,11 +11,10 @@ class aHelixExecute:
 
     def __bool__(self):
         if bool(self.eA) == False:
-            pickleName = self.pdbID+'_chosenArea'
-
             self.mH.pngDeleter()
-            self.eA.dS.pickle.deletePickle(pickleName)
-            if self.eA.dS.CAAmount >= 800:
+            self.eA.dS.mE.mkPNG.pngDeleter()
+            
+            if self.eA.dS.CAAmount > 500:
                 self.eA.dS.mE.mkMat.pdbMover()
                 self.eA.dS.dR.dsspMover()
             else:
@@ -27,15 +26,12 @@ class aHelixExecute:
 
     def doAHelixPNGs(self):
         aList = self.eA.dS.dR.getAHelix()
-        # grayMat = self.eA.dS.mE.grayMat
+        grayMat = self.eA.dS.mE.loadGrayMat()
         
-        self.mH.plotAHelixPNGs(self.eA.dS.mE.grayMat, aList)
+        self.mH.plotAHelixPNGs(grayMat, aList)
 
     def aHelixFeatures(self):
         return self.eA.featureOfAHelixs()
-
-    # def findAHelix(self, overWrite=False):
-    #     return self.eA.dS.stepClrDiaLines(overWrite)
 
 
 if __name__ == '__main__':

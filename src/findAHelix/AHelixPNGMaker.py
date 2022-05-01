@@ -4,6 +4,7 @@ from pathlib import Path
 
 from src.operateOfPNG.pngMaker import makePNG
 
+
 class makeAHelixPNG(makePNG):
     def __init__(self, pdbID: str, colorFilename="gray.rgb"):
         super().__init__(colorFilename)
@@ -20,8 +21,8 @@ class makeAHelixPNG(makePNG):
 
         result = list(subdir.rglob(self.pdbID))
         if len(result) != 0:
-            __pngPath =str(result[0]) # 如果找到了已存在的文件夹，返回路径。
-            return  __pngPath
+            __pngPath = str(result[0])  # 如果找到了已存在的文件夹，返回路径。
+            return __pngPath
 
         else:
             for root, dirs, files in os.walk(__pngPath):  # 选择存储图片的位置
@@ -38,16 +39,8 @@ class makeAHelixPNG(makePNG):
                             return __pngPath
 
     def pngDeleter(self):
-        # __pngPath = self.__pathExe(pdbID)
         if os.path.exists(self.__path):
             shutil.rmtree(self.__path)
-        # for root, dirs, files in os.walk(self.__path):
-        #     if list(files):
-        #         for file in files:
-        #             file=os.path.join(self.__path, file)
-        #             os.remove(file)
-
-        # os.rmdir(self.__path)
         print("已成功删除{}的α螺旋灰度图片集！".format(self.pdbID))
 
     def __plotAHelixPNG(self, clrMatrix, matLen, __pngFile):
@@ -77,5 +70,6 @@ class makeAHelixPNG(makePNG):
             except:
                 print("生成图片错误的蛋白质：", self.pdbID)
 
-if __name__=='__main__':
-    mah=makeAHelixPNG('1a4f')
+
+if __name__ == '__main__':
+    mah = makeAHelixPNG('1a4f')

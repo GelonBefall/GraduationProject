@@ -50,8 +50,8 @@ class application:
                 for range2 in assignRange2:
                     if abs(range2[0] - range1[0]) <= 4 and abs(range2[1] - range1[1]) <= 4:
                         newRange = []
-                        newRange.append(round((range2[0]+range1[0])//2))
-                        newRange.append(round((range2[1]+range1[1])//2))
+                        newRange.append((range2[0]+range1[0])//2) #round()
+                        newRange.append((range2[1]+range1[1])//2)
                         assignRange.append(tuple(newRange))
                         copy_assignRange1.remove(range1)
                         assignRange2.remove(range2)
