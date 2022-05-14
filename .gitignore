@@ -8,6 +8,7 @@ production/aHelixPNG/*
 production/json/*
 production/abosrb/*
 production/pickle/*
+production/plots/*
 production/sqlBackUp/*
 
 materials/pdb/*
@@ -34,3 +35,5 @@ src/operateOfSQL/__pycache__/
 src/operateOfSQL/baks/
 
 src/operateOfPNG/__pycache__/
+
+src/visualPlt/__pycache__/

@@ -64,8 +64,8 @@ class readDSSP:
         Dparser = parseDSSP(self.__dsspFile)
         Dparser.parse()
         pStruct = Dparser.dictTodataframe()[['resnum', 'struct']]
-        # pStruct=pddict # print(pStruct)
-
+        # pStruct=pddict 
+        # print(pStruct)
         resNums = pStruct[pStruct['struct'] == '  H'].index
         # print(resNums)
         aHelix = self.dsspGrouper(resNums)
@@ -81,7 +81,7 @@ class readDSSP:
 
 
 if __name__ == '__main__':
-    dR = readDSSP('1bdr')
+    dR = readDSSP('1a0a')
     print(dR.getAHelix())
     # print(dR.aHelixRange())
     # print(dR.dsspFinder())

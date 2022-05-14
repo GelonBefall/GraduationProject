@@ -9,7 +9,7 @@ class matSQLOP(sqlOP):
 
     def createTable(self, matrixLen):
         # Create new table.
-        if matrixLen > 500:
+        if matrixLen > 800:
             return 0
         tableCreateSQL = "CREATE TABLE pdb_{}(".format(self.pdbID)
         for i in range(matrixLen-1):

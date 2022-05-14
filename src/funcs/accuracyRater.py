@@ -7,18 +7,17 @@ class accuRater:
         self.lenAssign = len(assignRange)
         self.lendssp = len(dsspRange)
 
-        self.accu = self.getAccu()
+        self.score = self.getScore()
 
-    def getAccu(self):  # ,dsspRange, assignRange
-        accu = self.lenAssign
+    def getScore(self):  # ,dsspRange, assignRange
+        score = self.lenAssign
 
         if self.lenAssign == 0:
-            return accu
+            return score
 
         for indexA in range(self.lenAssign):
             '''遍历指定结果'''
             assignHelix = self.assignRange[indexA]
-
             for indexB in range(self.lendssp):
                 '''遍历dssp结果'''
                 flag = 0
@@ -30,28 +29,64 @@ class accuRater:
                     break
                 elif (dsspHelix[0]-1) <= assignHelix[0] < (dsspHelix[1]+1) and (dsspHelix[0]-1) < assignHelix[1] <= (dsspHelix[1]+1):
                     # 如果指定结果能在指定范围内，得分增加百分比
-                    score = (assignHelix[1]-assignHelix[0]) / (dsspHelix[1]-dsspHelix[0])
-                    accu -= (1-score)
+                    rateScore = (
+                        assignHelix[1]-assignHelix[0]) / (dsspHelix[1]-dsspHelix[0])
+                    score -= (1-rateScore)
                     flag = 1
                     break
             if flag == 0:
-                accu -= 1
-        return accu
+                score -= 1
+        return score
 
-    def getAccuRate(self):  # , pdbID, dsspRange, assignRange
-        # lenAssign = len(assignRange)
-        if self.accu == 0:
+    def getScoreRate(self):  # , pdbID, dsspRange, assignRange
+        if self.score == 0:
             return {self.pdbID: 0}
-        # accu = getAccu(dsspRange, assignRange)
-        # lenAssign = len(assignRange)
-        rate = self.accu/self.lenAssign
-        accuRate = {self.pdbID: rate}
 
-        return accuRate
+        rate = self.score/self.lenAssign
+        scoreRate = {self.pdbID: rate}
 
-    def getAccuValue(self):  # dsspRange, assignRange
-        # accu = getAccu(dsspRange, assignRange)
-        # lendssp = len(dsspRange)
-        # lenAssign = len(assignRange)
-        accuValue = {self.lenAssign: self.accu}
-        return accuValue
+        return scoreRate
+
+    def getScoreValue(self):  # dsspRange, assignRange
+        scoreValue = {self.lenAssign: self.score}
+        return scoreValue
+
+    def getSimNum(self):
+        simNum = {"(0,0.5)": 0, "(0.5,0.8)": 0, "(0.8,1)": 0}
+        if self.lenAssign == 0:
+            return simRate
+
+        for indexA in range(self.lenAssign):
+            '''遍历指定结果'''
+            assignHelix = self.assignRange[indexA]
+            
+            for indexB in range(self.lendssp):
+                '''遍历dssp结果'''
+                dsspHelix = self.dsspRange[indexB]
+                newRange = [0, 0]
+                flag=0
+
+                if assignHelix[0] > dsspHelix[0]:
+                    newRange[0] = assignHelix[0]
+                else:
+                    newRange[0] = dsspHelix[0]
+                if assignHelix[1] > dsspHelix[1]:
+                    newRange[1] = dsspHelix[1]
+                else:
+                    newRange[1] = assignHelix[1]
+
+                simRate = (newRange[1]-newRange[0])/(dsspHelix[1]-dsspHelix[0])
+                if simRate < 0.5:
+                    
+                    continue
+                elif 0.5 <= simRate < 0.8:
+                    simNum["(0.5,0.8)"] += 1
+                    flag=1
+                    break
+                else:
+                    simNum["(0.8,1)"] += 1
+                    flag=1
+                    break
+            if flag==0:
+                simNum["(0,0.5)"] += 1
+        return simNum

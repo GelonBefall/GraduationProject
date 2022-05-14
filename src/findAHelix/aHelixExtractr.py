@@ -39,6 +39,7 @@ class extractAHelix:
             for step in diaLines:
                 # 以间隔长短遍历
                 alphaFeature = {}
+                # print("两残基编号相差{}时：".format(step))
 
                 for aRange in diaLines[step]:
                     # 以α螺旋范围遍历
@@ -46,9 +47,13 @@ class extractAHelix:
 
                     if len(uList) <= 6:
                         continue
+                    # print("  {}中的距离特征为：".format(aRange))
                     mR = lM.rangeDis(uList)
+                    # print("\t相隔{}的距离范围为：".format(step), mR)
                     mD = lM.meanDis(uList)
+                    # print("\t相隔{}的平均距离为：".format(step), mD)
                     vD = lM.varDis(uList)
+                    # print("\t相隔{}的距离方差为：".format(step), vD)
                     if mR == 0 or mD == 0 or vD == 0:
                         continue
 
@@ -74,7 +79,7 @@ if __name__ == '__main__':
     # from src.funcs.dirWalker import getPDBID
     # pdbIDs=getPDBID()
     # for pdbID in pdbIDs:
-    pdbID = '1a30'
+    pdbID = '1a0a'
     fE = extractAHelix(pdbID, True)
     # print(fE.getMstClr([(1,2,3),(1,2,3),(1,2,3),(3,2,1)]))
     print(fE.featureOfAHelixs(overWrite=True))  #

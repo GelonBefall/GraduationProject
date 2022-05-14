@@ -25,7 +25,7 @@ class diaStep:
         self.clrMaps = self.mE.mkPNG.colormaps  # mkPNG.colormaps
 
     def __bool__(self):
-        if type(self.disMatrix) != bool and self.mE.mkMat.CAAmount > 500:
+        if type(self.disMatrix) != bool and self.mE.mkMat.CAAmount > 800:
             print('该蛋白过大，已自动跳过并即将转移pdb文件及dssp文件。')
             return False
         elif type(self.disMatrix) == bool or self.aR == [] or self.CAAmount <= self.aR[-1][-1]:
@@ -40,7 +40,7 @@ class diaStep:
         # aHR = dR.aHelixRange()
         for r in range(len(self.aR)):
             # 遍历所有α螺旋区段.
-
+            # print("距离矩阵在", self.aR, "中时：\n", self.disMatrix[self.aR[r][0]:self.aR[r][1]+1,self.aR[r][0]:self.aR[r][1]+1])
             if 5 >= (self.aR[r][1]-self.aR[r][0]):
                 # 若step值 or 5大于该区段长度，跳过
                 continue
@@ -65,6 +65,45 @@ class diaStep:
                 diaLines[step] = diaLine
         return diaLines
 
+    def statDiaLine(self, step: int, checks: dict):
+        '''提取图中的灰阶值。'''
+
+        for r in range(len(self.aR)):
+            # 遍历所有α螺旋区段.
+            # if 5 >= (self.aR[r][1]-self.aR[r][0]):
+            #     # 若step值 or 5大于该区段长度，跳过
+            #     continue
+
+            for row in range(self.aR[r][0], self.aR[r][1]-step+1):
+                # 遍历的是第r个区段.
+                col = row+step
+                check = self.mE.mkPNG.getMyCheck(self.grayMat[row][col])
+                if check in [1, 2, 3, 4]:
+                    checks[check] += 1
+                else:
+                    checks['other'] += 1
+        return checks
+
+    def statDiaLines(self):
+        pickleName = '0000_statCheck'
+        steps = [1, 2, 3]
+        try:
+            allChecks = self.pickle.loadPickle(pickleName)
+            if bool(allChecks) == False:
+                raise
+
+        except:
+            allChecks = {}
+            # checks=
+            for step in steps:
+                allChecks[step] = {1: 0, 2: 0, 3: 0, 4: 0, 'other': 0}
+
+        for step in steps:
+            allChecks[step] = self.statDiaLine(step, allChecks[step])
+        self.pickle.savePickle(allChecks, pickleName, overWrite=True)
+
+        return allChecks
+
     def stepClrDiaLine1(self, step: int, choosenAreas):
         '''遍历灰度矩阵算法1.0'''
         choosenArea = []
@@ -75,16 +114,16 @@ class diaStep:
             end = area[0]
             row = area[0]
             while row < (area[1]-step+1):
-                col = row+step
+                col = row + step
 
                 if step in self.mE.mkPNG.getMyChecks(self.grayMat[row][col]):
                     row += 1
                 else:
                     # end = row - 1
-                    end = col - 2
+                    end = col - 1
                     if (end-start) >= 4:
-                        # end = col - 1
                         choosenArea.append((start, end))
+
                     start = col
                     row = start
 
@@ -183,8 +222,9 @@ class diaStep:
 
 
 if __name__ == '__main__':
-    dS = diaStep('1b55',)  # True
+    dS = diaStep('1biq',)  # True
     print(dS.aR)
+    # dS.stepDiaLine(1)
     print(dS.stepClrDiaLines1(overWrite=True))
     print(dS.stepClrDiaLines2(overWrite=True))
-    # print(dS.stepDiaLines())
+    # print(dS.statDiaLines())

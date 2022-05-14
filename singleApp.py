@@ -1,36 +1,61 @@
 from application import application
+from src.funcs.pickleOperater import pickleOP
+from src.visualPlt.checksPloter import pltChecks
+from src.visualPlt.simPloter import plotPie
 
 if __name__ == '__main__':
-    pdbID = '12e8'  # input()1a4f
+    pdbID = '1biq'  # input()1a4f
     overWrite = False
+    pickle = pickleOP()
+    scoreRates = []
+    scoreValues = []
+    simNums={"(0,0.5)":0,"(0.5,0.8)":0,"(0.8,1)":0}
+
+    dsspNum = 0
     app = application(pdbID, overWrite)
-    accuRates = []
-    accuValues=[]
     if bool(app) == True:
+        dsspNum += len(app.aE.eA.dS.aR)
         app.doMatPNG()
         app.doAHelixPNGs()
         app.aHelixFeatures()
+        # app.checkStatis()
+        simNum=app.simNum()
 
-        rate=app.accuRater()
-        accuRates.append(rate)
-        accuValues.append(app.accuValuer())
-
+        simNums["(0,0.5)"]+=simNum["(0,0.5)"]
+        simNums["(0.5,0.8)"]+=simNum["(0.5,0.8)"]
+        simNums["(0.8,1)"]+=simNum["(0.8,1)"]
+        scoreRates.append(app.scoreRater())
+        scoreValues.append(app.scoreValuer())
     values = 0
     nums = 0
     rates = 0
-    for accuRate in accuRates:
-        pdb, rate = accuRate.popitem()
+    for scoreRate in scoreRates:
+        pdb, rate = scoreRate.popitem()
         rates += rate
         print('{}的二级结构范围指定的相似度为{}'.format(pdb, rate))
 
-    for accuValue in accuValues:
-        num, value = accuValue.popitem()
+    for scoreValue in scoreValues:
+        num, value = scoreValue.popitem()
         nums += num
         values += value
 
-    sample = len(accuRates)
-    meanAccu = rates/sample
+    sample = len(scoreRates)
+    meanscore = rates/sample
     meanValue = values/nums
-    print('本次运行一共有', sample, '个样本，指定二级结构范围的平均相似度为', meanAccu)
-    print('本次运行一共指定有', nums, '个α螺旋，指定得出的平均相似度为', meanValue)
-#  1a03 12e8 117e 1a02 169l 1a0d 1a0n 1a2b
+    print('本次运行一共有', sample, '个样本，每个样本指定二级结构范围的平均相似度得分为', meanscore)
+    print('其中，DSSP中有', dsspNum,'个α-螺旋，程序一共指定有', nums, '个α-螺旋，指定得出的平均相似度得分为', meanValue)
+    print('指定得到的α-螺旋中，有', simNums["(0.8,1)"],'个相似度大于80%，有', simNums["(0.5,0.8)"], '个大于50%，有', simNums["(0,0.5)"], '个小于50%，')
+    
+    pickleName = '0000_statCheck'
+    steps = [1, 2, 3]
+    allchecks = pickle.loadPickle(pickleName)
+    for step in steps:
+        pltChecks(step, allchecks[step])
+        
+    pickleName = '0000_simNums'
+    try:
+        simNums=pickle.loadPickle(pickleName)
+    except:
+        pickle.savePickle(simNums,pickleName)
+    plotPie(simNums)
+    

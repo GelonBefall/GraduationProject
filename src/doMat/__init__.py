@@ -38,7 +38,7 @@ class matrixExecute:
 
             if self.mkMat.CAAmount <= 4:
                 return False
-            elif self.mkMat.CAAmount > 500:
+            elif self.mkMat.CAAmount > 800:
                 return self.mkMat.CAAmount
             else:
                 self.mkMat.calMatrix()
