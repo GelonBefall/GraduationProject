@@ -18,6 +18,7 @@ class makeMyDirs:
         self.__mkdir(producPath)
         self.makePNG(producPath)
         self.makePickle(producPath)
+        self.makeLabel(producPath)
         self.makeSQLBackup(producPath)
 
     def makePNG(self, producPath):
@@ -45,6 +46,14 @@ class makeMyDirs:
     def makePickle(self, producPath):
         picklePath = os.path.join(producPath, 'pickle/')
         self.__mkdir(picklePath)
+
+    def makeLabel(self, producPath):
+        labelPath = os.path.join(producPath, 'label/')
+        self.__mkdir(labelPath)
+        for i in range(1, 94):
+            subDir = "label_{:0>2d}/".format(i)
+            subLabelPath = os.path.join(labelPath, subDir)
+            self.__mkdir(subLabelPath)
 
     def makeSQLBackup(self, producPath):
         sqlPath = os.path.join(producPath, 'sqlBackUp/')

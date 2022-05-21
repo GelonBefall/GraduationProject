@@ -54,6 +54,20 @@ def getDSSP(start=0, end=None):
 
     return wholeDsspIDs
 
+def getPNG(matPath):
+    '''Return a list include dicts which contain pdbIDs in certain path.'''
+    subPath = Path(matPath)
+    subfiles = subPath.glob('*.png')
+    dsspTmps = []
+    for dssp in subfiles:
+        dsspID = dssp.stem
+        dsspTmps.append(dsspID)  # 收集该目录下的所有dssp
+
+    return dsspTmps
+
+
+
+
 
 if __name__ == '__main__':
-    print(getDSSP())
+    print(getPNG(0))

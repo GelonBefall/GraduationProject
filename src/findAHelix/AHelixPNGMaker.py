@@ -43,8 +43,25 @@ class makeAHelixPNG(makePNG):
             shutil.rmtree(self.__path)
         print("已成功删除{}的α螺旋灰度图片集！".format(self.pdbID))
 
+    def __pngCopyer(self, source, destination):
+        shutil.copyfile(source, destination)
+
     def __plotAHelixPNG(self, clrMatrix, matLen, __pngFile):
-        self._pngPlot(clrMatrix, matLen, __pngFile)
+        __pngPath1=os.path.join(self.__path, __pngFile)
+        self._pngPlot(clrMatrix, matLen, __pngPath1)
+
+        def getLen(dis): return {
+            30.0 < dis : 40,
+            20.0 < dis <= 30.0: 30,
+            10.0 < dis <= 20.0: 20,
+            5.0 < dis <= 10.0: 10,
+            dis <= 5.0: 5
+        }
+        len = getLen(matLen)[True]
+
+        desPath=os.path.join(os.getcwd(), "production/sizePNG/", str(len))
+        __pngPath2=os.path.join(desPath, __pngFile)
+        self.__pngCopyer(__pngPath1,__pngPath2)
 
     def plotAHelixPNGs(self, clrMatrix, aHelixList: list):
 
@@ -57,8 +74,7 @@ class makeAHelixPNG(makePNG):
                 print('未生成过{}的α螺旋灰度矩阵图，将自动生成。'.format(self.pdbID))
 
         for aHelix in aHelixList:
-            __pngFile = os.path.join(
-                self.__path, self.pdbID+"_{}.png".format(str(aHelix)))
+            __pngFile = self.pdbID+"_{}.png".format(str(aHelix))
 
             start = aHelix[0]
             end = aHelix[1]+1

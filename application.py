@@ -8,12 +8,15 @@ class application:
     def __init__(self, pdbID: str, overWrite=False, dsspPath=None):
         self.pdbID = pdbID.lower()
         self.aE = aHelixExecute(self.pdbID, overWrite, dsspPath=dsspPath)
-        self.set_accR()
+        # if self.__bool__==False:
+        #     return None
+        
 
     def __bool__(self):
         if bool(self.aE) == False:
             return False
         else:
+            self.set_accR()
             return True
 
     def doMatPNG(self):

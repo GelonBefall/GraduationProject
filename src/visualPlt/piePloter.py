@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import os
 
-def plotPie(simNums:dict):
+def plotPie(simNums:dict, pngName):
     low=simNums["(0,0.5)"]
     mid=simNums["(0.5,0.8)"]
     high=simNums["(0.8,1)"]
@@ -16,13 +16,13 @@ def plotPie(simNums:dict):
     # colors = ['green','blue','orange']
     
     expodes = (0,0,0.1)
-    plt.title('程序指定的相似度占比')
+    plt.title(pngName)
     #设置绘图属性并绘图
     plt.pie(data,explode=expodes,labels=labels,shadow=True,autopct='%10.2f%%')#,colors=colors
     ## 用于显示为一个长宽相等的饼图
     plt.axis('equal')
     plt.legend()
-    
-    path = os.path.join(os.getcwd(), "production/plots/",'simNumPie.png')
+    pngName+='.png'
+    path = os.path.join(os.getcwd(), "production/plots/", pngName)
     plt.savefig(path, dpi=400)
     

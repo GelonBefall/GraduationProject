@@ -1,15 +1,16 @@
 from application import application
 from src.funcs.pickleOperater import pickleOP
 from src.visualPlt.checksPloter import pltChecks
-from src.visualPlt.simPloter import plotPie
+from src.visualPlt.piePloter import plotPie
 
 if __name__ == '__main__':
-    pdbID = '1biq'  # input()1a4f
+    pdbID = '1ez4'  # input()1a4f
     overWrite = False
     pickle = pickleOP()
     scoreRates = []
     scoreValues = []
     simNums={"(0,0.5)":0,"(0.5,0.8)":0,"(0.8,1)":0}
+    scoreNums={"(0,0.5)":0,"(0.5,0.8)":0,"(0.8,1)":0}
 
     dsspNum = 0
     app = application(pdbID, overWrite)
@@ -31,6 +32,12 @@ if __name__ == '__main__':
     rates = 0
     for scoreRate in scoreRates:
         pdb, rate = scoreRate.popitem()
+        if rate<0.5:
+            scoreNums["(0,0.5)"]+=1
+        elif 0.5 <= rate < 0.8:
+            scoreNums["(0.5,0.8)"] += 1
+        else:
+            scoreNums["(0.8,1)"] += 1
         rates += rate
         print('{}的二级结构范围指定的相似度为{}'.format(pdb, rate))
 
@@ -57,5 +64,11 @@ if __name__ == '__main__':
         simNums=pickle.loadPickle(pickleName)
     except:
         pickle.savePickle(simNums,pickleName)
-    plotPie(simNums)
-    
+    plotPie(simNums, "指定结果的相似度情况")
+
+    pickleName = '0000_scoreNums'
+    try:
+        scoreNums=pickle.loadPickle(pickleName)
+    except:
+        pickle.savePickle(scoreNums,pickleName)
+    plotPie(scoreNums, "指定结果的得分分布")

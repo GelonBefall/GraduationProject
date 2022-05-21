@@ -9,6 +9,9 @@ production/json/*
 production/abosrb/*
 production/pickle/*
 production/plots/*
+production/sizePNG/*
+production/checks/*
+production/label/*
 production/sqlBackUp/*
 
 materials/pdb/*
@@ -37,3 +40,5 @@ src/operateOfSQL/baks/
 src/operateOfPNG/__pycache__/
 
 src/visualPlt/__pycache__/
+
+yolov5/
