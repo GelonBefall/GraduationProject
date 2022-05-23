@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import os
 
-def plotPie(simNums:dict, pngName):
+def plotPie(simNums:dict, pngName,x:str):
     low=simNums["(0,0.5)"]
     mid=simNums["(0.5,0.8)"]
     high=simNums["(0.8,1)"]
@@ -23,6 +23,6 @@ def plotPie(simNums:dict, pngName):
     plt.axis('equal')
     plt.legend()
     pngName+='.png'
-    path = os.path.join(os.getcwd(), "production/plots/", pngName)
+    path = os.path.join(os.getcwd(), "production/plots/pie", x,pngName)
     plt.savefig(path, dpi=400)
     

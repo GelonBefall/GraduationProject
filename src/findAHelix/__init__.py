@@ -24,11 +24,11 @@ class aHelixExecute:
         else:
             return True
 
-    def doAHelixPNGs(self):
-        aList = self.eA.dS.dR.getAHelix()
-        grayMat = self.eA.dS.mE.loadGrayMat()
+    # def doAHelixPNGs(self):
+    #     aList = self.eA.dS.dR.getAHelix()
+    #     grayMat = self.eA.dS.mE.loadGrayMat()
         
-        self.mH.plotAHelixPNGs(grayMat, aList)
+    #     self.mH.plotAHelixPNGs(grayMat, aList)
 
     def aHelixFeatures(self):
         return self.eA.featureOfAHelixs()

@@ -22,15 +22,15 @@ class application:
     def doMatPNG(self):
         return self.aE.eA.dS.mE.doDisPNG()
 
-    def doAHelixPNGs(self):
-        return self.aE.doAHelixPNGs()
+    # def doAHelixPNGs(self):
+    #     return self.aE.doAHelixPNGs()
 
     def aHelixFeatures(self):
         return (self.aE.aHelixFeatures())
         # print
     
-    def checkStatis(self):
-        return self.aE.eA.dS.statDiaLines()
+    # def checkStatis(self):
+    #     return self.aE.eA.dS.statDiaLines()
 
     # def writeLowAccu(self, dsspRange, assignRange):
     #     __filePath = os.path.join(os.getcwd(), 'production/lowAccu.txt')

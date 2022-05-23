@@ -34,4 +34,4 @@ def labelPNGs(whitchDir):
 
 
 if __name__=='__main__':
-    labelPNGs(1)
+    labelPNGs(2)

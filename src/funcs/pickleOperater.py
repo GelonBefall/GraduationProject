@@ -6,12 +6,12 @@ class pickleOP:
     def __init__(self):
         self.__path = os.path.join(os.getcwd(), "production/pickle/")
 
-    def savePickle(self, diaLines: dict, pickleName: str, overWrite=False):
+    def savePickle(self, diaLines: dict, pickleName: str, otherpath='', overWrite=False):
 
-        pickleFile = self.__path+pickleName
+        pickleFile = self.__path+otherpath+'/'+pickleName
 
         if overWrite == True:
-            with open(pickleFile, "wb") as pk:
+            with open(pickleFile, "wb") as pk: 
                 # pickles=pickle.dumps(diaLines)
                 pickle.dump(diaLines, pk)
 
@@ -24,8 +24,8 @@ class pickleOP:
                     # pickles=pickle.dumps(diaLines)
                     pickle.dump(diaLines, pk)
 
-    def loadPickle(self, pickleName: str) -> dict:
-        pickleFile = self.__path+pickleName
+    def loadPickle(self, pickleName: str, otherpath='') -> dict:
+        pickleFile = self.__path+otherpath+'/'+pickleName
 
         with open(pickleFile, "rb") as pk:
             # pickles=pickle.dumps(diaLines)

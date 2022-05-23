@@ -2,7 +2,7 @@ from application import application
 from src.funcs.dirWalker import getPDBID, getDSSP
 from src.funcs.pickleOperater import pickleOP
 from src.visualPlt.checksPloter import pltChecks
-from src.visualPlt.piePloter import plotPie
+
 
 if __name__ == '__main__':
     start = 0
@@ -19,7 +19,7 @@ if __name__ == '__main__':
 
     count=0
     for dssp in dssps:
-        if count < 3:
+        if count < 1:
             count+=1
             continue
         path = list(dssp.keys())[0]
@@ -36,7 +36,7 @@ if __name__ == '__main__':
             if bool(app) == True:
                 dsspNum += len(app.aE.eA.dS.aR)
                 app.doMatPNG()
-                app.doAHelixPNGs()
+                # app.doAHelixPNGs()
                 app.aHelixFeatures()
                 # app.checkStatis()
                 simNum = app.simNum()
@@ -46,7 +46,7 @@ if __name__ == '__main__':
                 simNums["(0.8,1)"] += simNum["(0.8,1)"]
                 scoreRates.append(app.scoreRater())
                 scoreValues.append(app.scoreValuer())
-        # break
+        break
     values = 0
     nums = 0
     rates = 0
@@ -77,22 +77,16 @@ if __name__ == '__main__':
     print('指定得到的α-螺旋中，有', simNums["(0.8,1)"], '个相似度大于80%，有',
           simNums["(0.5,0.8)"], '个大于50%，有', simNums["(0,0.5)"], '个小于50%，')
 
-    pickleName = '0000_statCheck'
-    steps = [1, 2, 3]
-    allchecks = pickle.loadPickle(pickleName)
-    for step in steps:
-        pltChecks(step, allchecks[step])
+    # pickleName = '0000_statCheck'
+    # steps = [1, 2, 3]
+    # allchecks = pickle.loadPickle(pickleName)
+    # for step in steps:
+    #     pltChecks(step, allchecks[step])
 
     pickleName = '0000_simNums'
-    try:
-        simNums = pickle.loadPickle(pickleName)
-    except:
-        pickle.savePickle(simNums, pickleName)
-    plotPie(simNums, "指定结果的相似度情况")
+    pickle.savePickle(simNums, pickleName, str(count+1))
+    # plotPie(simNums, "指定结果的相似度情况")
 
     pickleName = '0000_scoreNums'
-    try:
-        scoreNums = pickle.loadPickle(pickleName)
-    except:
-        pickle.savePickle(scoreNums, pickleName)
-    plotPie(scoreNums, "指定结果的得分分布")
+    pickle.savePickle(scoreNums, pickleName, str(count+1))
+    # plotPie(scoreNums, "指定结果的得分分布")
