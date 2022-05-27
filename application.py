@@ -1,4 +1,4 @@
-import os
+# import os
 
 from src.findAHelix import aHelixExecute
 from src.funcs.accuracyRater import accuRater
@@ -11,38 +11,20 @@ class application:
         # if self.__bool__==False:
         #     return None
         
-
     def __bool__(self):
         if bool(self.aE) == False:
             return False
         else:
-            self.set_accR()
+            # self.set_accR()
             return True
 
     def doMatPNG(self):
         return self.aE.eA.dS.mE.doDisPNG()
 
-    # def doAHelixPNGs(self):
-    #     return self.aE.doAHelixPNGs()
-
-    def aHelixFeatures(self):
-        return (self.aE.aHelixFeatures())
-        # print
-    
-    # def checkStatis(self):
-    #     return self.aE.eA.dS.statDiaLines()
-
-    # def writeLowAccu(self, dsspRange, assignRange):
-    #     __filePath = os.path.join(os.getcwd(), 'production/lowAccu.txt')
-    #     with open(__filePath, 'a+', encoding='utf-8') as f:
-    #         writed = [self.pdbID+'\n', 'dssp范围：' +
-    #                   str(dsspRange)+'\n', '程序指定范围：'+str(assignRange)+'\n\n']
-    #         f.writelines(writed)
-
-    def set_accR(self):
+    def getAssignRange(self):
         dsspRange = self.aE.eA.dS.aR
-        assignRange1 = self.aE.eA.dS.stepClrDiaLines1()  # 算法 1
-        assignRange2 = self.aE.eA.dS.stepClrDiaLines2()  # 算法 2
+        assignRange1 = self.aE.eA.dS.stepClrDiaLines1()  # 算法 1True
+        assignRange2 = self.aE.eA.dS.stepClrDiaLines2()  # 算法 2True
 
         if assignRange1 == []:
             assignRange = assignRange2
@@ -67,19 +49,44 @@ class application:
                 assignRange += (copy_assignRange1+assignRange2)
             else:
                 assignRange += copy_assignRange1
-        self.assignRange=assignRange
-        self.dsspRange=dsspRange
-        self.accR = accuRater(self.pdbID, dsspRange, assignRange)
+        
+        return assignRange
+        
+    def getMyAssignSimilarity(self):
+        dsspRange = self.aE.eA.dS.aR
+        assignRange=self.getAssignRange()
+        accR = accuRater(self.pdbID, dsspRange, assignRange)
+        allSim=accR.getSims()
+        
+        return allSim
+        # self.assignRange=assignRange
+        # self.dsspRange=dsspRange
+    # def doAHelixPNGs(self):
+    #     return self.aE.doAHelixPNGs()
 
-    def scoreRater(self):
-        scoreRate = self.accR.getScoreRate()
+    # def aHelixFeatures(self):
+    #     return (self.aE.aHelixFeatures())
+    #     # print
+    
+    # def checkStatis(self):
+    #     return self.aE.eA.dS.statDiaLines()
 
-        # if scoreRate[self.pdbID] <= 0.3:
-        #     self.writeLowAccu(self.dsspRange, self.assignRange)
-        return scoreRate
+    # def writeLowAccu(self, dsspRange, assignRange):
+    #     __filePath = os.path.join(os.getcwd(), 'production/lowAccu.txt')
+    #     with open(__filePath, 'a+', encoding='utf-8') as f:
+    #         writed = [self.pdbID+'\n', 'dssp范围：' +
+    #                   str(dsspRange)+'\n', '程序指定范围：'+str(assignRange)+'\n\n']
+    #         f.writelines(writed)
 
-    def scoreValuer(self):
-        return self.accR.getScoreValue()
+    # def scoreRater(self):
+    #     scoreRate = self.accR.getScoreRate()
 
-    def simNum(self):
-        return self.accR.getSimNum()
+    #     # if scoreRate[self.pdbID] <= 0.3:
+    #     #     self.writeLowAccu(self.dsspRange, self.assignRange)
+    #     return scoreRate
+
+    # def scoreValuer(self):
+    #     return self.accR.getScoreValue()
+
+    # def simNum(self):
+    #     return self.accR.getSimNum()

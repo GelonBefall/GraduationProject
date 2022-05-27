@@ -13,6 +13,7 @@ production/sizePNG/*
 production/checks/*
 production/label/*
 production/sqlBackUp/*
+production/trainPNG/*
 
 materials/pdb/*
 materials/big_pdb/*

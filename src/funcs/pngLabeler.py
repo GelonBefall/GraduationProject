@@ -19,14 +19,15 @@ def labelPNG(pdbID, labelPath):
         labelFile.close()
 
 
-def labelPNGs(whitchDir):
-    __matPath = os.path.join(os.getcwd(), "production/matPNG/")
-    subDir = "matPNG_{:0>2d}/".format(whitchDir)
-    __matPath = os.path.join(__matPath, subDir)
+def labelPNGs(whitchDir, genre='train'):
+    __mainPath=os.path.join(os.getcwd(), "production/trainPNG/", whitchDir)
+    __matPath = os.path.join(__mainPath, 'images/')
+    __labelPath=os.path.join(__mainPath, 'labels/')
 
-    __labelPath=os.path.join(os.getcwd(), "production/label/")
-    subDir = "label_{:0>2d}/".format(whitchDir)
-    __labelPath = os.path.join(__labelPath, subDir)
+    # subDir = "{:0>2d}/".format(whitchDir)
+    __matPath = os.path.join(__matPath, genre)
+    __labelPath = os.path.join(__labelPath, genre)
+    
 
     pdbIDs =getPNG(__matPath)
     for pdbID in pdbIDs:

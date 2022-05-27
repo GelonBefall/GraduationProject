@@ -1,6 +1,7 @@
 import os
 import requests
 import shutil
+from func_timeout import func_set_timeout
 
 from pathlib import Path
 from Bio.PDB.PDBParser import PDBParser
@@ -75,12 +76,21 @@ class readPDB:
 
                     else:
                         url = "https://files.rcsb.org/download/" + self.pdbID + ".pdb"
-                        r = requests.get(url)
-                        # print(r)
                         for i in range(3):
-                            if r:
-                                print("Downloading {}.pdb...".format(self.pdbID))
+                            r = None
 
+                            print("Downloading {}.pdb...try it time {}.".format(self.pdbID, i+1))
+
+                            # @func_set_timeout(120)
+                            def getFile():
+                                r = requests.get(url)  # print(r)
+                                return r
+                            try:
+                                r = getFile()
+                            except:
+                                continue
+
+                            if r:
                                 self._pdbFile = os.path.join(
                                     __subPath, self.pdbID + ".pdb")
                                 with open(self._pdbFile, "wb") as pdbFile:
@@ -90,10 +100,11 @@ class readPDB:
                                 if isPDBExist == 0:
                                     print("PDB file download successfully!")
                                     return __subPath
-                            if i == 2:
-                                print(
-                                    "PDB file can't download or doesn't exist, please check!")
-                                return 1
+                            # else:
+                            #     continue
+                        print(
+                            "PDB file can't download or doesn't exist, please check!")
+                        return None
 
     def residuesCount(self):
         '''Get CA atoms' count.'''
@@ -128,7 +139,7 @@ class readPDB:
 
 
 if __name__ == '__main__':
-    rp = readPDB(pdbID='1a14')
+    rp = readPDB(pdbID='1kqs')
     print(rp.residuesCount())
     print(rp.CAAmount)
     # print(rp.pdbDeleter())

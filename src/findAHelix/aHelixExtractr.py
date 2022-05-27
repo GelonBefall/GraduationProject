@@ -16,9 +16,9 @@ class extractAHelix:
             return True
 
     def dropDSSP(self):
-        sql = aHelixSQLOP(pdbID=self.pdbID, database='alphaFeatures')
-        sql.dropTable()
-        sql.db.close()
+        # sql = aHelixSQLOP(pdbID=self.pdbID, database='alphaFeatures')
+        # sql.dropTable()
+        # sql.db.close()
         
         self.dS.dR.dsspDeleter()
     

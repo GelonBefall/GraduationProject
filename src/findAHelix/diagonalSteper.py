@@ -179,11 +179,15 @@ class diaStep:
         steps = [1, 2, 3]
         pickleName = self.pdbID+"_chosenArea1"
         try:
-            choosenAreas = self.pickle.loadPickle(pickleName)
-            if (bool(choosenAreas)) and (overWrite == False):
+            if overWrite == False:
+                choosenAreas = self.pickle.loadPickle(pickleName)
+            else:
+                print('程序为覆盖写模式。')
+                raise
+            if bool(choosenAreas):
                 return choosenAreas
             else:
-                print('pickle存储为空或程序为覆盖写模式。')
+                print('pickle存储为空。')
                 raise
         except:
             choosenAreas = [(0, self.CAAmount-1)]
@@ -202,11 +206,15 @@ class diaStep:
         steps = [1, 2, 3, 4]
         pickleName = self.pdbID+"_chosenArea2"
         try:
-            choosenAreas = self.pickle.loadPickle(pickleName)
-            if (bool(choosenAreas)) and (overWrite == False):
+            if overWrite == False:
+                choosenAreas = self.pickle.loadPickle(pickleName)
+            else:
+                print('程序为覆盖写模式。')
+                raise
+            if bool(choosenAreas):
                 return choosenAreas
             else:
-                print('pickle存储为空或程序为覆盖写模式。')
+                print('pickle存储为空。')
                 raise
         except:
             choosenAreas = [(0, self.CAAmount-1)]

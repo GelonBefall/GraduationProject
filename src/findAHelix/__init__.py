@@ -1,5 +1,5 @@
 from src.findAHelix.aHelixExtractr import extractAHelix
-from src.findAHelix.aHelixPNGMaker import makeAHelixPNG
+# from src.findAHelix.aHelixPNGMaker import makeAHelixPNG
 
 
 class aHelixExecute:
@@ -7,11 +7,11 @@ class aHelixExecute:
         self.pdbID = pdbID.lower()
         self.eA = extractAHelix(
             self.pdbID, overWrite=overWrite, dsspPath=dsspPath)
-        self.mH = makeAHelixPNG(self.pdbID)
+        # self.mH = makeAHelixPNG(self.pdbID)
 
     def __bool__(self):
         if bool(self.eA) == False:
-            self.mH.pngDeleter()
+            # self.mH.pngDeleter()
             self.eA.dS.mE.mkPNG.pngDeleter()
             
             if self.eA.dS.CAAmount > 500:
@@ -19,7 +19,8 @@ class aHelixExecute:
                 self.eA.dS.dR.dsspMover()
             else:
                 self.eA.dS.mE.dropPDB()
-                self.eA.dropDSSP()
+                # self.eA.dropDSSP()
+                self.eA.dS.dR.dsspDeleter()
             return False
         else:
             return True
