@@ -44,7 +44,7 @@ if __name__ == '__main__':
 
         pickleName = '00'+str(count+1)+'_sims'
         pickle.savePickle(sims, pickleName, 'assign', overWrite=True) #str(count+1)
-        # break
+        break
     print('done')
     # app.doAHelixPNGs()
                 # app.aHelixFeatures()

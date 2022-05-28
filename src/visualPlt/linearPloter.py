@@ -35,24 +35,28 @@ def plotLinr(simNums:dict, pngName, numb:str):
 
 def plotstatLinr(dataset:list):
     pngName='验证集测试结果'
-    data=[]
+    dsspSim=[]
+    selfSim=[]
     xlabels = range(1,8)
-    ylabels=[0,0.5,1]
+    # ylabels=[0,0.5,1]
     x = range(len(xlabels))
-    y = [0,0.5,1]
+    # y = [0,0.5,1]
     for stats in dataset:
-        data.append(stats["(0.8,1)"]/stats["dsspNum"])
-
+        dsspSim.append(stats["(0.8,1)"]/stats["dsspNum"])
+        selfSim.append(stats["(0.8,1)"]/(stats["(0.8,1)"]+stats["(0.5,0.8)"]+stats["(0,0.5)"]))
+    # print(dsspSim,'\n',selfSim)
     plt.figure()
     plt.rcParams['font.sans-serif'] = ['SimHei']  # 用来正常显示中文标签
-    plt.plot(x, data, marker='o', mec='r', mfc='w')
+    plt.plot(x, dsspSim, marker='o', mec='r', mfc='w', label=u'占DSSP比例')
+    plt.plot(x, selfSim, marker='s', mec='c', mfc='w', label=u'占指定总数比例')
     plt.legend()  # 让图例生效
 
     plt.title(pngName)
     
-    plt.xlabel(u"数据集") #X轴标签
-    plt.ylabel(u"相似度高于80%的α-螺旋所占DSSP比例") #Y轴标签
+    plt.xlabel(u"验证集编号") #X轴标签
+    plt.ylabel(u"相似度高于80%的α-螺旋数量所占比例") #Y轴标签
     plt.xticks(x, xlabels)
+    plt.ylim(0.7, 1) # 限定纵轴的范围
     # plt.yticks(y, ylabels)#
     plt.margins(0)
     plt.subplots_adjust(bottom=0.15)
