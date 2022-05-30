@@ -1,6 +1,6 @@
 from src.funcs.pickleOperater import pickleOP
 # from src.visualPlt.piePloter import plotPie
-from src.visualPlt.linearPloter import plotstatLinr
+from src.visualPlt.linearPloter import plotstatLinr,plotPRCLinr
 
 # dict1 = {'a': 1, 'b': 2}
 # dict2 = {'a': 2, 'c': 3}
@@ -23,10 +23,14 @@ def getStat(x:str, genre):
     
 def plotAssignlinrs(genre):
     stats=[]
-    for i in range(1,8):
+    for i in range(1,7):
         stats.append(getStat(str(i),genre))
     plotstatLinr(stats)
+    # plotPRCLinr(stats)
         
 
 if __name__=='__main__':
+    # getStat("1","recogn")
     plotAssignlinrs('assign')
+    # plotAssignlinrs("recogn")
+    

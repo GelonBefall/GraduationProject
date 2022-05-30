@@ -15,22 +15,24 @@ def getRecognSimilarity(pdbID, recognRange):
 
 def getRecSims():
     pickle=pickleOP()
+    for i in range(1,7):
+        x=str(i)
+        recgonRanges=reagainLabels(x)
+        sims = {"(0,0.5)": 0, "(0.5,0.8)": 0, "(0.8,1)": 0, 'dsspNum':0}
+        for pdbID in recgonRanges.keys():
+            recgonRange=recgonRanges[pdbID]
+            sim = getRecognSimilarity(pdbID, recgonRange)
+            # print(pdbID,': ', sim)
 
-    recgonRanges=reagainLabels()
-    sims = {"(0,0.5)": 0, "(0.5,0.8)": 0, "(0.8,1)": 0, 'dsspNum':0}
-    for pdbID in recgonRanges.keys():
-        recgonRange=recgonRanges[pdbID]
-        sim = getRecognSimilarity(pdbID, recgonRange)
-        print(pdbID,': ', sim)
+            sims["(0,0.5)"] += sim["(0,0.5)"]
+            sims["(0.5,0.8)"] += sim["(0.5,0.8)"]
+            sims["(0.8,1)"] += sim["(0.8,1)"]
+            sims["dsspNum"] += sim['dsspNum']
 
-        sims["(0,0.5)"] += sim["(0,0.5)"]
-        sims["(0.5,0.8)"] += sim["(0.5,0.8)"]
-        sims["(0.8,1)"] += sim["(0.8,1)"]
-        sims["dsspNum"] += sim['dsspNum']
-
-    print(sims)
-    pickleName = '00'+str(1)+'_sims'
-    # pickle.savePickle(sims, pickleName, 'recogn', overWrite=True)
+        print(sims)
+        pickleName = '00'+x+'_sims'
+        pickle.savePickle(sims, pickleName, 'recogn', overWrite=True)
+    print('done')
 
 
 if __name__ == '__main__':

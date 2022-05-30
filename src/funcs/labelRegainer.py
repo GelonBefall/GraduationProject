@@ -2,9 +2,9 @@ import os
 from src.operateOfPNG.pngReader import readPNG
 
 
-def reagainLabel(pdbID, labelFile):
+def reagainLabel(pdbID, labelFile,x:str):
     # matPath='F:\\GraduationProject\\production\\matPNG\\matPNG_03'
-    matPath = 'F:\\GraduationProject\\production\\trainPNG\\2\\images\\val'
+    matPath = 'F:\\GraduationProject\\production\\trainPNG\\tests\\'+x
     matFile = os.path.join(matPath, pdbID+'.png')
     reader = readPNG()
     grayMat = reader.loadGrayMat(matFile)
@@ -31,9 +31,9 @@ def reagainLabel(pdbID, labelFile):
         return recgonRanges
 
 
-def reagainLabels():
+def reagainLabels(x:str):
     recgonRanges = {}
-    labelPath = 'F:\\GraduationProject\\yolov5\\runs\\detect\\a-Helix3\\labels\\'
+    labelPath = 'F:\\GraduationProject\\yolov5\\runs\\detect\\a-Helix'+x+'\\labels\\'
     # labelPath = 'F:\\GraduationProject\\production\\trainPNG\\1\\labels\\val'
     for dirPath, subdirs, subfiles in os.walk(labelPath):
         # for subdir in subdirs:
@@ -41,7 +41,7 @@ def reagainLabels():
         #     subfiles = subdir.glob('*.txt')
         for dssp in subfiles:
             pdbID = dssp[:4]
-            recgonRange = reagainLabel(pdbID, os.path.join(labelPath, dssp))
+            recgonRange = reagainLabel(pdbID, os.path.join(labelPath, dssp),x)
             if recgonRange == 0:
                 continue
             else:

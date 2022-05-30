@@ -64,7 +64,7 @@ class readDSSP:
         Dparser = parseDSSP(self.__dsspFile)
         Dparser.parse()
         pStruct = Dparser.dictTodataframe()[['resnum', 'struct']]
-        # pStruct=pddict 
+        # pStruct=pddict
         # print(pStruct)
         resNums = pStruct[pStruct['struct'] == '  H'].index
         # print(resNums)
@@ -81,8 +81,16 @@ class readDSSP:
 
 
 if __name__ == '__main__':
-    dR = readDSSP('1jcn')
-    print(dR.getAHelix())
+    dsspNum = 0
+    matpath = 'F:\\GraduationProject\\production\\matPNG\\matPNG_01\\images\\train'
+    for dir, subdir, files in os.walk(matpath):
+        for png in files:
+            pdbID = png[:-4]
+            dR = readDSSP(pdbID)
+            dsspNum += len(dR.getAHelix())
+    print(dsspNum)
+    # dR = readDSSP('1jcn')
+    # print(dR.getAHelix())
     # print(dR.aHelixRange())
     # print(dR.dsspFinder())
     # print(dR.dsspMover())
