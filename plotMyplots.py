@@ -1,6 +1,6 @@
 from src.funcs.pickleOperater import pickleOP
 # from src.visualPlt.piePloter import plotPie
-from src.visualPlt.linearPloter import plotstatLinr,plotPRCLinr
+from src.visualPlt.linearPloter import plotstatLinr
 
 # dict1 = {'a': 1, 'b': 2}
 # dict2 = {'a': 2, 'c': 3}

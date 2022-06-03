@@ -2,8 +2,8 @@ import os
 import matplotlib.pyplot as plt
 import numpy as np
 # 改变绘图风格
-import seaborn as sns
-sns.set(color_codes=True)
+# import seaborn as sns
+# sns.set(color_codes=True)
 
 
 def pltChecks(step: int, checks: dict):

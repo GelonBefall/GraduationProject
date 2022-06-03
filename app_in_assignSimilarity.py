@@ -17,9 +17,9 @@ if __name__ == '__main__':
 
     count=0
     for dssp in dssps:
-        if count < 6: #6
-            count+=1
-            continue
+        # if count < 6: #6
+        #     count+=1
+        #     continue
         # else:
         #     sys.exit()
         path = list(dssp.keys())[0]
@@ -32,18 +32,18 @@ if __name__ == '__main__':
 
             if bool(app) == True:
                 # dsspNum += len(app.aE.eA.dS.aR)
-                app.doMatPNG()
-                sim = app.getMyAssignSimilarity()
-                sims["(0,0.5)"] += sim["(0,0.5)"]
-                sims["(0.5,0.8)"] += sim["(0.5,0.8)"]
-                sims["(0.8,1)"] += sim["(0.8,1)"]
-                sims["dsspNum"] += len(app.aE.eA.dS.aR)
-                
+                # app.doMatPNG()
+                # sim = app.getMyAssignSimilarity()
+                # sims["(0,0.5)"] += sim["(0,0.5)"]
+                # sims["(0.5,0.8)"] += sim["(0.5,0.8)"]
+                # sims["(0.8,1)"] += sim["(0.8,1)"]
+                # sims["dsspNum"] += len(app.aE.eA.dS.aR)
+                app.checkStatis()
             else:
                 continue
 
-        pickleName = '00'+str(count+1)+'_sims'
-        pickle.savePickle(sims, pickleName, 'assign', overWrite=True) #str(count+1)
+        # pickleName = '00'+str(count+1)+'_sims'
+        # pickle.savePickle(sims, pickleName, 'assign', overWrite=True) #str(count+1)
         break
     print('done')
     # app.doAHelixPNGs()
@@ -83,11 +83,11 @@ if __name__ == '__main__':
     # print('指定得到的α-螺旋中，有', simNums["(0.8,1)"], '个相似度大于80%，有',
     #       simNums["(0.5,0.8)"], '个大于50%，有', simNums["(0,0.5)"], '个小于50%，')
 
-    # # pickleName = '0000_statCheck'
-    # # steps = [1, 2, 3]
-    # # allchecks = pickle.loadPickle(pickleName)
-    # # for step in steps:
-    # #     pltChecks(step, allchecks[step])
+    # pickleName = '0000_statCheck'
+    # steps = [1, 2, 3]
+    # allchecks = pickle.loadPickle(pickleName)
+    # for step in steps:
+    #     pltChecks(step, allchecks[step])
 
     # pickleName = '0000_simNums'
     # pickle.savePickle(simNums, pickleName, str(count+1))

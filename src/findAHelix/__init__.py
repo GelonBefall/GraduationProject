@@ -1,5 +1,5 @@
 from src.findAHelix.aHelixExtractr import extractAHelix
-# from src.findAHelix.aHelixPNGMaker import makeAHelixPNG
+from src.findAHelix.aHelixPNGMaker import makeAHelixPNG
 
 
 class aHelixExecute:
@@ -7,7 +7,7 @@ class aHelixExecute:
         self.pdbID = pdbID.lower()
         self.eA = extractAHelix(
             self.pdbID, overWrite=overWrite, dsspPath=dsspPath)
-        # self.mH = makeAHelixPNG(self.pdbID)
+        self.mH = makeAHelixPNG(self.pdbID)
 
     def __bool__(self):
         if bool(self.eA) == False:
@@ -25,11 +25,11 @@ class aHelixExecute:
         else:
             return True
 
-    # def doAHelixPNGs(self):
-    #     aList = self.eA.dS.dR.getAHelix()
-    #     grayMat = self.eA.dS.mE.loadGrayMat()
+    def doAHelixPNGs(self):
+        aList = self.eA.dS.dR.getAHelix()
+        grayMat = self.eA.dS.mE.loadGrayMat()
         
-    #     self.mH.plotAHelixPNGs(grayMat, aList)
+        self.mH.plotAHelixPNGs(grayMat, aList)
 
     def aHelixFeatures(self):
         return self.eA.featureOfAHelixs()

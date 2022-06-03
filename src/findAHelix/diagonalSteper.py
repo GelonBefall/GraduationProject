@@ -65,44 +65,44 @@ class diaStep:
                 diaLines[step] = diaLine
         return diaLines
 
-    # def statDiaLine(self, step: int, checks: dict):
-    #     '''提取图中的灰阶值。'''
+    def statDiaLine(self, step: int, checks: dict):
+        '''提取图中的灰阶值。'''
 
-    #     for r in range(len(self.aR)):
-    #         # 遍历所有α螺旋区段.
-    #         # if 5 >= (self.aR[r][1]-self.aR[r][0]):
-    #         #     # 若step值 or 5大于该区段长度，跳过
-    #         #     continue
+        for r in range(len(self.aR)):
+            # 遍历所有α螺旋区段.
+            # if 5 >= (self.aR[r][1]-self.aR[r][0]):
+            #     # 若step值 or 5大于该区段长度，跳过
+            #     continue
 
-    #         for row in range(self.aR[r][0], self.aR[r][1]-step+1):
-    #             # 遍历的是第r个区段.
-    #             col = row+step
-    #             check = self.mE.mkPNG.getMyCheck(self.grayMat[row][col])
-    #             if check in [1, 2, 3, 4]:
-    #                 checks[check] += 1
-    #             else:
-    #                 checks['other'] += 1
-    #     return checks
+            for row in range(self.aR[r][0], self.aR[r][1]-step+1):
+                # 遍历的是第r个区段.
+                col = row+step
+                check = self.mE.mkPNG.getMyCheck(self.grayMat[row][col])
+                if check in [1, 2, 3, 4]:
+                    checks[check] += 1
+                else:
+                    checks['other'] += 1
+        return checks
 
-    # def statDiaLines(self):
-    #     pickleName = '0000_statCheck'
-    #     steps = [1, 2, 3]
-    #     try:
-    #         allChecks = self.pickle.loadPickle(pickleName)
-    #         if bool(allChecks) == False:
-    #             raise
+    def statDiaLines(self):
+        pickleName = '0000_statCheck'
+        steps = [1, 2, 3]
+        try:
+            allChecks = self.pickle.loadPickle(pickleName)
+            if bool(allChecks) == False:
+                raise
 
-    #     except:
-    #         allChecks = {}
-    #         # checks=
-    #         for step in steps:
-    #             allChecks[step] = {1: 0, 2: 0, 3: 0, 4: 0, 'other': 0}
+        except:
+            allChecks = {}
+            # checks=
+            for step in steps:
+                allChecks[step] = {1: 0, 2: 0, 3: 0, 4: 0, 'other': 0}
 
-    #     for step in steps:
-    #         allChecks[step] = self.statDiaLine(step, allChecks[step])
-    #     self.pickle.savePickle(allChecks, pickleName, overWrite=True)
+        for step in steps:
+            allChecks[step] = self.statDiaLine(step, allChecks[step])
+        self.pickle.savePickle(allChecks, pickleName, overWrite=True)
 
-    #     return allChecks
+        return allChecks
 
     def stepClrDiaLine1(self, step: int, choosenAreas):
         '''遍历灰度矩阵算法1.0'''

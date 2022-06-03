@@ -29,7 +29,7 @@ class makeMyDirs:
 
         aHelixPath = os.path.join(producPath, "aHelixPNG/")
         self.__mkdir(aHelixPath)
-        self.makeAHelixPNG(aHelixPath)
+        # self.makeAHelixPNG(aHelixPath)
 
     def makeMatPNG(self, matPath):
         for i in range(1, 94):
@@ -37,11 +37,11 @@ class makeMyDirs:
             subMatPath = os.path.join(matPath, subDir)
             self.__mkdir(subMatPath)
 
-    def makeAHelixPNG(self, aHelixPath):
-        for i in range(1, 94):
-            subDir = "aHelix_{:0>2d}/".format(i)
-            subMatPath = os.path.join(aHelixPath, subDir)
-            self.__mkdir(subMatPath)
+    # def makeAHelixPNG(self, aHelixPath):
+    #     for i in range(1, 94):
+    #         subDir = "aHelix_{:0>2d}/".format(i)
+    #         subMatPath = os.path.join(aHelixPath, subDir)
+    #         self.__mkdir(subMatPath)
 
     def makePickle(self, producPath):
         picklePath = os.path.join(producPath, 'pickle/')

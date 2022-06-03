@@ -82,7 +82,7 @@ class readDSSP:
 
 if __name__ == '__main__':
     dsspNum = 0
-    matpath = 'F:\\GraduationProject\\production\\matPNG\\matPNG_01\\images\\train'
+    matpath = 'F:\\GraduationProject\\production\\matPNG\\matPNG_01\\images\\val'
     for dir, subdir, files in os.walk(matpath):
         for png in files:
             pdbID = png[:-4]

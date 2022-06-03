@@ -22,7 +22,7 @@ class application:
         return self.aE.eA.dS.mE.doDisPNG()
 
     def getAssignRange(self):
-        dsspRange = self.aE.eA.dS.aR
+        # dsspRange = self.aE.eA.dS.aR
         assignRange1 = self.aE.eA.dS.stepClrDiaLines1()  # 算法 1True
         assignRange2 = self.aE.eA.dS.stepClrDiaLines2()  # 算法 2True
 
@@ -61,15 +61,15 @@ class application:
         return allSim
         # self.assignRange=assignRange
         # self.dsspRange=dsspRange
-    # def doAHelixPNGs(self):
-    #     return self.aE.doAHelixPNGs()
+    def doAHelixPNGs(self):
+        return self.aE.doAHelixPNGs()
 
     # def aHelixFeatures(self):
     #     return (self.aE.aHelixFeatures())
     #     # print
     
-    # def checkStatis(self):
-    #     return self.aE.eA.dS.statDiaLines()
+    def checkStatis(self):
+        return self.aE.eA.dS.statDiaLines()
 
     # def writeLowAccu(self, dsspRange, assignRange):
     #     __filePath = os.path.join(os.getcwd(), 'production/lowAccu.txt')
