@@ -32,8 +32,8 @@ class pngInit:
     def getChecked(self, dis):
         '''划分距离区间，数字化选择上色颜色。'''
         def getCheck(dis): return {
-            23 < dis: 10,
-            13 < dis <= 23: 9,
+            20 < dis: 10,
+            13 < dis <= 20: 9,
             10.0 < dis <= 13: 8,
             9.0 < dis <= 10.0: 7,
             8.0 <= dis <= 9.0: 6,

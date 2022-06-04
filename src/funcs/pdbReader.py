@@ -139,7 +139,7 @@ class readPDB:
 
 
 if __name__ == '__main__':
-    rp = readPDB(pdbID='1kqs')
+    rp = readPDB(pdbID='10gs')
     print(rp.residuesCount())
     print(rp.CAAmount)
     # print(rp.pdbDeleter())

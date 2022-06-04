@@ -84,9 +84,9 @@ class matrixExecute:
 
 
 if __name__ == '__main__':
-    matEXE = matrixExecute(pdbID='1914')  # pdbID='1a4f'
+    matEXE = matrixExecute(pdbID='10gs')  # pdbID='1a4f'
     # print(op.createTable())
     # print(op.saveToDB())
-    # print(matEXE.LASMat())
+    print(matEXE.LASMat())
     # print(matEXE.doDisPNG())
-    print(matEXE.loadGrayMat())
+    # print(matEXE.loadGrayMat())

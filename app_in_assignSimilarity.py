@@ -33,12 +33,13 @@ if __name__ == '__main__':
             if bool(app) == True:
                 # dsspNum += len(app.aE.eA.dS.aR)
                 # app.doMatPNG()
+                app.doAHelixPNGs()
                 # sim = app.getMyAssignSimilarity()
                 # sims["(0,0.5)"] += sim["(0,0.5)"]
                 # sims["(0.5,0.8)"] += sim["(0.5,0.8)"]
                 # sims["(0.8,1)"] += sim["(0.8,1)"]
                 # sims["dsspNum"] += len(app.aE.eA.dS.aR)
-                app.checkStatis()
+                # app.checkStatis()
             else:
                 continue
 
